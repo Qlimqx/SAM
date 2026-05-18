@@ -880,7 +880,8 @@ function updateSheetLink(){
 (function init(){
   try{const s=localStorage.getItem('mgp-settings');if(s)SETTINGS={...SETTINGS,...JSON.parse(s)};}catch(e){}
   applyAccent(SETTINGS.accentColor);
-  const savedUrl=localStorage.getItem('mgp-script-url');
+  const FORCE_URL = 'https://script.google.com/macros/s/TON_URL_ICI/exec';
+  const savedUrl = FORCE_URL || localStorage.getItem('mgp-script-url');
   if(savedUrl){
     SCRIPT_URL=savedUrl;
     document.getElementById('sheet-url-input').value=savedUrl;
