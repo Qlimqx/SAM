@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MotoGP™ RP – Grand Prix</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700;1,900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--accent:#e30613;--accent-dim:rgba(227,6,19,.15);--bg:#09090b;--card:#111116;--card2:#17171d;--border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.12);--text:#f0f0f5;--muted:#666678;--sub:#9999af;--gold:#f5c842;--silver:#b0b8c4;--bronze:#cd7f32;--panel-w:400px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;font-size:15px;line-height:1.6;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;font-family:inherit}
+input,select,textarea{font-family:inherit}
+.hidden{display:none!important}
+
+/* ── SETUP MODAL ── */
+.setup-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.93);z-index:500;display:flex;align-items:center;justify-content:center;padding:20px}
+.setup-modal{background:#13131a;border:1px solid var(--border2);border-radius:12px;width:100%;max-width:620px;max-height:92vh;overflow-y:auto;padding:36px}
+.setup-modal h2{font-family:'Barlow Condensed',sans-serif;font-size:34px;font-weight:900;font-style:italic;text-transform:uppercase;margin-bottom:6px;letter-spacing:-.01em}
+.setup-modal>p{font-size:14px;color:var(--sub);line-height:1.7;margin-bottom:24px}
+.setup-steps{display:flex;flex-direction:column;gap:18px;margin-bottom:28px}
+.step{display:flex;gap:16px;align-items:flex-start}
+.step-num{flex-shrink:0;width:30px;height:30px;background:var(--accent);color:#fff;border-radius:50%;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-top:2px}
+.step-body{flex:1;font-size:13px;color:var(--sub);line-height:1.7}
+.step-body strong{color:var(--text)}
+.step-body a{color:#60a5fa;text-decoration:underline}
+.step-body code{background:var(--card2);border:1px solid var(--border2);padding:2px 7px;border-radius:3px;font-family:monospace;font-size:11.5px;color:#86efac}
+.sheet-structure{background:var(--card);border:1px solid var(--border);border-radius:8px;margin-top:10px;overflow:hidden}
+.sheet-tab{display:flex;gap:0;border-bottom:1px solid var(--border);overflow-x:auto}
+.sheet-tab-btn{background:none;border:none;border-right:1px solid var(--border);color:var(--muted);font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:8px 14px;cursor:pointer;white-space:nowrap;transition:color .15s,background .15s}
+.sheet-tab-btn.active{color:var(--accent);background:rgba(227,6,19,.07)}
+.sheet-preview{padding:12px;font-family:monospace;font-size:11.5px;line-height:1.8;color:var(--sub);overflow-x:auto}
+.sheet-preview .hdr{color:#f5c842;font-weight:700}
+.sheet-preview .val{color:#86efac}
+.setup-input-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;display:block}
+.setup-input{width:100%;background:var(--card2);border:1px solid var(--border2);color:var(--text);padding:12px 14px;border-radius:6px;font-size:14px;outline:none;transition:border-color .15s;margin-bottom:8px}
+.setup-input:focus{border-color:var(--accent)}
+.setup-error{color:#f87171;font-size:12px;margin-bottom:12px;min-height:18px}
+.btn-setup-go{width:100%;background:var(--accent);color:#fff;border:none;padding:14px;border-radius:6px;font-size:14px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;transition:opacity .15s}
+.btn-setup-go:hover{opacity:.85}
+.btn-setup-go:disabled{opacity:.5;cursor:not-allowed}
+.btn-setup-skip{width:100%;background:none;border:1px solid var(--border2);color:var(--sub);padding:12px;border-radius:6px;font-size:13px;font-weight:600;transition:all .15s}
+.btn-setup-skip:hover{border-color:var(--text);color:var(--text)}
+
+/* ── TOP BAR ── */
+.topbar{background:#000;border-bottom:1px solid var(--border);padding:7px 0;font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+.topbar-inner{max-width:1280px;margin:0 auto;padding:0 24px;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.topbar-left{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:11px}
+.status-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.status-dot.ok{background:#4ade80}
+.status-dot.err{background:#f87171}
+.status-dot.loading{background:#fbbf24;animation:blink .8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.topbar-right{display:flex;gap:20px}
+.topbar-right a{color:var(--muted)}.topbar-right a:hover{color:var(--text)}
+
+/* ── NAVBAR ── */
+.navbar{background:rgba(0,0,0,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
+.navbar-inner{max-width:1280px;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:32px;height:64px}
+.logo{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;font-style:italic;letter-spacing:-.02em;color:var(--text);display:flex;align-items:center;gap:8px;flex-shrink:0}
+.logo .badge{background:var(--accent);color:#fff;padding:2px 7px;font-size:13px;font-weight:800;letter-spacing:.04em;font-style:normal}
+.nav-links{display:flex;gap:4px;flex:1}
+.nav-links a{color:var(--sub);font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:6px 12px;border-radius:4px;transition:color .15s,background .15s}
+.nav-links a:hover{color:var(--text);background:rgba(255,255,255,.06)}
+.nav-links a.active{color:var(--accent)}
+.nav-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.btn-reload{background:none;border:1px solid var(--border2);color:var(--sub);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:7px 14px;border-radius:4px;display:flex;align-items:center;gap:6px;transition:all .15s}
+.btn-reload:hover{border-color:var(--text);color:var(--text)}
+.btn-edit{background:var(--accent);color:#fff;border:none;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:7px 16px;border-radius:4px;display:flex;align-items:center;gap:6px;transition:opacity .15s}
+.btn-edit:hover{opacity:.85}
+.btn-edit.active{background:#fff;color:#000}
+.edit-dot{width:7px;height:7px;background:currentColor;border-radius:50%;animation:blink 1.5s infinite}
+
+/* ── HERO ── */
+.hero{position:relative;min-height:520px;display:flex;align-items:flex-end;overflow:hidden;background:var(--card);border-bottom:3px solid var(--accent)}
+.hero-bg{position:absolute;inset:0;background:linear-gradient(135deg,#0d0d12 0%,#1a1428 50%,#0a1222 100%)}
+.hero-grid-lines{position:absolute;inset:0;opacity:.04;background-image:repeating-linear-gradient(0deg,transparent,transparent 59px,#fff 59px,#fff 60px),repeating-linear-gradient(90deg,transparent,transparent 79px,#fff 79px,#fff 80px)}
+.hero-accent-line{position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent)}
+.hero-bg-num{position:absolute;right:-20px;bottom:-40px;font-family:'Barlow Condensed',sans-serif;font-size:380px;font-weight:900;font-style:italic;color:rgba(255,255,255,.025);line-height:1;user-select:none;pointer-events:none}
+.hero-content{position:relative;max-width:1280px;width:100%;margin:0 auto;padding:48px 24px 40px;display:flex;align-items:flex-end;justify-content:space-between;gap:40px}
+.hero-eyebrow{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.hero-eyebrow::before{content:'';display:block;width:28px;height:2px;background:var(--accent)}
+.hero-title{font-family:'Barlow Condensed',sans-serif;font-size:clamp(48px,6vw,88px);font-weight:900;font-style:italic;line-height:.95;letter-spacing:-.02em;text-transform:uppercase}
+.hero-subtitle{font-family:'Barlow Condensed',sans-serif;font-size:clamp(20px,2.5vw,32px);font-weight:400;color:var(--sub);margin-top:6px;font-style:italic;text-transform:uppercase;letter-spacing:.04em}
+.hero-meta{display:flex;align-items:center;gap:24px;margin-top:28px;flex-wrap:wrap}
+.meta-item{display:flex;flex-direction:column;gap:2px}
+.meta-lbl{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.meta-val{font-size:15px;font-weight:600;color:var(--text)}
+.meta-sep{width:1px;height:36px;background:var(--border2)}
+.status-badge{display:inline-flex;align-items:center;gap:7px;padding:6px 14px;border-radius:4px;font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+.s-upcoming{background:rgba(255,165,0,.15);color:#ffa500;border:1px solid rgba(255,165,0,.3)}
+.s-live{background:rgba(227,6,19,.2);color:#ff3d4e;border:1px solid rgba(227,6,19,.4)}
+.s-live .ldot{width:7px;height:7px;background:#ff3d4e;border-radius:50%;animation:blink 1s infinite}
+.s-finished{background:rgba(100,200,100,.1);color:#6dcc6d;border:1px solid rgba(100,200,100,.25)}
+
+/* ── EVENT TABS ── */
+.event-tabs{background:var(--card);border-bottom:1px solid var(--border)}
+.tabs-inner{max-width:1280px;margin:0 auto;padding:0 24px;display:flex;gap:4px;overflow-x:auto}
+.tab-btn{color:var(--sub);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:16px 18px;border:none;background:transparent;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap;transition:color .15s,border-color .15s}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
+
+/* ── SECTIONS ── */
+.section{padding:48px 0}
+.section-inner{max-width:1280px;margin:0 auto;padding:0 24px}
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}
+.section-title{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:800;font-style:italic;text-transform:uppercase;letter-spacing:-.01em;display:flex;align-items:center;gap:12px}
+.section-title::before{content:'';display:block;width:4px;height:28px;background:var(--accent);border-radius:2px;flex-shrink:0}
+.section-link{color:var(--accent);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.section-link::after{content:'→';margin-left:5px}
+
+/* ── NEWS ── */
+.news-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.news-card{background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden;cursor:pointer;transition:border-color .2s,transform .2s}
+.news-card:hover{border-color:var(--border2);transform:translateY(-2px)}
+.news-card-img{height:160px;background:linear-gradient(135deg,#1a1428,#0a1222);display:flex;align-items:center;justify-content:center;font-size:44px;position:relative}
+.news-card-img::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,transparent 50%,rgba(0,0,0,.6))}
+.news-cat{position:absolute;top:12px;left:12px;background:var(--accent);color:#fff;font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:3px;z-index:1}
+.news-hot{background:#ff6b00!important}
+.news-card-body{padding:16px}
+.news-date{font-size:11px;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em}
+.news-title{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;line-height:1.2;margin-bottom:8px;text-transform:uppercase}
+.news-desc{font-size:13px;color:var(--sub);line-height:1.5}
+
+/* ── GRID ── */
+.grid-section{background:var(--card);padding:40px 0}
+.grid-visual{display:flex;flex-direction:column;gap:8px;margin-bottom:28px}
+.grid-row-v{display:flex;gap:8px;justify-content:center}
+.grid-box{background:var(--card2);border:1px solid var(--border);border-radius:6px;padding:12px 20px;text-align:center;min-width:140px;flex:1;max-width:160px}
+.gb-pos{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.gb-num{font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:900;font-style:italic;color:var(--accent);line-height:1}
+.gb-name{font-size:12px;font-weight:600;margin-top:4px}
+.gb-team{font-size:10px;color:var(--muted)}
+.grid-box.pole{border-color:rgba(245,200,66,.3);background:rgba(245,200,66,.04)}
+.grid-box.pole .gb-num{color:var(--gold)}
+.grid-table{width:100%;border-collapse:collapse}
+.grid-table th{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:8px 12px;border-bottom:1px solid var(--border)}
+.grid-table td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:middle}
+.grid-table tr:last-child td{border-bottom:none}
+.grid-table tr:hover td{background:rgba(255,255,255,.025)}
+.gpos{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;font-style:italic;width:50px}
+.gpos.p1{color:var(--gold)}.gpos.p2{color:var(--silver)}.gpos.p3{color:var(--bronze)}
+.rrow{display:flex;gap:16px;align-items:center}
+.num-badge{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;background:var(--accent-dim);color:var(--accent);border:1px solid rgba(227,6,19,.25);padding:3px 10px;border-radius:4px;min-width:44px;text-align:center}
+.rname{font-weight:600;font-size:15px}.rteam{font-size:12px;color:var(--sub)}
+.mfr-badge{font-size:11px;font-weight:600;letter-spacing:.05em;color:var(--muted);background:var(--card2);padding:3px 8px;border-radius:3px;border:1px solid var(--border)}
+.lap-t{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:700;letter-spacing:.03em}
+.lap-g{font-size:13px;color:var(--muted)}
+
+/* ── RESULTS ── */
+.podium{display:grid;grid-template-columns:1fr 1.15fr 1fr;gap:12px;margin-bottom:28px;align-items:flex-end}
+.pod-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px 16px;text-align:center;position:relative;overflow:hidden}
+.pod-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.pod-card.p1::before{background:var(--gold)}.pod-card.p2::before{background:var(--silver)}.pod-card.p3::before{background:var(--bronze)}
+.pod-icon{font-size:36px;margin-bottom:8px}
+.pod-rider{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;text-transform:uppercase;font-style:italic}
+.pod-team{font-size:12px;color:var(--sub);margin-bottom:12px}
+.pod-time{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:600;letter-spacing:.04em}
+.pod-pts{background:var(--accent-dim);color:var(--accent);border:1px solid rgba(227,6,19,.2);font-size:12px;font-weight:700;padding:3px 10px;border-radius:12px;display:inline-block;margin-top:8px}
+.res-table{width:100%;border-collapse:collapse}
+.res-table th{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:8px 12px;border-bottom:1px solid var(--border);text-align:left}
+.res-table td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:middle}
+.res-table tr:last-child td{border-bottom:none}
+.res-table tr:hover td{background:rgba(255,255,255,.025)}
+.rpos{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;font-style:italic;width:40px}
+.rpos.top3{color:var(--gold)}.dnf{color:var(--muted);font-style:italic}
+
+/* ── STANDINGS ── */
+.std-table{width:100%;border-collapse:collapse}
+.std-table th{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:10px 14px;border-bottom:1px solid var(--border);text-align:left}
+.std-table td{padding:12px 14px;border-bottom:1px solid var(--border);vertical-align:middle}
+.std-table tr:last-child td{border-bottom:none}
+.std-table tr:hover td{background:rgba(255,255,255,.025)}
+.spos{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;font-style:italic;width:44px}
+.spos.leader{color:var(--accent)}
+.bar-wrap{width:180px}
+.bar-bg{height:4px;background:var(--border2);border-radius:2px;overflow:hidden}
+.bar-fill{height:100%;background:var(--accent);border-radius:2px;transition:width .4s}
+.pts-val{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;text-align:right}
+
+/* ── RIDER CARDS ── */
+.riders-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+.rider-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px 16px;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;cursor:pointer;transition:border-color .2s,transform .2s;position:relative;overflow:hidden}
+.rider-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .2s}
+.rider-card:hover{border-color:var(--border2);transform:translateY(-2px)}
+.rider-card:hover::after{transform:scaleX(1)}
+.rc-num{font-family:'Barlow Condensed',sans-serif;font-size:52px;font-weight:900;font-style:italic;color:var(--accent);line-height:1;opacity:.25;position:absolute;right:10px;top:6px}
+.rc-flag{font-size:28px;z-index:1}
+.rc-name{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;text-transform:uppercase;font-style:italic;z-index:1;line-height:1.1}
+.rc-team{font-size:11px;color:var(--sub);z-index:1}
+.rc-nat{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;z-index:1}
+
+/* ── FOOTER ── */
+.footer{background:#000;border-top:1px solid var(--border);padding:40px 0 24px}
+.footer-inner{max-width:1280px;margin:0 auto;padding:0 24px}
+.footer-top{display:flex;gap:48px;justify-content:space-between;flex-wrap:wrap;margin-bottom:32px}
+.footer-brand .logo{font-size:26px;margin-bottom:12px}
+.footer-brand p{font-size:13px;color:var(--muted);max-width:280px;line-height:1.6}
+.footer-col h4{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:8px}
+.footer-col ul li a{font-size:13px;color:var(--sub);transition:color .15s}
+.footer-col ul li a:hover{color:var(--text)}
+.footer-bottom{border-top:1px solid var(--border);padding-top:20px;display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--muted);flex-wrap:wrap;gap:12px}
+
+/* ── EDIT PANEL ── */
+.edit-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;opacity:0;pointer-events:none;transition:opacity .25s}
+.edit-overlay.open{opacity:1;pointer-events:all}
+.edit-panel{position:fixed;top:0;right:0;bottom:0;width:var(--panel-w);background:#111118;border-left:1px solid var(--border2);z-index:201;transform:translateX(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;overflow:hidden}
+.edit-panel.open{transform:translateX(0)}
+.ep-header{padding:18px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.ep-header h3{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;font-style:italic;text-transform:uppercase;display:flex;align-items:center;gap:8px}
+.ep-header h3 .dot{background:var(--accent);width:10px;height:10px;border-radius:2px;display:block}
+.btn-close{background:none;border:1px solid var(--border2);color:var(--sub);width:32px;height:32px;border-radius:4px;font-size:18px;display:flex;align-items:center;justify-content:center;transition:background .15s,color .15s}
+.btn-close:hover{background:var(--card2);color:var(--text)}
+.ep-body{flex:1;overflow-y:auto;padding:24px}
+.ep-section{margin-bottom:28px}
+.ep-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;display:block}
+.ep-field{margin-bottom:14px}
+.ep-field label{display:block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.ep-field input,.ep-field select{width:100%;background:var(--card2);border:1px solid var(--border2);color:var(--text);padding:9px 12px;border-radius:5px;font-size:14px;outline:none;transition:border-color .15s}
+.ep-field input:focus,.ep-field select:focus{border-color:var(--accent)}
+.ep-field select option{background:#111118}
+.ep-divider{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--sub);margin:20px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.ep-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.color-row{display:flex;gap:8px;align-items:center}
+.color-row input[type=color]{width:40px;height:38px;padding:2px;border-radius:4px;border:1px solid var(--border2);background:transparent;cursor:pointer}
+.color-row input[type=text]{flex:1;background:var(--card2);border:1px solid var(--border2);color:var(--text);padding:9px 12px;border-radius:5px;font-size:14px;outline:none}
+.color-row input[type=text]:focus{border-color:var(--accent)}
+.preset-colors{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:4px}
+.preset-colors button{width:32px;height:32px;border:none;border-radius:4px;cursor:pointer;transition:transform .1s}
+.preset-colors button:hover{transform:scale(1.15)}
+.section-toggle{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)}
+.section-toggle label{font-size:13px;font-weight:500}
+.toggle-sw{width:42px;height:24px;background:var(--border2);border-radius:12px;border:none;position:relative;cursor:pointer;transition:background .2s}
+.toggle-sw.on{background:var(--accent)}
+.toggle-sw::after{content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;background:#fff;border-radius:50%;transition:transform .2s}
+.toggle-sw.on::after{transform:translateX(18px)}
+.sheets-link-box{background:rgba(66,133,244,.08);border:1px solid rgba(66,133,244,.25);border-radius:8px;padding:16px;margin-bottom:16px}
+.sheets-link-box p{font-size:13px;color:var(--sub);line-height:1.6;margin-bottom:12px}
+.sheets-link-box a{display:inline-flex;align-items:center;gap:8px;background:rgba(66,133,244,.15);border:1px solid rgba(66,133,244,.3);color:#93c5fd;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:9px 16px;border-radius:5px;transition:background .15s;text-decoration:none}
+.sheets-link-box a:hover{background:rgba(66,133,244,.25)}
+.ep-footer{padding:16px 20px;border-top:1px solid var(--border);display:flex;gap:10px;flex-shrink:0}
+.btn-save-settings{flex:1;background:var(--accent);color:#fff;border:none;padding:11px;border-radius:5px;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;transition:opacity .15s}
+.btn-save-settings:hover{opacity:.85}
+.btn-change-sheet{background:none;border:1px solid var(--border2);color:var(--sub);padding:11px 14px;border-radius:5px;font-size:12px;font-weight:600;transition:all .15s}
+.btn-change-sheet:hover{border-color:var(--text);color:var(--text)}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:#1e2a1e;border:1px solid #4caf50;color:#7de87d;font-size:13px;font-weight:600;padding:10px 22px;border-radius:6px;z-index:300;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px}
+@keyframes spin{to{transform:rotate(360deg)}}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     SETUP MODAL
+══════════════════════════════════════ -->
+<div class="setup-backdrop" id="setup-backdrop">
+  <div class="setup-modal">
+    <h2>📊 Connexion Google Sheets</h2>
+    <p>Le site lit ses données directement depuis un Google Sheets public. Pour mettre à jour le site : modifie le tableur, puis clique <strong>Recharger</strong> sur le site. C'est tout !</p>
+
+    <div class="setup-steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          Dans ton Google Sheets, crée ces 6 onglets (noms exacts) :<br>
+          <code>config</code> &nbsp;<code>actualites</code> &nbsp;<code>grille</code> &nbsp;<code>resultats</code> &nbsp;<code>classement</code> &nbsp;<code>pilotes</code>
+          <div class="sheet-structure" style="margin-top:10px">
+            <div class="sheet-tab" id="demo-tabs">
+              <button class="sheet-tab-btn active" onclick="showDemo('config',this)">config</button>
+              <button class="sheet-tab-btn" onclick="showDemo('actualites',this)">actualites</button>
+              <button class="sheet-tab-btn" onclick="showDemo('grille',this)">grille</button>
+              <button class="sheet-tab-btn" onclick="showDemo('resultats',this)">resultats</button>
+              <button class="sheet-tab-btn" onclick="showDemo('classement',this)">classement</button>
+              <button class="sheet-tab-btn" onclick="showDemo('pilotes',this)">pilotes</button>
+            </div>
+            <div class="sheet-preview" id="demo-preview"></div>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          Dans le Sheet : <strong>Extensions → Apps Script</strong>. Supprime tout le code existant, colle le script ci-dessous et clique 💾 <strong>Enregistrer</strong>.
+          <div style="margin-top:10px;position:relative">
+            <pre id="gas-code" style="background:var(--card);border:1px solid var(--border);border-radius:6px;padding:12px;font-size:11px;color:#86efac;line-height:1.7;overflow-x:auto;white-space:pre">function doGet() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheets = ['config','actualites','grille','resultats','classement','pilotes'];
+  var out = {};
+  sheets.forEach(function(name) {
+    var s = ss.getSheetByName(name);
+    if (!s) { out[name] = []; return; }
+    var vals = s.getDataRange().getValues();
+    if (vals.length &lt; 2) { out[name] = []; return; }
+    var headers = vals[0];
+    out[name] = vals.slice(1).filter(function(r){
+      return r.some(function(c){ return c !== ''; });
+    }).map(function(r) {
+      var o = {};
+      headers.forEach(function(h,i){ if(h) o[String(h)] = String(r[i] || ''); });
+      return o;
+    });
+  });
+  return ContentService.createTextOutput(JSON.stringify(out))
+    .setMimeType(ContentService.MimeType.JSON);
+}</pre>
+            <button onclick="copyScript()" style="position:absolute;top:8px;right:8px;background:var(--card2);border:1px solid var(--border2);color:var(--sub);font-size:11px;font-weight:700;padding:5px 10px;border-radius:4px;cursor:pointer" id="btn-copy-script">📋 Copier</button>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          Clique <strong>Déployer → Nouveau déploiement</strong>.<br>
+          Type : <strong>Application Web</strong> → Exécuter en tant que : <strong>Moi</strong> → Accès : <strong>Tout le monde</strong> → <strong>Déployer</strong>.<br>
+          Google demande une autorisation → clique <strong>Autoriser l'accès</strong> (normal, c'est ton propre script).<br>
+          Copie l'<strong>URL du déploiement</strong> (commence par <code>https://script.google.com/macros/s/...</code>).
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">Colle l'URL Apps Script ci-dessous :</div>
+      </div>
+    </div>
+
+    <label class="setup-input-label">URL du déploiement Apps Script</label>
+    <input class="setup-input" id="sheet-url-input" type="text" placeholder="https://script.google.com/macros/s/XXXX/exec">
+    <div class="setup-error" id="setup-error"></div>
+    <button class="btn-setup-go" id="btn-connect" onclick="connectSheet()">🔗 Connecter</button>
+    <button class="btn-setup-skip" onclick="skipSetup()">Utiliser les données de démonstration (sans Sheets)</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     TOP BAR
+══════════════════════════════════════ -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="topbar-left">
+      <span class="status-dot loading" id="status-dot"></span>
+      <span id="status-label">Chargement...</span>
+    </div>
+    <div class="topbar-right">
+      <a href="#">Tickets</a><a href="#">Boutique</a><a href="#">VideoPass</a>
+    </div>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="navbar-inner">
+    <div class="logo">
+      <span class="badge" id="nav-series">MotoGP™</span>
+      <span style="background:none;color:var(--text);font-size:22px" id="nav-title">GRAND PRIX</span>
+    </div>
+    <div class="nav-links">
+      <a href="#hero" class="active">Accueil</a>
+      <a href="#news">Actualités</a>
+      <a href="#grid">Grille</a>
+      <a href="#results">Résultats</a>
+      <a href="#standings">Classement</a>
+      <a href="#riders">Pilotes</a>
+    </div>
+    <div class="nav-right">
+      <button class="btn-reload" id="btn-reload" onclick="reloadData()">↺ Recharger</button>
+      <button class="btn-edit" id="btn-edit" onclick="toggleEdit()"><span class="edit-dot"></span>Apparence</button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-bg"></div><div class="hero-grid-lines"></div><div class="hero-accent-line"></div>
+  <div class="hero-bg-num" id="hero-bg-num">5</div>
+  <div class="hero-content">
+    <div>
+      <div class="hero-eyebrow" id="hero-eyebrow">Manche 5 — Saison 2026</div>
+      <h1 class="hero-title" id="hero-title">Grand Prix de France</h1>
+      <div class="hero-subtitle" id="hero-subtitle">Circuit Bugatti — Le Mans</div>
+      <div class="hero-meta">
+        <div class="meta-item"><div class="meta-lbl">Date</div><div class="meta-val" id="hero-date">9–11 mai 2026</div></div>
+        <div class="meta-sep"></div>
+        <div class="meta-item"><div class="meta-lbl">Tours</div><div class="meta-val" id="hero-laps">27 tours</div></div>
+        <div class="meta-sep"></div>
+        <div class="meta-item"><div class="meta-lbl">Distance</div><div class="meta-val" id="hero-dist">118.8 km</div></div>
+        <div class="meta-sep"></div>
+        <div class="meta-item"><div class="meta-lbl">Météo</div><div class="meta-val" id="hero-weather">Sec / 24°C</div></div>
+        <div class="meta-sep"></div>
+        <div><div class="status-badge s-finished" id="status-badge">✓ Terminé</div></div>
+      </div>
+    </div>
+    <div><div style="font-size:80px;line-height:1" id="hero-flag">🇫🇷</div></div>
+  </div>
+</section>
+
+<!-- EVENT TABS -->
+<div class="event-tabs"><div class="tabs-inner">
+  <button class="tab-btn active">Programme</button>
+  <button class="tab-btn">Grille de départ</button>
+  <button class="tab-btn">Résultats</button>
+  <button class="tab-btn">Classement</button>
+  <button class="tab-btn">Infos circuit</button>
+  <button class="tab-btn">Statistiques</button>
+</div></div>
+
+<!-- NEWS -->
+<section class="section" id="news">
+  <div class="section-inner">
+    <div class="section-header"><h2 class="section-title">Dernières Actualités</h2><a href="#" class="section-link">Voir tout</a></div>
+    <div class="news-grid" id="news-grid"></div>
+  </div>
+</section>
+
+<!-- GRID -->
+<section class="grid-section" id="grid">
+  <div class="section-inner">
+    <div class="section-header"><h2 class="section-title">Grille de Départ</h2></div>
+    <div id="grid-visual"></div>
+    <table class="grid-table"><thead><tr><th>Pos.</th><th>Pilote</th><th>Constructeur</th><th>Temps</th><th>Écart</th></tr></thead><tbody id="grid-tbody"></tbody></table>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section class="section" id="results">
+  <div class="section-inner">
+    <div class="section-header"><h2 class="section-title">Résultats de Course</h2></div>
+    <div class="podium" id="podium"></div>
+    <table class="res-table"><thead><tr><th>Pos.</th><th>Pilote</th><th>Équipe</th><th>Constructeur</th><th>Temps / Écart</th><th>Points</th></tr></thead><tbody id="results-tbody"></tbody></table>
+  </div>
+</section>
+
+<!-- STANDINGS -->
+<section class="section" id="standings" style="background:var(--card)">
+  <div class="section-inner">
+    <div class="section-header"><h2 class="section-title">Classement Championnat</h2></div>
+    <table class="std-table"><thead><tr><th>Pos.</th><th>Pilote</th><th>Équipe</th><th></th><th>Points</th></tr></thead><tbody id="standings-tbody"></tbody></table>
+  </div>
+</section>
+
+<!-- RIDERS -->
+<section class="section" id="riders">
+  <div class="section-inner">
+    <div class="section-header"><h2 class="section-title">Pilotes en Vedette</h2></div>
+    <div class="riders-grid" id="riders-grid"></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer"><div class="footer-inner">
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="logo"><span class="badge" id="footer-series">MotoGP™</span><span style="background:none;color:var(--text);font-size:22px">RP</span></div>
+      <p>Site de roleplay. Données gérées via Google Sheets. Non officiel.</p>
+    </div>
+    <div class="footer-col"><h4>Événement</h4><ul><li><a href="#">Programme</a></li><li><a href="#">Grille</a></li><li><a href="#">Résultats</a></li></ul></div>
+    <div class="footer-col"><h4>Pilotes</h4><ul><li><a href="#">Profils</a></li><li><a href="#">Statistiques</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><span id="footer-copy">© 2026 MotoGP™ RP</span></div>
+</div></footer>
+
+<!-- EDIT PANEL (Apparence uniquement) -->
+<div class="edit-overlay" id="edit-overlay" onclick="toggleEdit()"></div>
+<div class="edit-panel" id="edit-panel">
+  <div class="ep-header">
+    <h3><span class="dot"></span>Apparence</h3>
+    <button class="btn-close" onclick="toggleEdit()">✕</button>
+  </div>
+  <div class="ep-body">
+
+    <div class="sheets-link-box">
+      <p>Le contenu (actualités, grille, résultats…) se modifie directement dans Google Sheets. Modifie le tableur puis clique <strong>Recharger</strong> sur le site.</p>
+      <a href="#" id="sheets-open-link" target="_blank">📊 Ouvrir mon Google Sheets</a>
+    </div>
+
+    <div class="ep-divider">Couleur d'accentuation</div>
+    <div class="ep-field">
+      <label>Couleur principale</label>
+      <div class="color-row">
+        <input type="color" id="e-color-picker" value="#e30613" oninput="updateAccent(this.value)">
+        <input type="text" id="e-color-text" value="#e30613" oninput="updateAccent(this.value)">
+      </div>
+    </div>
+    <div class="preset-colors">
+      <button onclick="setAccent('#e30613')" style="background:#e30613" title="Rouge MotoGP"></button>
+      <button onclick="setAccent('#ff6b00')" style="background:#ff6b00" title="Orange"></button>
+      <button onclick="setAccent('#f5c842')" style="background:#f5c842" title="Or"></button>
+      <button onclick="setAccent('#00c896')" style="background:#00c896" title="Vert"></button>
+      <button onclick="setAccent('#0099ff')" style="background:#0099ff" title="Bleu"></button>
+      <button onclick="setAccent('#cc00ff')" style="background:#cc00ff" title="Violet"></button>
+    </div>
+
+    <div class="ep-divider">Branding</div>
+    <div class="ep-field"><label>Nom de la série</label><input id="e-series" type="text" placeholder="MotoGP™"></div>
+    <div class="ep-field"><label>Libellé navigation</label><input id="e-navtitle" type="text" placeholder="GRAND PRIX"></div>
+    <div class="ep-field"><label>Copyright footer</label><input id="e-copy" type="text" placeholder="© 2026 MotoGP™ RP"></div>
+
+    <div class="ep-divider">Sections visibles</div>
+    <div class="section-toggle"><label>Actualités</label><button class="toggle-sw on" id="tog-news" onclick="toggleSec('news',this)"></button></div>
+    <div class="section-toggle"><label>Grille de départ</label><button class="toggle-sw on" id="tog-grid" onclick="toggleSec('grid',this)"></button></div>
+    <div class="section-toggle"><label>Résultats</label><button class="toggle-sw on" id="tog-results" onclick="toggleSec('results',this)"></button></div>
+    <div class="section-toggle"><label>Classement</label><button class="toggle-sw on" id="tog-standings" onclick="toggleSec('standings',this)"></button></div>
+    <div class="section-toggle"><label>Pilotes</label><button class="toggle-sw on" id="tog-riders" onclick="toggleSec('riders',this)"></button></div>
+
+  </div>
+  <div class="ep-footer">
+    <button class="btn-save-settings" onclick="saveSettings()">💾 Sauvegarder l'apparence</button>
+    <button class="btn-change-sheet" onclick="toggleEdit();showSetup()">Changer Sheets</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- ══════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════ -->
+<script>
+// ── DEMO DATA (fallback) ──────────────────────────
+const DEMO = {
+  config:{gp_name:"Grand Prix de France",gp_subtitle:"Circuit Bugatti — Le Mans",gp_round:"5",gp_season:"2026",gp_date:"9–11 mai 2026",gp_flag:"🇫🇷",gp_weather:"Sec / 24°C",gp_laps:"27 tours",gp_dist:"118.8 km",gp_status:"finished",branding_series:"MotoGP™",branding_nav:"GRAND PRIX",branding_copy:"© 2026 MotoGP™ RP"},
+  actualites:[
+    {titre:"Martín remporte un GP marqué par la chute de M.Márquez",categorie:"COURSE",date:"10 mai 2026",emoji:"🏆",description:"Le Champion du Monde 2024 signe un succès devant Bezzecchi et Ogura.",une:"true"},
+    {titre:"M.Márquez opéré après sa spectaculaire sortie",categorie:"SANTÉ",date:"10 mai 2026",emoji:"🏥",description:"Double intervention chirurgicale pour le champion, forfait plusieurs Grands Prix.",une:"false"},
+    {titre:"Acosta en pole position au Mans",categorie:"QUALIF",date:"9 mai 2026",emoji:"⚡",description:"Le prodige KTM en première ligne pour la deuxième fois cette saison.",une:"false"},
+    {titre:"Quartararo retrouve le sourire dans son GP national",categorie:"FRANCE",date:"9 mai 2026",emoji:"🇫🇷",description:"El Diablo qualifié en Q2 et vise un top 5 devant son public.",une:"false"},
+  ],
+  grille:[
+    {position:"1",numero:"37",pilote:"Pedro Acosta",equipe:"Red Bull KTM Factory",constructeur:"KTM",temps:"1'31.456",ecart:"—"},
+    {position:"2",numero:"89",pilote:"Jorge Martín",equipe:"Aprilia Racing",constructeur:"Aprilia",temps:"1'31.598",ecart:"+0.142"},
+    {position:"3",numero:"73",pilote:"Alex Márquez",equipe:"Gresini Racing",constructeur:"Ducati",temps:"1'31.744",ecart:"+0.288"},
+    {position:"4",numero:"1",pilote:"Francesco Bagnaia",equipe:"Ducati Lenovo",constructeur:"Ducati",temps:"1'31.856",ecart:"+0.400"},
+    {position:"5",numero:"20",pilote:"Fabio Quartararo",equipe:"Monster Yamaha",constructeur:"Yamaha",temps:"1'31.999",ecart:"+0.543"},
+    {position:"6",numero:"49",pilote:"Fabio Di Giannantonio",equipe:"VR46 Racing",constructeur:"Ducati",temps:"1'32.105",ecart:"+0.649"},
+  ],
+  resultats:[
+    {position:"1",numero:"89",pilote:"Jorge Martín",equipe:"Aprilia Racing",constructeur:"Aprilia",temps:"41'23.456",points:"25"},
+    {position:"2",numero:"72",pilote:"Marco Bezzecchi",equipe:"Aprilia Racing",constructeur:"Aprilia",temps:"+1.234",points:"20"},
+    {position:"3",numero:"79",pilote:"Ai Ogura",equipe:"Trackhouse Racing",constructeur:"Aprilia",temps:"+3.567",points:"16"},
+    {position:"4",numero:"37",pilote:"Pedro Acosta",equipe:"Red Bull KTM",constructeur:"KTM",temps:"+5.123",points:"13"},
+    {position:"5",numero:"20",pilote:"Fabio Quartararo",equipe:"Monster Yamaha",constructeur:"Yamaha",temps:"+9.456",points:"11"},
+    {position:"DNF",numero:"93",pilote:"Marc Márquez",equipe:"Ducati Lenovo",constructeur:"Ducati",temps:"Abandon",points:"0"},
+  ],
+  classement:[
+    {position:"1",numero:"89",pilote:"Jorge Martín",equipe:"Aprilia Racing",points:"125"},
+    {position:"2",numero:"37",pilote:"Pedro Acosta",equipe:"Red Bull KTM",points:"117"},
+    {position:"3",numero:"73",pilote:"Alex Márquez",equipe:"Gresini Racing",points:"95"},
+    {position:"4",numero:"1",pilote:"Francesco Bagnaia",equipe:"Ducati Lenovo",points:"87"},
+    {position:"5",numero:"72",pilote:"Marco Bezzecchi",equipe:"Aprilia Racing",points:"78"},
+    {position:"6",numero:"20",pilote:"Fabio Quartararo",equipe:"Monster Yamaha",points:"65"},
+  ],
+  pilotes:[
+    {numero:"89",nom:"Jorge Martín",equipe:"Aprilia Racing",nationalite:"Espagne",drapeau:"🇪🇸"},
+    {numero:"37",nom:"Pedro Acosta",equipe:"Red Bull KTM",nationalite:"Espagne",drapeau:"🇪🇸"},
+    {numero:"73",nom:"Alex Márquez",equipe:"Gresini Racing",nationalite:"Espagne",drapeau:"🇪🇸"},
+    {numero:"1",nom:"Francesco Bagnaia",equipe:"Ducati Lenovo",nationalite:"Italie",drapeau:"🇮🇹"},
+    {numero:"20",nom:"Fabio Quartararo",equipe:"Monster Yamaha",nationalite:"France",drapeau:"🇫🇷"},
+    {numero:"72",nom:"Marco Bezzecchi",equipe:"Aprilia Racing",nationalite:"Italie",drapeau:"🇮🇹"},
+  ]
+};
+
+// ── DEMO PREVIEW DATA ─────────────────────────────
+const PREVIEWS = {
+  config:`<span class="hdr">cle                  valeur</span>
+<span class="val">gp_name              Grand Prix de France</span>
+<span class="val">gp_subtitle          Circuit Bugatti — Le Mans</span>
+<span class="val">gp_round             5</span>
+<span class="val">gp_season            2026</span>
+<span class="val">gp_date              9–11 mai 2026</span>
+<span class="val">gp_flag              🇫🇷</span>
+<span class="val">gp_weather           Sec / 24°C</span>
+<span class="val">gp_laps              27 tours</span>
+<span class="val">gp_dist              118.8 km</span>
+<span class="val">gp_status            finished  <span style="color:var(--muted)">← upcoming / live / finished</span></span>
+<span class="val">branding_series      MotoGP™</span>
+<span class="val">branding_nav         GRAND PRIX</span>
+<span class="val">branding_copy        © 2026 MotoGP™ RP</span>`,
+  actualites:`<span class="hdr">titre                     categorie  date          emoji  description          une</span>
+<span class="val">Martín remporte le GP...  COURSE     10 mai 2026   🏆     Succès au Mans...     true</span>
+<span class="val">Acosta en pole...         QUALIF     9 mai 2026    ⚡     Premier rang...       false</span>`,
+  grille:`<span class="hdr">position  numero  pilote          equipe          constructeur  temps      ecart</span>
+<span class="val">1         37      Pedro Acosta    Red Bull KTM    KTM           1'31.456   —</span>
+<span class="val">2         89      Jorge Martín    Aprilia Racing  Aprilia       1'31.598   +0.142</span>`,
+  resultats:`<span class="hdr">position  numero  pilote          equipe          constructeur  temps      points</span>
+<span class="val">1         89      Jorge Martín    Aprilia Racing  Aprilia       41'23.456  25</span>
+<span class="val">2         72      Marco Bezzecchi Aprilia Racing  Aprilia       +1.234     20</span>
+<span class="val">DNF       93      Marc Márquez    Ducati Lenovo   Ducati        Abandon    0</span>`,
+  classement:`<span class="hdr">position  numero  pilote          equipe          points</span>
+<span class="val">1         89      Jorge Martín    Aprilia Racing  125</span>
+<span class="val">2         37      Pedro Acosta    Red Bull KTM    117</span>`,
+  pilotes:`<span class="hdr">numero  nom              equipe          nationalite  drapeau</span>
+<span class="val">89      Jorge Martín     Aprilia Racing  Espagne      🇪🇸</span>
+<span class="val">20      Fabio Quartararo Monster Yamaha  France       🇫🇷</span>`
+};
+
+function showDemo(tab,btn){
+  document.querySelectorAll('.sheet-tab-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('demo-preview').innerHTML=PREVIEWS[tab]||'';
+}
+showDemo('config',document.querySelector('.sheet-tab-btn.active'));
+
+// ── STATE ─────────────────────────────────────────
+let DATA = JSON.parse(JSON.stringify(DEMO));
+let SCRIPT_URL = '';
+let SHEET_EDIT_URL = '';
+let editOpen = false;
+let SETTINGS = {accentColor:'#e30613',series:'MotoGP™',navTitle:'GRAND PRIX',copy:'© 2026 MotoGP™ RP',sections:{news:true,grid:true,results:true,standings:true,riders:true}};
+
+// ── COPY SCRIPT ───────────────────────────────────
+function copyScript(){
+  const code=document.getElementById('gas-code').innerText;
+  navigator.clipboard.writeText(code).then(()=>{
+    const btn=document.getElementById('btn-copy-script');
+    btn.textContent='✓ Copié !';setTimeout(()=>{btn.textContent='📋 Copier';},2000);
+  });
+}
+
+// ── FETCH FROM APPS SCRIPT ────────────────────────
+async function loadFromScript(url){
+  const r = await fetch(url);
+  if(!r.ok) throw new Error('HTTP '+r.status);
+  const json = await r.json();
+  // config tab: array of {cle, valeur} → flat object
+  DATA.config = {};
+  (json.config||[]).forEach(row=>{ if(row.cle) DATA.config[row.cle]=row.valeur||''; });
+  DATA.actualites = json.actualites||DEMO.actualites;
+  DATA.grille      = json.grille||DEMO.grille;
+  DATA.resultats   = json.resultats||DEMO.resultats;
+  DATA.classement  = json.classement||DEMO.classement;
+  DATA.pilotes     = json.pilotes||DEMO.pilotes;
+}
+
+// ── CONNECT ───────────────────────────────────────
+async function connectSheet(){
+  const raw=document.getElementById('sheet-url-input').value.trim();
+  const errEl=document.getElementById('setup-error');
+  errEl.textContent='';
+  if(!raw){errEl.textContent='Veuillez coller votre URL Apps Script.';return;}
+  if(!raw.includes('script.google.com')&&!raw.includes('exec')){
+    errEl.textContent="URL invalide. Elle doit commencer par https://script.google.com/macros/s/...";return;
+  }
+  const btn=document.getElementById('btn-connect');
+  btn.disabled=true;btn.innerHTML='<span class="spinner"></span>Connexion...';
+  setStatus('loading','Connexion...');
+  try{
+    await loadFromScript(raw);
+    SCRIPT_URL=raw;
+    localStorage.setItem('mgp-script-url',raw);
+    document.getElementById('setup-backdrop').classList.add('hidden');
+    renderAll();
+    setStatus('ok','Connecté — données chargées ✓');
+    showToast('✓ Connecté !');
+    updateSheetLink();
+  }catch(e){
+    errEl.textContent='Erreur : '+e.message+'. Vérifie que le déploiement est bien "Tout le monde" et réessaie.';
+    setStatus('err','Erreur de connexion');
+  }finally{btn.disabled=false;btn.innerHTML='🔗 Connecter';}
+}
+
+// ── RELOAD ────────────────────────────────────────
+async function reloadData(){
+  if(!SCRIPT_URL){showToast('⚠ Non connecté');return;}
+  const btn=document.getElementById('btn-reload');
+  btn.textContent='↺ Chargement...';btn.disabled=true;
+  setStatus('loading','Actualisation...');
+  try{
+    await loadFromScript(SCRIPT_URL);
+    renderAll();
+    setStatus('ok','Actualisé — '+new Date().toLocaleTimeString('fr-FR'));
+    showToast('✓ Données rechargées');
+  }catch(e){
+    setStatus('err','Erreur lors du rechargement');
+    showToast('❌ '+e.message);
+  }finally{btn.textContent='↺ Recharger';btn.disabled=false;}
+}
+
+// ── SKIP / DEMO ───────────────────────────────────
+function skipSetup(){
+  document.getElementById('setup-backdrop').classList.add('hidden');
+  DATA=JSON.parse(JSON.stringify(DEMO));
+  renderAll();
+  setStatus('err','Mode démo — non connecté');
+}
+
+function showSetup(){
+  document.getElementById('setup-backdrop').classList.remove('hidden');
+  document.getElementById('setup-error').textContent='';
+}
+
+// ── RENDER ────────────────────────────────────────
+function renderAll(){
+  renderHero();renderNews();renderGrid();renderResults();renderStandings();renderRiders();renderBranding();renderSections();
+  applyAccent(SETTINGS.accentColor);
+}
+
+function cfg(key,fallback=''){
+  return (DATA.config&&DATA.config[key])||fallback;
+}
+
+function set(id,val){const el=document.getElementById(id);if(el)el.innerHTML=val;}
+
+function renderHero(){
+  const name=cfg('gp_name','Grand Prix');
+  set('hero-eyebrow',`Manche ${cfg('gp_round','?')} — Saison ${cfg('gp_season','2026')}`);
+  set('hero-title',name);
+  set('hero-subtitle',cfg('gp_subtitle',''));
+  set('hero-date',cfg('gp_date',''));set('hero-laps',cfg('gp_laps',''));
+  set('hero-dist',cfg('gp_dist',''));set('hero-weather',cfg('gp_weather',''));
+  set('hero-flag',cfg('gp_flag','🏁'));set('hero-bg-num',cfg('gp_round',''));
+  const badge=document.getElementById('status-badge');badge.className='status-badge';
+  const st=cfg('gp_status','finished');
+  if(st==='live'){badge.classList.add('s-live');badge.innerHTML='<span class="ldot"></span>EN DIRECT';}
+  else if(st==='upcoming'){badge.classList.add('s-upcoming');badge.textContent='⏱ À VENIR';}
+  else{badge.classList.add('s-finished');badge.textContent='✓ TERMINÉ';}
+  document.title=`${name} — RP`;
+}
+
+function renderBranding(){
+  const s=SETTINGS.series||cfg('branding_series','MotoGP™');
+  const n=SETTINGS.navTitle||cfg('branding_nav','GRAND PRIX');
+  const c=SETTINGS.copy||cfg('branding_copy','© 2026 MotoGP™ RP');
+  ['nav-series','footer-series'].forEach(id=>set(id,s));
+  set('nav-title',n);set('footer-copy',c);
+}
+
+function renderNews(){
+  const items=DATA.actualites||[];
+  document.getElementById('news-grid').innerHTML=items.map(n=>`
+    <div class="news-card">
+      <div class="news-card-img">
+        <div class="news-cat ${n.une==='true'?'news-hot':''}">${n.categorie||'NEWS'}</div>
+        <span style="position:relative;z-index:1">${n.emoji||'📰'}</span>
+      </div>
+      <div class="news-card-body">
+        <div class="news-date">${n.date||''}</div>
+        <div class="news-title">${n.titre||''}</div>
+        <div class="news-desc">${n.description||''}</div>
+      </div>
+    </div>`).join('');
+}
+
+function renderGrid(){
+  const items=DATA.grille||[];
+  const top=items.slice(0,4);
+  document.getElementById('grid-visual').innerHTML=`<div class="grid-visual">
+    <div class="grid-row-v">${top.slice(0,2).map((r,i)=>`<div class="grid-box${i===0?' pole':''}"><div class="gb-pos">${i===0?'POLE':'2ème'}</div><div class="gb-num">${r.numero||''}</div><div class="gb-name">${(r.pilote||'').split(' ').pop()}</div><div class="gb-team">${r.equipe||''}</div></div>`).join('')}</div>
+    <div class="grid-row-v">${top.slice(2,4).map((r,i)=>`<div class="grid-box"><div class="gb-pos">${i+3}ème</div><div class="gb-num">${r.numero||''}</div><div class="gb-name">${(r.pilote||'').split(' ').pop()}</div><div class="gb-team">${r.equipe||''}</div></div>`).join('')}</div>
+  </div>`;
+  document.getElementById('grid-tbody').innerHTML=items.map(r=>`<tr>
+    <td><span class="gpos${parseInt(r.position)<=3?' p'+r.position:''}">${r.position}</span></td>
+    <td><div class="rrow"><span class="num-badge">${r.numero}</span><div><div class="rname">${r.pilote}</div><div class="rteam">${r.equipe}</div></div></div></td>
+    <td><span class="mfr-badge">${r.constructeur}</span></td>
+    <td><span class="lap-t">${r.temps}</span></td>
+    <td><span class="lap-g">${r.ecart}</span></td>
+  </tr>`).join('');
+}
+
+function renderResults(){
+  const items=DATA.resultats||[];
+  const top3=items.slice(0,3);
+  const order=[top3[1],top3[0],top3[2]].filter(Boolean);
+  const pc=['p2','p1','p3'],icons=['🥈','🥇','🥉'];
+  document.getElementById('podium').innerHTML=order.map((r,i)=>`<div class="pod-card ${pc[i]}"><div class="pod-icon">${icons[i]}</div><div class="pod-rider">${r.pilote}</div><div class="pod-team">${r.equipe}</div><div class="pod-time">${r.temps}</div><div class="pod-pts">+${r.points} pts</div></div>`).join('');
+  document.getElementById('results-tbody').innerHTML=items.map(r=>`<tr>
+    <td><span class="rpos${parseInt(r.position)<=3?' top3':''} ${r.position==='DNF'?'dnf':''}">${r.position}</span></td>
+    <td><div class="rrow"><span class="num-badge">${r.numero}</span><div class="rname">${r.pilote}</div></div></td>
+    <td style="color:var(--sub);font-size:13px">${r.equipe}</td>
+    <td><span class="mfr-badge">${r.constructeur}</span></td>
+    <td class="${r.position==='DNF'?'dnf':''}"><span class="lap-t" style="font-size:15px">${r.temps}</span></td>
+    <td style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700">${parseInt(r.points)>0?r.points:'—'}</td>
+  </tr>`).join('');
+}
+
+function renderStandings(){
+  const items=DATA.classement||[];
+  const max=items.length>0?(parseInt(items[0].points)||1):1;
+  document.getElementById('standings-tbody').innerHTML=items.map((r,i)=>`<tr>
+    <td><span class="spos${i===0?' leader':''}">${r.position}</span></td>
+    <td><div class="rrow"><span class="num-badge">${r.numero}</span><div class="rname">${r.pilote}</div></div></td>
+    <td style="color:var(--sub);font-size:13px">${r.equipe}</td>
+    <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:${Math.round(parseInt(r.points)/max*100)}%"></div></div></div></td>
+    <td class="pts-val">${r.points}</td>
+  </tr>`).join('');
+}
+
+function renderRiders(){
+  document.getElementById('riders-grid').innerHTML=(DATA.pilotes||[]).map(r=>`<div class="rider-card"><div class="rc-num">${r.numero}</div><div class="rc-flag">${r.drapeau}</div><div class="rc-name">${r.nom}</div><div class="rc-team">${r.equipe}</div><div class="rc-nat">${r.nationalite}</div></div>`).join('');
+}
+
+function renderSections(){
+  ['news','grid','results','standings','riders'].forEach(k=>{
+    const el=document.getElementById(k);if(el)el.classList.toggle('hidden',SETTINGS.sections[k]===false);
+    const tog=document.getElementById('tog-'+k);if(tog)tog.className='toggle-sw'+(SETTINGS.sections[k]!==false?' on':'');
+  });
+}
+
+// ── STATUS ────────────────────────────────────────
+function setStatus(state,label){
+  document.getElementById('status-dot').className='status-dot '+state;
+  document.getElementById('status-label').textContent=label;
+}
+
+function updateSheetLink(){
+  const link=document.getElementById('sheets-open-link');
+  if(SHEET_ID)link.href=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/edit`;
+}
+
+// ── EDIT PANEL ────────────────────────────────────
+function toggleEdit(){
+  editOpen=!editOpen;
+  document.getElementById('edit-panel').classList.toggle('open',editOpen);
+  document.getElementById('edit-overlay').classList.toggle('open',editOpen);
+  document.getElementById('btn-edit').classList.toggle('active',editOpen);
+  if(editOpen){
+    document.getElementById('e-color-text').value=SETTINGS.accentColor;
+    document.getElementById('e-color-picker').value=SETTINGS.accentColor;
+    document.getElementById('e-series').value=SETTINGS.series;
+    document.getElementById('e-navtitle').value=SETTINGS.navTitle;
+    document.getElementById('e-copy').value=SETTINGS.copy;
+    updateSheetLink();
+  }
+}
+
+function saveSettings(){
+  SETTINGS.accentColor=document.getElementById('e-color-text').value;
+  SETTINGS.series=document.getElementById('e-series').value;
+  SETTINGS.navTitle=document.getElementById('e-navtitle').value;
+  SETTINGS.copy=document.getElementById('e-copy').value;
+  localStorage.setItem('mgp-settings',JSON.stringify(SETTINGS));
+  renderAll();
+  showToast('✓ Apparence sauvegardée');
+}
+
+function toggleSec(id,btn){
+  SETTINGS.sections[id]=!btn.classList.contains('on');
+  renderSections();
+}
+
+function updateAccent(color){
+  SETTINGS.accentColor=color;applyAccent(color);
+  document.getElementById('e-color-text').value=color;
+  if(color.match(/^#[0-9a-fA-F]{6}$/))document.getElementById('e-color-picker').value=color;
+}
+function setAccent(color){updateAccent(color);}
+function applyAccent(color){
+  document.documentElement.style.setProperty('--accent',color);
+  try{const r=parseInt(color.slice(1,3),16),g=parseInt(color.slice(3,5),16),b=parseInt(color.slice(5,7),16);document.documentElement.style.setProperty('--accent-dim',`rgba(${r},${g},${b},.15)`);}catch(e){}
+}
+
+// ── TOAST ─────────────────────────────────────────
+function showToast(msg){
+  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+// ── TABS ──────────────────────────────────────────
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click',function(){
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+
+// ── STATUS ────────────────────────────────────────
+function setStatus(state,label){
+  document.getElementById('status-dot').className='status-dot '+state;
+  document.getElementById('status-label').textContent=label;
+}
+function updateSheetLink(){
+  const link=document.getElementById('sheets-open-link');
+  if(link) link.href='https://docs.google.com/spreadsheets/d/1obJATvdOgEr_NtJwPMcA0G5aYuWCqF6eh4PbBq5Avmk/edit';
+}
+
+// ── INIT ─────────────────────────────────────────
+(function init(){
+  try{const s=localStorage.getItem('mgp-settings');if(s)SETTINGS={...SETTINGS,...JSON.parse(s)};}catch(e){}
+  applyAccent(SETTINGS.accentColor);
+  const savedUrl=localStorage.getItem('mgp-script-url');
+  if(savedUrl){
+    SCRIPT_URL=savedUrl;
+    document.getElementById('sheet-url-input').value=savedUrl;
+    document.getElementById('setup-backdrop').classList.add('hidden');
+    setStatus('loading','Chargement des données...');
+    loadFromScript(savedUrl).then(()=>{
+      renderAll();
+      setStatus('ok','Connecté — données chargées ✓');
+      updateSheetLink();
+    }).catch(()=>{
+      DATA=JSON.parse(JSON.stringify(DEMO));renderAll();
+      setStatus('err','Impossible de joindre le script — données de démo affichées');
+    });
+  }else{
+    setStatus('err','Non connecté');
+    setTimeout(()=>showSetup(),200);
+  }
+})();
+</script>
+</body>
+</html>
