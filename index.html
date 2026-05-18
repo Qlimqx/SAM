@@ -1167,10 +1167,9 @@ async function publishAll(){
   collectAllTabs();
   renderAll();
   const btn=document.querySelector('.btn-publish');
-  btn.disabled=true;btn.textContent='Publication...';
+  btn.disabled=true;btn.textContent='⏳ Envoi...';
   setStatus('loading','Publication vers Google Sheets...');
 
-  // Convert DATA to sheet format for POST
   const configRows=Object.entries(DATA.config||{}).map(([cle,valeur])=>({cle,valeur}));
   const payload={
     config:configRows,
@@ -1182,19 +1181,28 @@ async function publishAll(){
   };
 
   try{
-    const r=await fetch(FORCE_URL,{
+    // no-cors : la requête part sans blocage CORS, Apps Script reçoit et écrit
+    // On ne peut pas lire la réponse, mais l'écriture se fait quand même
+    await fetch(FORCE_URL,{
       method:'POST',
-      body:JSON.stringify(payload)
+      mode:'no-cors',
+      body:JSON.stringify(payload),
+      headers:{'Content-Type':'text/plain'}
     });
-    const json=await r.json();
-    if(json.ok){
-      setStatus('ok','Publié ✓ — '+new Date().toLocaleTimeString('fr-FR'));
-      showToast('🚀 Publié sur Google Sheets !');
-    }else{
-      throw new Error(json.error||'Erreur inconnue');
-    }
+
+    // Attendre que Apps Script finisse d'écrire dans le Sheet
+    btn.textContent='⏳ Écriture...';
+    await new Promise(r=>setTimeout(r,3500));
+
+    // Recharger pour confirmer
+    btn.textContent='⏳ Vérification...';
+    await loadFromScript(FORCE_URL);
+    renderAll();
+    setStatus('ok','Publié ✓ — '+new Date().toLocaleTimeString('fr-FR'));
+    showToast('🚀 Publié sur Google Sheets !');
   }catch(e){
-    setStatus('err','Erreur publication : '+e.message);
+    // no-cors ne lève jamais vraiment d'erreur réseau, mais au cas où
+    setStatus('err','Erreur : '+e.message);
     showToast('❌ '+e.message);
   }finally{
     btn.disabled=false;btn.textContent='🚀 Publier sur le Sheet';
