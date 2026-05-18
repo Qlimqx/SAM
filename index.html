@@ -758,7 +758,7 @@ function showDemo(tab,btn){
 showDemo('config',document.querySelector('.sheet-tab-btn.active'));
 
 // ── URL DU SCRIPT (à changer si tu redéploies) ────
-const FORCE_URL = 'https://script.google.com/macros/s/AKfycbyMIDy9nlsmrz1nNJ2HtAa0vWNKa1-tdKeaRNUoDw927N78opgXz9wrVKq5KktzXPQ8FA/exec';
+const FORCE_URL = 'https://script.google.com/macros/s/AKfycbyGMmW_diUaTvtCIvmVSoaEJv50wYBzb9yH3bELNb-yj966ClE52yjiVlbJuvZNn8-hxg/exec';
 const AUTO_REFRESH_SEC = 30;
 const ADMIN_PASSWORD = 'admin'; // ← Change ce mot de passe ici
 
@@ -1180,46 +1180,64 @@ function collectAllTabs(){
   DATA.config=c;
 }
 
+// ── ÉCRITURE VIA JSONP GET (même technique que la lecture) ──
+function jsonpWrite(section, data){
+  return new Promise(function(resolve, reject){
+    var cbName='mgpW_'+Date.now()+'_'+Math.random().toString(36).substr(2,5);
+    var script=document.createElement('script');
+    var done=false;
+    window[cbName]=function(result){
+      done=true;delete window[cbName];
+      if(script.parentNode)script.parentNode.removeChild(script);
+      if(result.ok)resolve();
+      else reject(new Error(result.error||'Erreur '+section));
+    };
+    script.onerror=function(){
+      done=true;delete window[cbName];
+      if(script.parentNode)script.parentNode.removeChild(script);
+      reject(new Error('Impossible d\'écrire '+section));
+    };
+    setTimeout(function(){
+      if(!done){
+        delete window[cbName];
+        if(script.parentNode)script.parentNode.removeChild(script);
+        reject(new Error('Timeout '+section));
+      }
+    },15000);
+    script.src=FORCE_URL+'?action=write&section='+encodeURIComponent(section)+'&data='+encodeURIComponent(JSON.stringify(data))+'&callback='+cbName;
+    document.head.appendChild(script);
+  });
+}
+
 // ── PUBLISH TO SHEET ──────────────────────────────
 async function publishAll(){
   collectAllTabs();
   renderAll();
   const btn=document.querySelector('.btn-publish');
-  btn.disabled=true;btn.textContent='⏳ Envoi...';
-  setStatus('loading','Publication vers Google Sheets...');
+  btn.disabled=true;
+  setStatus('loading','Publication...');
 
   const configRows=Object.entries(DATA.config||{}).map(([cle,valeur])=>({cle,valeur}));
-  const payload={
-    config:configRows,
-    actualites:DATA.actualites||[],
-    grille:DATA.grille||[],
-    resultats:DATA.resultats||[],
-    classement:DATA.classement||[],
-    pilotes:DATA.pilotes||[]
-  };
+  const sections=[
+    ['config',    configRows],
+    ['actualites',DATA.actualites||[]],
+    ['grille',    DATA.grille||[]],
+    ['resultats', DATA.resultats||[]],
+    ['classement',DATA.classement||[]],
+    ['pilotes',   DATA.pilotes||[]]
+  ];
 
   try{
-    // no-cors : la requête part sans blocage CORS, Apps Script reçoit et écrit
-    // On ne peut pas lire la réponse, mais l'écriture se fait quand même
-    await fetch(FORCE_URL,{
-      method:'POST',
-      mode:'no-cors',
-      body:JSON.stringify(payload),
-      headers:{'Content-Type':'text/plain'}
-    });
-
-    // Attendre que Apps Script finisse d'écrire dans le Sheet
-    btn.textContent='⏳ Écriture...';
-    await new Promise(r=>setTimeout(r,3500));
-
-    // Recharger pour confirmer
-    btn.textContent='⏳ Vérification...';
-    await loadFromScript(FORCE_URL);
-    renderAll();
+    for(const [name,data] of sections){
+      btn.textContent='⏳ '+name+'...';
+      await jsonpWrite(name,data);
+    }
     setStatus('ok','Publié ✓ — '+new Date().toLocaleTimeString('fr-FR'));
     showToast('🚀 Publié sur Google Sheets !');
+    // Recharger pour confirmer
+    await loadFromScript(FORCE_URL);
+    renderAll();
   }catch(e){
-    // no-cors ne lève jamais vraiment d'erreur réseau, mais au cas où
     setStatus('err','Erreur : '+e.message);
     showToast('❌ '+e.message);
   }finally{
