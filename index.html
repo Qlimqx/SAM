@@ -250,9 +250,47 @@ input,select,textarea{font-family:inherit}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px}
 @keyframes spin{to{transform:rotate(360deg)}}
-::-webkit-scrollbar{width:6px;height:6px}
-::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+/* ── ADMIN LOGIN ── */
+.admin-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:400;display:flex;align-items:center;justify-content:center;padding:20px}
+.admin-modal{background:#13131a;border:1px solid var(--border2);border-radius:12px;width:100%;max-width:340px;padding:32px;text-align:center}
+.admin-modal h3{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:800;font-style:italic;text-transform:uppercase;margin-bottom:8px}
+.admin-modal p{font-size:13px;color:var(--sub);margin-bottom:20px}
+.admin-modal input{width:100%;background:var(--card2);border:1px solid var(--border2);color:var(--text);padding:11px 14px;border-radius:6px;font-size:15px;outline:none;text-align:center;letter-spacing:.1em;margin-bottom:8px}
+.admin-modal input:focus{border-color:var(--accent)}
+.admin-error{color:#f87171;font-size:12px;min-height:18px;margin-bottom:10px}
+.btn-admin-go{width:100%;background:var(--accent);color:#fff;border:none;padding:12px;border-radius:6px;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;transition:opacity .15s}
+.btn-admin-go:hover{opacity:.85}
+.btn-admin-cancel{width:100%;background:none;border:1px solid var(--border2);color:var(--sub);padding:10px;border-radius:6px;font-size:13px;font-weight:600;transition:all .15s}
+.btn-admin-cancel:hover{border-color:var(--text);color:var(--text)}
+.btn-admin-logout{background:none;border:1px solid rgba(248,113,113,.3);color:#f87171;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 10px;border-radius:4px;transition:all .15s}
+.btn-admin-logout:hover{background:rgba(248,113,113,.1)}
+
+/* ── ADMIN PANEL TABS ── */
+.ep-tabs{display:flex;overflow-x:auto;border-bottom:1px solid var(--border);flex-shrink:0}
+.ep-tab{background:none;border:none;color:var(--muted);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:11px 12px;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:color .15s,border-color .15s}
+.ep-tab:hover{color:var(--text)}
+.ep-tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.ep-section{display:none}
+.ep-section.active{display:block}
+.ep-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ep-divider{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--sub);margin:18px 0 10px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+
+/* ── ADMIN DATA ROWS ── */
+.data-row-block{background:var(--card2);border:1px solid var(--border);border-radius:6px;padding:12px;margin-bottom:8px;position:relative}
+.data-row-block .ep-field{margin-bottom:8px}
+.data-row-block .ep-field:last-child{margin-bottom:0}
+.data-row-block .ep-field label{font-size:10px}
+.data-row-block .ep-field input,.data-row-block .ep-field select{padding:7px 10px;font-size:13px}
+.btn-del-row{position:absolute;top:8px;right:8px;background:rgba(220,50,50,.1);border:1px solid rgba(220,50,50,.2);color:#e05555;font-size:10px;font-weight:700;padding:3px 8px;border-radius:3px;cursor:pointer;transition:background .15s}
+.btn-del-row:hover{background:rgba(220,50,50,.25)}
+.btn-add-row{background:none;border:1px dashed var(--border2);color:var(--sub);width:100%;padding:10px;border-radius:5px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;transition:all .15s;margin-bottom:4px;cursor:pointer}
+.btn-add-row:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
+.btn-publish{flex:1;background:linear-gradient(135deg,#16a34a,#15803d);color:#fff;border:none;padding:11px;border-radius:5px;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;transition:opacity .15s;cursor:pointer}
+.btn-publish:hover{opacity:.85}
+.btn-publish:disabled{opacity:.5;cursor:not-allowed}
+
+/* ── LOGO CLICK HINT ── */
+.logo{cursor:pointer;user-select:none}
 </style>
 </head>
 <body>
@@ -315,6 +353,37 @@ input,select,textarea{font-family:inherit}
   }
   return ContentService.createTextOutput(json)
     .setMimeType(ContentService.MimeType.JSON);
+}
+
+function doPost(e) {
+  try {
+    var data = JSON.parse(e.postData.contents);
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var cols = {
+      config:     ['cle','valeur'],
+      actualites: ['titre','categorie','date','emoji','description','une'],
+      grille:     ['position','numero','pilote','equipe','constructeur','temps','ecart'],
+      resultats:  ['position','numero','pilote','equipe','constructeur','temps','points'],
+      classement: ['position','numero','pilote','equipe','points'],
+      pilotes:    ['numero','nom','equipe','nationalite','drapeau']
+    };
+    Object.keys(cols).forEach(function(name) {
+      if (!data[name]) return;
+      var sheet = ss.getSheetByName(name);
+      if (!sheet) return;
+      var headers = cols[name];
+      sheet.clearContents();
+      sheet.appendRow(headers);
+      data[name].forEach(function(row) {
+        sheet.appendRow(headers.map(function(h) { return row[h] || ''; }));
+      });
+    });
+    return ContentService.createTextOutput('{"ok":true}')
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch(err) {
+    return ContentService.createTextOutput('{"ok":false,"error":"' + err.message + '"}')
+      .setMimeType(ContentService.MimeType.JSON);
+  }
 }</pre>
             <button onclick="copyScript()" style="position:absolute;top:8px;right:8px;background:var(--card2);border:1px solid var(--border2);color:var(--sub);font-size:11px;font-weight:700;padding:5px 10px;border-radius:4px;cursor:pointer" id="btn-copy-script">📋 Copier</button>
           </div>
@@ -361,7 +430,7 @@ input,select,textarea{font-family:inherit}
 <!-- NAVBAR -->
 <nav class="navbar">
   <div class="navbar-inner">
-    <div class="logo">
+    <div class="logo" onclick="logoClick()" title="Cliquez 3× pour l'accès admin">
       <span class="badge" id="nav-series">MotoGP™</span>
       <span style="background:none;color:var(--text);font-size:22px" id="nav-title">GRAND PRIX</span>
     </div>
@@ -375,7 +444,7 @@ input,select,textarea{font-family:inherit}
     </div>
     <div class="nav-right">
       <button class="btn-reload" id="btn-reload" onclick="reloadData()">↺ Recharger</button>
-      <button class="btn-edit" id="btn-edit" onclick="toggleEdit()"><span class="edit-dot"></span>Apparence</button>
+      <button class="btn-edit" id="btn-edit" onclick="toggleEdit()" style="display:none"><span class="edit-dot"></span>Admin</button>
     </div>
   </div>
 </nav>
@@ -470,53 +539,128 @@ input,select,textarea{font-family:inherit}
   <div class="footer-bottom"><span id="footer-copy">© 2026 MotoGP™ RP</span></div>
 </div></footer>
 
-<!-- EDIT PANEL (Apparence uniquement) -->
+<!-- ADMIN LOGIN MODAL -->
+<div class="admin-backdrop hidden" id="admin-backdrop">
+  <div class="admin-modal">
+    <div style="font-size:32px;margin-bottom:12px">🔐</div>
+    <h3>Accès Administrateur</h3>
+    <p>Entrez le mot de passe pour accéder au panneau d'édition.</p>
+    <input type="password" id="admin-pw-input" placeholder="Mot de passe..." onkeydown="if(event.key==='Enter')checkAdmin()">
+    <div class="admin-error" id="admin-error"></div>
+    <button class="btn-admin-go" onclick="checkAdmin()">Entrer</button>
+    <button class="btn-admin-cancel" onclick="closeAdminLogin()">Annuler</button>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
 <div class="edit-overlay" id="edit-overlay" onclick="toggleEdit()"></div>
 <div class="edit-panel" id="edit-panel">
   <div class="ep-header">
-    <h3><span class="dot"></span>Apparence</h3>
-    <button class="btn-close" onclick="toggleEdit()">✕</button>
+    <h3><span class="dot"></span><span id="panel-title">Admin</span></h3>
+    <div style="display:flex;gap:8px">
+      <button class="btn-admin-logout" onclick="logoutAdmin()" id="btn-logout">Déconnexion</button>
+      <button class="btn-close" onclick="toggleEdit()">✕</button>
+    </div>
+  </div>
+  <div class="ep-tabs" id="ep-tabs">
+    <button class="ep-tab active" onclick="switchTab('gp',this)">GP</button>
+    <button class="ep-tab" onclick="switchTab('actualites',this)">Actus</button>
+    <button class="ep-tab" onclick="switchTab('grille',this)">Grille</button>
+    <button class="ep-tab" onclick="switchTab('resultats',this)">Résultats</button>
+    <button class="ep-tab" onclick="switchTab('classement',this)">Classement</button>
+    <button class="ep-tab" onclick="switchTab('pilotes',this)">Pilotes</button>
+    <button class="ep-tab" onclick="switchTab('style',this)">Style</button>
   </div>
   <div class="ep-body">
 
-    <div class="sheets-link-box">
-      <p>Le contenu (actualités, grille, résultats…) se modifie directement dans Google Sheets. Modifie le tableur puis clique <strong>Recharger</strong> sur le site.</p>
-      <a href="#" id="sheets-open-link" target="_blank">📊 Ouvrir mon Google Sheets</a>
-    </div>
-
-    <div class="ep-divider">Couleur d'accentuation</div>
-    <div class="ep-field">
-      <label>Couleur principale</label>
-      <div class="color-row">
-        <input type="color" id="e-color-picker" value="#e30613" oninput="updateAccent(this.value)">
-        <input type="text" id="e-color-text" value="#e30613" oninput="updateAccent(this.value)">
+    <!-- GP -->
+    <div class="ep-section active" id="tab-gp">
+      <div class="ep-field"><label>Nom du Grand Prix</label><input id="e-gp-name" type="text"></div>
+      <div class="ep-field"><label>Circuit / Lieu</label><input id="e-gp-subtitle" type="text"></div>
+      <div class="ep-row">
+        <div class="ep-field"><label>Manche N°</label><input id="e-gp-round" type="text"></div>
+        <div class="ep-field"><label>Saison</label><input id="e-gp-season" type="text"></div>
+      </div>
+      <div class="ep-field"><label>Date</label><input id="e-gp-date" type="text"></div>
+      <div class="ep-row">
+        <div class="ep-field"><label>Drapeau emoji</label><input id="e-gp-flag" type="text"></div>
+        <div class="ep-field"><label>Météo</label><input id="e-gp-weather" type="text"></div>
+      </div>
+      <div class="ep-row">
+        <div class="ep-field"><label>Tours</label><input id="e-gp-laps" type="text"></div>
+        <div class="ep-field"><label>Distance</label><input id="e-gp-dist" type="text"></div>
+      </div>
+      <div class="ep-field"><label>Statut</label>
+        <select id="e-gp-status">
+          <option value="finished">✓ Terminé</option>
+          <option value="live">⬤ En direct</option>
+          <option value="upcoming">⏱ À venir</option>
+        </select>
       </div>
     </div>
-    <div class="preset-colors">
-      <button onclick="setAccent('#e30613')" style="background:#e30613" title="Rouge MotoGP"></button>
-      <button onclick="setAccent('#ff6b00')" style="background:#ff6b00" title="Orange"></button>
-      <button onclick="setAccent('#f5c842')" style="background:#f5c842" title="Or"></button>
-      <button onclick="setAccent('#00c896')" style="background:#00c896" title="Vert"></button>
-      <button onclick="setAccent('#0099ff')" style="background:#0099ff" title="Bleu"></button>
-      <button onclick="setAccent('#cc00ff')" style="background:#cc00ff" title="Violet"></button>
+
+    <!-- ACTUALITÉS -->
+    <div class="ep-section" id="tab-actualites">
+      <div id="list-actualites"></div>
+      <button class="btn-add-row" onclick="addRow('actualites')">+ Ajouter une actualité</button>
     </div>
 
-    <div class="ep-divider">Branding</div>
-    <div class="ep-field"><label>Nom de la série</label><input id="e-series" type="text" placeholder="MotoGP™"></div>
-    <div class="ep-field"><label>Libellé navigation</label><input id="e-navtitle" type="text" placeholder="GRAND PRIX"></div>
-    <div class="ep-field"><label>Copyright footer</label><input id="e-copy" type="text" placeholder="© 2026 MotoGP™ RP"></div>
+    <!-- GRILLE -->
+    <div class="ep-section" id="tab-grille">
+      <div id="list-grille"></div>
+      <button class="btn-add-row" onclick="addRow('grille')">+ Ajouter un pilote</button>
+    </div>
 
-    <div class="ep-divider">Sections visibles</div>
-    <div class="section-toggle"><label>Actualités</label><button class="toggle-sw on" id="tog-news" onclick="toggleSec('news',this)"></button></div>
-    <div class="section-toggle"><label>Grille de départ</label><button class="toggle-sw on" id="tog-grid" onclick="toggleSec('grid',this)"></button></div>
-    <div class="section-toggle"><label>Résultats</label><button class="toggle-sw on" id="tog-results" onclick="toggleSec('results',this)"></button></div>
-    <div class="section-toggle"><label>Classement</label><button class="toggle-sw on" id="tog-standings" onclick="toggleSec('standings',this)"></button></div>
-    <div class="section-toggle"><label>Pilotes</label><button class="toggle-sw on" id="tog-riders" onclick="toggleSec('riders',this)"></button></div>
+    <!-- RÉSULTATS -->
+    <div class="ep-section" id="tab-resultats">
+      <div id="list-resultats"></div>
+      <button class="btn-add-row" onclick="addRow('resultats')">+ Ajouter une ligne</button>
+    </div>
+
+    <!-- CLASSEMENT -->
+    <div class="ep-section" id="tab-classement">
+      <div id="list-classement"></div>
+      <button class="btn-add-row" onclick="addRow('classement')">+ Ajouter un pilote</button>
+    </div>
+
+    <!-- PILOTES -->
+    <div class="ep-section" id="tab-pilotes">
+      <div id="list-pilotes"></div>
+      <button class="btn-add-row" onclick="addRow('pilotes')">+ Ajouter un pilote</button>
+    </div>
+
+    <!-- STYLE -->
+    <div class="ep-section" id="tab-style">
+      <div class="ep-field"><label>Nom de la série</label><input id="e-series" type="text"></div>
+      <div class="ep-field"><label>Libellé navigation</label><input id="e-navtitle" type="text"></div>
+      <div class="ep-field"><label>Copyright footer</label><input id="e-copy" type="text"></div>
+      <div class="ep-divider">Couleur</div>
+      <div class="ep-field">
+        <div class="color-row">
+          <input type="color" id="e-color-picker" value="#e30613" oninput="updateAccent(this.value)">
+          <input type="text" id="e-color-text" value="#e30613" oninput="updateAccent(this.value)">
+        </div>
+      </div>
+      <div class="preset-colors">
+        <button onclick="setAccent('#e30613')" style="background:#e30613"></button>
+        <button onclick="setAccent('#ff6b00')" style="background:#ff6b00"></button>
+        <button onclick="setAccent('#f5c842')" style="background:#f5c842"></button>
+        <button onclick="setAccent('#00c896')" style="background:#00c896"></button>
+        <button onclick="setAccent('#0099ff')" style="background:#0099ff"></button>
+        <button onclick="setAccent('#cc00ff')" style="background:#cc00ff"></button>
+      </div>
+      <div class="ep-divider">Sections visibles</div>
+      <div class="section-toggle"><label>Actualités</label><button class="toggle-sw on" id="tog-news" onclick="toggleSec('news',this)"></button></div>
+      <div class="section-toggle"><label>Grille</label><button class="toggle-sw on" id="tog-grid" onclick="toggleSec('grid',this)"></button></div>
+      <div class="section-toggle"><label>Résultats</label><button class="toggle-sw on" id="tog-results" onclick="toggleSec('results',this)"></button></div>
+      <div class="section-toggle"><label>Classement</label><button class="toggle-sw on" id="tog-standings" onclick="toggleSec('standings',this)"></button></div>
+      <div class="section-toggle"><label>Pilotes</label><button class="toggle-sw on" id="tog-riders" onclick="toggleSec('riders',this)"></button></div>
+    </div>
 
   </div>
   <div class="ep-footer">
-    <button class="btn-save-settings" onclick="saveSettings()">💾 Sauvegarder l'apparence</button>
-    <button class="btn-change-sheet" onclick="toggleEdit();showSetup()">Changer Sheets</button>
+    <button class="btn-publish" onclick="publishAll()">🚀 Publier sur le Sheet</button>
+    <button class="btn-save-settings" onclick="saveSettings()" style="flex:0;padding:11px 14px;font-size:11px">💾 Style</button>
   </div>
 </div>
 
@@ -613,11 +757,14 @@ showDemo('config',document.querySelector('.sheet-tab-btn.active'));
 // ── URL DU SCRIPT (à changer si tu redéploies) ────
 const FORCE_URL = 'https://script.google.com/macros/s/AKfycbz71bs_E8eXsAqwN6yLidbPAxJjNdWn0Zv8SmTufQla2a4IBDD05u-hrGER0gJIZf9xMg/exec';
 const AUTO_REFRESH_SEC = 30;
+const ADMIN_PASSWORD = 'admin'; // ← Change ce mot de passe ici
 
 // ── STATE ─────────────────────────────────────────
 let DATA = JSON.parse(JSON.stringify(DEMO));
 let SCRIPT_URL = FORCE_URL;
 let editOpen = false;
+let isAdmin = false;
+let logoClicks = 0, logoTimer = null;
 let SETTINGS = {accentColor:'#e30613',series:'MotoGP™',navTitle:'GRAND PRIX',copy:'© 2026 MotoGP™ RP',sections:{news:true,grid:true,results:true,standings:true,riders:true}};
 
 // ── COPY SCRIPT ───────────────────────────────────
@@ -842,30 +989,226 @@ function updateSheetLink(){
   if(SHEET_ID)link.href=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/edit`;
 }
 
+// ── ADMIN AUTH ────────────────────────────────────
+function logoClick(){
+  logoClicks++;
+  clearTimeout(logoTimer);
+  if(logoClicks>=3){ logoClicks=0; openAdminLogin(); return; }
+  logoTimer=setTimeout(()=>logoClicks=0, 1500);
+}
+function openAdminLogin(){
+  if(isAdmin){toggleEdit();return;}
+  document.getElementById('admin-backdrop').classList.remove('hidden');
+  setTimeout(()=>document.getElementById('admin-pw-input').focus(),100);
+}
+function closeAdminLogin(){
+  document.getElementById('admin-backdrop').classList.add('hidden');
+  document.getElementById('admin-pw-input').value='';
+  document.getElementById('admin-error').textContent='';
+}
+function checkAdmin(){
+  const pw=document.getElementById('admin-pw-input').value;
+  if(pw===ADMIN_PASSWORD){
+    isAdmin=true;
+    closeAdminLogin();
+    document.getElementById('btn-edit').style.display='flex';
+    showToast('🔐 Mode admin activé');
+    toggleEdit();
+  }else{
+    document.getElementById('admin-error').textContent='Mot de passe incorrect.';
+    document.getElementById('admin-pw-input').value='';
+    document.getElementById('admin-pw-input').focus();
+  }
+}
+function logoutAdmin(){
+  isAdmin=false;
+  document.getElementById('btn-edit').style.display='none';
+  toggleEdit();
+  showToast('Déconnecté du mode admin');
+}
+
 // ── EDIT PANEL ────────────────────────────────────
 function toggleEdit(){
   editOpen=!editOpen;
   document.getElementById('edit-panel').classList.toggle('open',editOpen);
   document.getElementById('edit-overlay').classList.toggle('open',editOpen);
   document.getElementById('btn-edit').classList.toggle('active',editOpen);
-  if(editOpen){
-    document.getElementById('e-color-text').value=SETTINGS.accentColor;
-    document.getElementById('e-color-picker').value=SETTINGS.accentColor;
-    document.getElementById('e-series').value=SETTINGS.series;
-    document.getElementById('e-navtitle').value=SETTINGS.navTitle;
-    document.getElementById('e-copy').value=SETTINGS.copy;
-    updateSheetLink();
+  if(editOpen) fillAdminPanel();
+}
+function switchTab(name,btn){
+  document.querySelectorAll('.ep-section').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.ep-tab').forEach(el=>el.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ── FILL ADMIN PANEL ─────────────────────────────
+const SCHEMAS = {
+  actualites:[
+    {k:'titre',l:'Titre',t:'text'},{k:'categorie',l:'Catégorie',t:'text'},
+    {k:'date',l:'Date',t:'text'},{k:'emoji',l:'Emoji',t:'text'},
+    {k:'description',l:'Description',t:'text'},{k:'une',l:'À la une (true/false)',t:'text'}
+  ],
+  grille:[
+    {k:'position',l:'Position',t:'text'},{k:'numero',l:'Dossard',t:'text'},
+    {k:'pilote',l:'Pilote',t:'text'},{k:'equipe',l:'Équipe',t:'text'},
+    {k:'constructeur',l:'Constructeur',t:'text'},{k:'temps',l:'Temps',t:'text'},{k:'ecart',l:'Écart',t:'text'}
+  ],
+  resultats:[
+    {k:'position',l:'Position (DNF ok)',t:'text'},{k:'numero',l:'Dossard',t:'text'},
+    {k:'pilote',l:'Pilote',t:'text'},{k:'equipe',l:'Équipe',t:'text'},
+    {k:'constructeur',l:'Constructeur',t:'text'},{k:'temps',l:'Temps/Écart',t:'text'},{k:'points',l:'Points',t:'text'}
+  ],
+  classement:[
+    {k:'position',l:'Position',t:'text'},{k:'numero',l:'Dossard',t:'text'},
+    {k:'pilote',l:'Pilote',t:'text'},{k:'equipe',l:'Équipe',t:'text'},{k:'points',l:'Points',t:'text'}
+  ],
+  pilotes:[
+    {k:'numero',l:'Dossard',t:'text'},{k:'nom',l:'Nom',t:'text'},
+    {k:'equipe',l:'Équipe',t:'text'},{k:'nationalite',l:'Nationalité',t:'text'},{k:'drapeau',l:'Drapeau emoji',t:'text'}
+  ]
+};
+
+function fillAdminPanel(){
+  const c=DATA.config||{};
+  sv('e-gp-name',c.gp_name);sv('e-gp-subtitle',c.gp_subtitle);
+  sv('e-gp-round',c.gp_round);sv('e-gp-season',c.gp_season);
+  sv('e-gp-date',c.gp_date);sv('e-gp-flag',c.gp_flag);
+  sv('e-gp-weather',c.gp_weather);sv('e-gp-laps',c.gp_laps);sv('e-gp-dist',c.gp_dist);
+  const sel=document.getElementById('e-gp-status');if(sel)sel.value=c.gp_status||'finished';
+  sv('e-series',c.branding_series||SETTINGS.series);
+  sv('e-navtitle',c.branding_nav||SETTINGS.navTitle);
+  sv('e-copy',c.branding_copy||SETTINGS.copy);
+  sv('e-color-text',SETTINGS.accentColor);
+  const cp=document.getElementById('e-color-picker');if(cp)cp.value=SETTINGS.accentColor;
+  ['actualites','grille','resultats','classement','pilotes'].forEach(k=>buildList(k));
+}
+
+function sv(id,val){const el=document.getElementById(id);if(el)el.value=val||'';}
+
+function buildList(tab){
+  const container=document.getElementById('list-'+tab);
+  if(!container)return;
+  const schema=SCHEMAS[tab]||[];
+  const items=DATA[tab]||[];
+  container.innerHTML='';
+  items.forEach((item,idx)=>{
+    const block=document.createElement('div');
+    block.className='data-row-block';
+    let html=`<button class="btn-del-row" onclick="delRow('${tab}',${idx})">✕</button>`;
+    // Show only key fields inline for compactness
+    const preview=schema.slice(0,3);
+    const rest=schema.slice(3);
+    preview.forEach(f=>{
+      html+=`<div class="ep-field"><label>${f.l}</label><input type="${f.t}" data-tab="${tab}" data-idx="${idx}" data-key="${f.k}" value="${escHtml(String(item[f.k]||''))}"></div>`;
+    });
+    if(rest.length){
+      html+=`<details><summary style="font-size:11px;color:var(--muted);cursor:pointer;margin-bottom:8px">+ détails</summary>`;
+      rest.forEach(f=>{
+        html+=`<div class="ep-field"><label>${f.l}</label><input type="${f.t}" data-tab="${tab}" data-idx="${idx}" data-key="${f.k}" value="${escHtml(String(item[f.k]||''))}"></div>`;
+      });
+      html+=`</details>`;
+    }
+    block.innerHTML=html;
+    container.appendChild(block);
+  });
+}
+
+function escHtml(s){return s.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');}
+
+function delRow(tab,idx){
+  collectTab(tab);
+  DATA[tab].splice(idx,1);
+  buildList(tab);
+  renderAll();
+}
+
+function addRow(tab){
+  collectTab(tab);
+  const schema=SCHEMAS[tab]||[];
+  const newRow={};
+  schema.forEach(f=>newRow[f.k]='');
+  DATA[tab].push(newRow);
+  buildList(tab);
+}
+
+function collectTab(tab){
+  const inputs=document.querySelectorAll(`[data-tab="${tab}"]`);
+  inputs.forEach(el=>{
+    const idx=parseInt(el.dataset.idx);
+    const key=el.dataset.key;
+    if(!DATA[tab][idx])DATA[tab][idx]={};
+    DATA[tab][idx][key]=el.value;
+  });
+}
+
+function collectAllTabs(){
+  ['actualites','grille','resultats','classement','pilotes'].forEach(collectTab);
+  // Collect GP config
+  const c=DATA.config||{};
+  c.gp_name=document.getElementById('e-gp-name')?.value||c.gp_name;
+  c.gp_subtitle=document.getElementById('e-gp-subtitle')?.value||c.gp_subtitle;
+  c.gp_round=document.getElementById('e-gp-round')?.value||c.gp_round;
+  c.gp_season=document.getElementById('e-gp-season')?.value||c.gp_season;
+  c.gp_date=document.getElementById('e-gp-date')?.value||c.gp_date;
+  c.gp_flag=document.getElementById('e-gp-flag')?.value||c.gp_flag;
+  c.gp_weather=document.getElementById('e-gp-weather')?.value||c.gp_weather;
+  c.gp_laps=document.getElementById('e-gp-laps')?.value||c.gp_laps;
+  c.gp_dist=document.getElementById('e-gp-dist')?.value||c.gp_dist;
+  c.gp_status=document.getElementById('e-gp-status')?.value||c.gp_status;
+  c.branding_series=document.getElementById('e-series')?.value||c.branding_series;
+  c.branding_nav=document.getElementById('e-navtitle')?.value||c.branding_nav;
+  c.branding_copy=document.getElementById('e-copy')?.value||c.branding_copy;
+  DATA.config=c;
+}
+
+// ── PUBLISH TO SHEET ──────────────────────────────
+async function publishAll(){
+  collectAllTabs();
+  renderAll();
+  const btn=document.querySelector('.btn-publish');
+  btn.disabled=true;btn.textContent='Publication...';
+  setStatus('loading','Publication vers Google Sheets...');
+
+  // Convert DATA to sheet format for POST
+  const configRows=Object.entries(DATA.config||{}).map(([cle,valeur])=>({cle,valeur}));
+  const payload={
+    config:configRows,
+    actualites:DATA.actualites||[],
+    grille:DATA.grille||[],
+    resultats:DATA.resultats||[],
+    classement:DATA.classement||[],
+    pilotes:DATA.pilotes||[]
+  };
+
+  try{
+    const r=await fetch(FORCE_URL,{
+      method:'POST',
+      body:JSON.stringify(payload)
+    });
+    const json=await r.json();
+    if(json.ok){
+      setStatus('ok','Publié ✓ — '+new Date().toLocaleTimeString('fr-FR'));
+      showToast('🚀 Publié sur Google Sheets !');
+    }else{
+      throw new Error(json.error||'Erreur inconnue');
+    }
+  }catch(e){
+    setStatus('err','Erreur publication : '+e.message);
+    showToast('❌ '+e.message);
+  }finally{
+    btn.disabled=false;btn.textContent='🚀 Publier sur le Sheet';
   }
 }
 
 function saveSettings(){
-  SETTINGS.accentColor=document.getElementById('e-color-text').value;
-  SETTINGS.series=document.getElementById('e-series').value;
-  SETTINGS.navTitle=document.getElementById('e-navtitle').value;
-  SETTINGS.copy=document.getElementById('e-copy').value;
+  SETTINGS.accentColor=document.getElementById('e-color-text')?.value||SETTINGS.accentColor;
+  SETTINGS.series=document.getElementById('e-series')?.value||SETTINGS.series;
+  SETTINGS.navTitle=document.getElementById('e-navtitle')?.value||SETTINGS.navTitle;
+  SETTINGS.copy=document.getElementById('e-copy')?.value||SETTINGS.copy;
   localStorage.setItem('mgp-settings',JSON.stringify(SETTINGS));
   renderAll();
-  showToast('✓ Apparence sauvegardée');
+  showToast('✓ Style sauvegardé');
 }
 
 function toggleSec(id,btn){
