@@ -524,7 +524,7 @@ function doPost(e) {
 <nav class="navbar">
   <div class="navbar-inner">
     <div class="logo" onclick="logoClick()" title="Cliquez 3× pour l'accès admin">
-      <span class="badge" id="nav-series">MotoGP™</span>
+      <span class="badge" id="nav-series">S.A.M™</span>
       <span style="background:none;color:var(--text);font-size:22px" id="nav-title">GRAND PRIX</span>
     </div>
     <div class="nav-links">
@@ -706,13 +706,13 @@ function doPost(e) {
 <footer class="footer"><div class="footer-inner">
   <div class="footer-top">
     <div class="footer-brand">
-      <div class="logo"><span class="badge" id="footer-series">MotoGP™</span><span style="background:none;color:var(--text);font-size:22px">S.A.M</span></div>
+      <div class="logo"><span class="badge" id="footer-series">S.A.M™</span><span style="background:none;color:var(--text);font-size:22px">S.A.M</span></div>
       <p></p>
     </div>
     <div class="footer-col"><h4>Événement</h4><ul><li><a href="#">Programme</a></li><li><a href="#">Grille</a></li><li><a href="#">Résultats</a></li></ul></div>
     <div class="footer-col"><h4>Pilotes</h4><ul><li><a href="#">Profils</a></li><li><a href="#">Statistiques</a></li></ul></div>
   </div>
-  <div class="footer-bottom"><span id="footer-copy">© 2026 MotoGP™ </span></div>
+  <div class="footer-bottom"><span id="footer-copy">© 2026 S.A.M™ </span></div>
 </div></footer>
 
 <!-- ADMIN LOGIN MODAL -->
@@ -894,8 +894,8 @@ function doPost(e) {
 <script>
 // ── DEMO DATA (fallback) ──────────────────────────
 const DEMO = {
-  config:{gp_name:"Grand Prix de France",gp_subtitle:"Circuit Bugatti — Le Mans",gp_round:"5",gp_season:"2026",gp_date:"9–11 mai 2026",gp_flag:"🇫🇷",gp_weather:"Sec / 24°C",gp_laps:"27 tours",gp_dist:"118.8 km",gp_status:"finished",gp_hero_image:"",branding_series:"MotoGP™",branding_nav:"GRAND PRIX",branding_copy:"© 2026 MotoGP™ RP",
-    rule_intro:"Bienvenue au championnat MotoGP™ RP. Voici les conditions financières d'engagement pour la saison en cours.",
+  config:{gp_name:"Grand Prix de France",gp_subtitle:"Circuit Bugatti — Le Mans",gp_round:"5",gp_season:"2026",gp_date:"9–11 mai 2026",gp_flag:"🇫🇷",gp_weather:"Sec / 24°C",gp_laps:"27 tours",gp_dist:"118.8 km",gp_status:"finished",gp_hero_image:"",branding_series:"S.A.M™",branding_nav:"GRAND PRIX",branding_copy:"© 2026 S.A.M™ RP",
+    rule_intro:"Bienvenue au championnat S.A.M™ RP. Voici les conditions financières d'engagement pour la saison en cours.",
     rule_inscription:"200 000",rule_caution:"30 000",
     rule_prime_victoire:"20 000",rule_prime_podium:"12 000",rule_prime_top8:"6 000",rule_prime_participation:"2 000",rule_prime_meca_parfait:"8 000",rule_prime_meca_part:"3 000",
     rule_champion:"80 000",rule_vice:"45 000",rule_3eme:"25 000",rule_4_6:"10 000",
@@ -961,9 +961,9 @@ const PREVIEWS = {
 <span class="val">gp_laps              27 tours</span>
 <span class="val">gp_dist              118.8 km</span>
 <span class="val">gp_status            finished  <span style="color:var(--muted)">← upcoming / live / finished</span></span>
-<span class="val">branding_series      MotoGP™</span>
+<span class="val">branding_series      S.A.M™</span>
 <span class="val">branding_nav         GRAND PRIX</span>
-<span class="val">branding_copy        © 2026 MotoGP™ RP</span>`,
+<span class="val">branding_copy        © 2026 S.A.M™ RP</span>`,
   actualites:`<span class="hdr">titre                     categorie  date          emoji  description          une</span>
 <span class="val">Martín remporte le GP...  COURSE     10 mai 2026   🏆     Succès au Mans...     true</span>
 <span class="val">Acosta en pole...         QUALIF     9 mai 2026    ⚡     Premier rang...       false</span>`,
@@ -1003,7 +1003,7 @@ let logoClicks = 0, logoTimer = null;
 let ARCHIVES = [];
 let IS_ARCHIVE = false;
 let CURRENT_ARCHIVE_ID = null;
-let SETTINGS = {accentColor:'#e30613',series:'MotoGP™',navTitle:'GRAND PRIX',copy:'© 2026 MotoGP™ RP',sections:{news:true,grid:true,results:true,standings:true,riders:true}};
+let SETTINGS = {accentColor:'#e30613',series:'S.A.M™',navTitle:'GRAND PRIX',copy:'© 2026 S.A.M™ RP',sections:{news:true,grid:true,results:true,standings:true,riders:true}};
 
 // ── COPY SCRIPT ───────────────────────────────────
 function copyScript(){
@@ -1199,9 +1199,9 @@ function renderHero(){
 }
 
 function renderBranding(){
-  const s=SETTINGS.series||cfg('branding_series','MotoGP™');
+  const s=SETTINGS.series||cfg('branding_series','S.A.M™');
   const n=SETTINGS.navTitle||cfg('branding_nav','GRAND PRIX');
-  const c=SETTINGS.copy||cfg('branding_copy','© 2026 MotoGP™ RP');
+  const c=SETTINGS.copy||cfg('branding_copy','© 2026 S.A.M™ RP');
   ['nav-series','footer-series'].forEach(id=>set(id,s));
   set('nav-title',n);set('footer-copy',c);
 }
