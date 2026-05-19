@@ -251,7 +251,19 @@ input,select,textarea{font-family:inherit}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px}
 @keyframes spin{to{transform:rotate(360deg)}}
-/* ── ADMIN LOGIN ── */
+/* ── PROGRAMME ── */
+.programme-grid{display:flex;flex-direction:column;gap:8px}
+.prog-day{margin-bottom:20px}
+.prog-day-label{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.prog-day-label::after{content:'';flex:1;height:1px;background:var(--border)}
+.prog-session{background:var(--card);border:1px solid var(--border);border-radius:7px;padding:14px 18px;display:flex;align-items:center;gap:18px;transition:border-color .2s}
+.prog-session:hover{border-color:var(--border2)}
+.prog-time{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;letter-spacing:.04em;min-width:80px;color:var(--text)}
+.prog-name{font-weight:600;font-size:15px;flex:1}
+.prog-badge{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border-radius:3px}
+.prog-finished{background:rgba(100,200,100,.1);color:#6dcc6d;border:1px solid rgba(100,200,100,.2)}
+.prog-live{background:rgba(227,6,19,.2);color:#ff3d4e;border:1px solid rgba(227,6,19,.4)}
+.prog-upcoming{background:rgba(255,165,0,.1);color:#ffa500;border:1px solid rgba(255,165,0,.25)}
 .admin-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:400;display:flex;align-items:center;justify-content:center;padding:20px}
 .admin-modal{background:#13131a;border:1px solid var(--border2);border-radius:12px;width:100%;max-width:340px;padding:32px;text-align:center}
 .admin-modal h3{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:800;font-style:italic;text-transform:uppercase;margin-bottom:8px}
@@ -464,25 +476,19 @@ function doPost(e) {
         <div class="meta-sep"></div>
         <div class="meta-item"><div class="meta-lbl">Tours</div><div class="meta-val" id="hero-laps">27 tours</div></div>
         <div class="meta-sep"></div>
-        <div class="meta-item"><div class="meta-lbl">Distance</div><div class="meta-val" id="hero-dist">118.8 km</div></div>
-        <div class="meta-sep"></div>
-        <div class="meta-item"><div class="meta-lbl">Météo</div><div class="meta-val" id="hero-weather">Sec / 24°C</div></div>
-        <div class="meta-sep"></div>
         <div><div class="status-badge s-finished" id="status-badge">✓ Terminé</div></div>
       </div>
     </div>
-    <div><div style="font-size:80px;line-height:1" id="hero-flag">🇫🇷</div></div>
   </div>
 </section>
 
 <!-- EVENT TABS -->
 <div class="event-tabs"><div class="tabs-inner">
-  <button class="tab-btn active" data-sections="all">Programme</button>
+  <button class="tab-btn active" data-sections="news">Programme</button>
   <button class="tab-btn" data-sections="grid">Grille de départ</button>
   <button class="tab-btn" data-sections="results">Résultats</button>
   <button class="tab-btn" data-sections="standings">Classement</button>
   <button class="tab-btn" data-sections="riders">Pilotes</button>
-  <button class="tab-btn" data-sections="news">Actualités</button>
 </div></div>
 
 <!-- NEWS -->
@@ -531,13 +537,13 @@ function doPost(e) {
 <footer class="footer"><div class="footer-inner">
   <div class="footer-top">
     <div class="footer-brand">
-      <div class="logo"><span class="badge" id="footer-series">MotoGP™</span><span style="background:none;color:var(--text);font-size:22px">RP</span></div>
-      <p>Site de roleplay. Données gérées via Google Sheets. Non officiel.</p>
+      <div class="logo"><span class="badge" id="footer-series">MotoGP™</span><span style="background:none;color:var(--text);font-size:22px">S.A.M</span></div>
+      <p></p>
     </div>
     <div class="footer-col"><h4>Événement</h4><ul><li><a href="#">Programme</a></li><li><a href="#">Grille</a></li><li><a href="#">Résultats</a></li></ul></div>
     <div class="footer-col"><h4>Pilotes</h4><ul><li><a href="#">Profils</a></li><li><a href="#">Statistiques</a></li></ul></div>
   </div>
-  <div class="footer-bottom"><span id="footer-copy">© 2026 MotoGP™ RP</span></div>
+  <div class="footer-bottom"><span id="footer-copy">© 2026 MotoGP™ </span></div>
 </div></footer>
 
 <!-- ADMIN LOGIN MODAL -->
@@ -679,6 +685,14 @@ function doPost(e) {
 // ── DEMO DATA (fallback) ──────────────────────────
 const DEMO = {
   config:{gp_name:"Grand Prix de France",gp_subtitle:"Circuit Bugatti — Le Mans",gp_round:"5",gp_season:"2026",gp_date:"9–11 mai 2026",gp_flag:"🇫🇷",gp_weather:"Sec / 24°C",gp_laps:"27 tours",gp_dist:"118.8 km",gp_status:"finished",gp_hero_image:"",branding_series:"MotoGP™",branding_nav:"GRAND PRIX",branding_copy:"© 2026 MotoGP™ RP"},
+  programme:[
+    {jour:"Vendredi",heure:"09:00 – 09:45",session:"Essais Libres 1",statut:"finished"},
+    {jour:"Vendredi",heure:"13:30 – 14:15",session:"Essais Libres 2",statut:"finished"},
+    {jour:"Samedi",heure:"10:10 – 10:40",session:"Essais Libres 3",statut:"finished"},
+    {jour:"Samedi",heure:"14:50",session:"Sprint Race",statut:"finished"},
+    {jour:"Dimanche",heure:"11:00",session:"Warm Up",statut:"finished"},
+    {jour:"Dimanche",heure:"14:00",session:"Grand Prix",statut:"finished"},
+  ],
   actualites:[
     {titre:"Martín remporte un GP marqué par la chute de M.Márquez",categorie:"COURSE",date:"10 mai 2026",emoji:"🏆",description:"Le Champion du Monde 2024 signe un succès devant Bezzecchi et Ogura.",une:"true"},
     {titre:"M.Márquez opéré après sa spectaculaire sortie",categorie:"SANTÉ",date:"10 mai 2026",emoji:"🏥",description:"Double intervention chirurgicale pour le champion, forfait plusieurs Grands Prix.",une:"false"},
@@ -761,7 +775,7 @@ function showDemo(tab,btn){
 showDemo('config',document.querySelector('.sheet-tab-btn.active'));
 
 // ── URL DU SCRIPT (à changer si tu redéploies) ────
-const FORCE_URL = 'https://script.google.com/macros/s/AKfycbyGMmW_diUaTvtCIvmVSoaEJv50wYBzb9yH3bELNb-yj966ClE52yjiVlbJuvZNn8-hxg/exec';
+const FORCE_URL = 'https://script.google.com/macros/s/AKfycbwDVK4j-eG7hhYZIpA1xEAHvQ5ovRWfT-20H3sYAjp3EkrN8SsCfezrBj_Uu0P9BFIntQ/exec';
 const AUTO_REFRESH_SEC = 30;
 const ADMIN_PASSWORD = 'admin'; // ← Change ce mot de passe ici
 
@@ -1207,7 +1221,7 @@ function jsonpWrite(section, data){
         reject(new Error('Timeout '+section+' — Apps Script trop lent ou URL incorrecte'));
       }
     },15000);
-    script.src=FORCE_URL+'?action=write&section='+encodeURIComponent(section)+'&data='+encodeURIComponent(JSON.stringify(data))+'&callback='+cbName;
+    script.src=FORCE_URL+'?action=write&section='+encodeURIComponent(section)+'&b64='+encodeURIComponent(btoa(unescape(encodeURIComponent(JSON.stringify(data)))))+'&callback='+cbName;
     document.head.appendChild(script);
   });
 }
@@ -1333,19 +1347,12 @@ function showTab(btn){
   ALL_SECTIONS.forEach(id=>{
     const el=document.getElementById(id);
     if(!el)return;
-    // Respecte les toggles admin (hidden class = admin l'a caché)
     const adminHidden=SETTINGS.sections&&SETTINGS.sections[id]===false;
     if(adminHidden){el.classList.add('hidden');return;}
-    if(target==='all'){el.classList.remove('hidden');}
-    else{el.classList.toggle('hidden', id!==target);}
+    el.classList.toggle('hidden', id!==target);
   });
-  // Scroll vers la section visible
-  if(target!=='all'){
-    const el=document.getElementById(target);
-    if(el)setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),50);
-  }else{
-    window.scrollTo({top:0,behavior:'smooth'});
-  }
+  const el=document.getElementById(target);
+  if(el)setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),50);
 }
 
 document.querySelectorAll('.tab-btn').forEach(btn=>{
@@ -1386,8 +1393,11 @@ function updateSheetLink(){
     });
   }
 
-  // Chargement initial
-  charger(false);
+  // Auto-click Programme tab au chargement
+  charger(false).then(()=>{
+    const progTab=document.querySelector('.tab-btn[data-sections="news"]');
+    if(progTab)showTab(progTab);
+  });
 
   // Auto-refresh toutes les X secondes (silencieux, sans remettre les démos)
   setInterval(function(){ if(!publishPaused) charger(true); }, AUTO_REFRESH_SEC * 1000);
