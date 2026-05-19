@@ -804,7 +804,7 @@ function showDemo(tab,btn){
 showDemo('config',document.querySelector('.sheet-tab-btn.active'));
 
 // ── URL DU SCRIPT (à changer si tu redéploies) ────
-const FORCE_URL = 'https://script.google.com/macros/s/AKfycbx8VlZ46Mxai2B6Kje7PWgTCmHVTq6usX_0EJ_L-br9x8ysaajSHeq2or1hUDLUV_mRIA/exec';
+const FORCE_URL = 'https://script.google.com/macros/s/AKfycbyvDOagEWWXzMjN1PNvQwbDQKlELQQyR_cRJRuCsXQruKIgaFfPC91fTjTaLVYRVTI4Mw/exec';
 const AUTO_REFRESH_SEC = 30;
 const ADMIN_PASSWORD = 'admin'; // ← Change ce mot de passe ici
 
@@ -1397,10 +1397,10 @@ async function loadArchive(id){
     DATA.resultats=r.resultats||[];DATA.classement=r.classement||[];DATA.pilotes=r.pilotes||[];
     IS_ARCHIVE=true;CURRENT_ARCHIVE_ID=id;
     renderAll();
-    const name=cfg('gp_name','Archive');
-    setStatus('ok','Archive : '+name);
+    const gpname=cfg('gp_name','Archive');
+    setStatus('ok','Archive : '+gpname);
     const badge=document.getElementById('archive-badge');
-    if(badge){badge.classList.add('show');badge.querySelector('span').textContent=name;}
+    if(badge){badge.classList.add('show');badge.querySelector('span').textContent=gpname;}
     document.getElementById('btn-reload').style.display='none';
     const t=document.querySelector('.tab-btn[data-sections="news"]');if(t)showTab(t);
     renderGpSelector();
@@ -1428,17 +1428,58 @@ async function selectGP(id){
 
 async function archiveCurrentGP(){
   const name=cfg('gp_name','ce GP');
-  if(!confirm('Archiver "'+name+'" ?\n\nLes données actuelles seront sauvegardées dans les archives et tu pourras y revenir à tout moment.'))return;
+  if(!confirm('Archiver "'+name+'" ?\n\nLes données seront sauvegardées et consultables à tout moment.'))return;
   const btn=document.getElementById('btn-archive');
   btn.disabled=true;btn.textContent='⏳ Archivage...';
+
+  const round=String(cfg('gp_round','0')).padStart(2,'0');
+  const saison=cfg('gp_season','2026');
+  const id='gp'+round+'_'+saison;
+  const pfx='arc_'+id+'_';
+
+  const log=document.getElementById('publish-log');
+  if(log){log.innerHTML='';log.style.display='block';}
+  function logLine(msg,ok){
+    if(!log)return;
+    const line=document.createElement('div');
+    line.style.cssText='padding:3px 0;font-size:12px;color:'+(ok===true?'#4ade80':ok===false?'#f87171':'#fbbf24');
+    line.textContent=msg;log.appendChild(line);
+  }
+
   try{
-    const r=await jsonpCall({action:'archive'});
-    if(r.ok){
-      showToast('📦 '+name+' archivé !');
-      await loadArchivesList();
-    }else{throw new Error(r.error||'Erreur');}
-  }catch(e){showToast('❌ '+e.message);}
-  finally{btn.disabled=false;btn.textContent='📦 Archiver ce GP';}
+    // 1. Créer l'entrée index dans l'onglet archives
+    logLine('⏳ Création de l\'index...',null);
+    const meta={id,nom:cfg('gp_name'),circuit:cfg('gp_subtitle'),date:cfg('gp_date'),round:cfg('gp_round'),saison};
+    const r=await jsonpCall({action:'archiveIndex',b64:btoa(unescape(encodeURIComponent(JSON.stringify(meta))))});
+    if(!r.ok)throw new Error(r.error||'Erreur création index');
+    if(log){const l=log.lastChild;if(l){l.textContent='✓ Index créé ('+id+')';l.style.color='#4ade80';}}
+
+    // 2. Sauvegarder chaque section dans un onglet préfixé (ex: arc_gp05_2026_grille)
+    const configRows=Object.entries(DATA.config||{}).map(([cle,valeur])=>({cle,valeur}));
+    const sections=[
+      [pfx+'config',    configRows],
+      [pfx+'actualites',DATA.actualites||[]],
+      [pfx+'grille',    DATA.grille||[]],
+      [pfx+'resultats', DATA.resultats||[]],
+      [pfx+'classement',DATA.classement||[]],
+      [pfx+'pilotes',   DATA.pilotes||[]]
+    ];
+    for(const [tabName,data] of sections){
+      const label=tabName.replace(pfx,'');
+      logLine('⏳ Sauvegarde '+label+'...',null);
+      await jsonpWrite(tabName,data);
+      if(log){const l=log.lastChild;if(l){l.textContent='✓ '+label;l.style.color='#4ade80';}}
+    }
+
+    logLine('📦 '+name+' archivé avec succès !',true);
+    showToast('📦 '+name+' archivé !');
+    await loadArchivesList();
+  }catch(e){
+    logLine('❌ '+e.message,false);
+    showToast('❌ '+e.message);
+  }finally{
+    btn.disabled=false;btn.textContent='📦 Archiver ce GP';
+  }
 }
 
 // ── GP SELECTOR UI ────────────────────────────────
