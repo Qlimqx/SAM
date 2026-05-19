@@ -531,13 +531,13 @@ function doPost(e) {
 <footer class="footer"><div class="footer-inner">
   <div class="footer-top">
     <div class="footer-brand">
-      <div class="logo"><span class="badge" id="footer-series">MotoGP™</span><span style="background:none;color:var(--text);font-size:22px">S.A.M</span></div>
-      <p></p>
+      <div class="logo"><span class="badge" id="footer-series">MotoGP™</span><span style="background:none;color:var(--text);font-size:22px">RP</span></div>
+      <p>Site de roleplay. Données gérées via Google Sheets. Non officiel.</p>
     </div>
     <div class="footer-col"><h4>Événement</h4><ul><li><a href="#">Programme</a></li><li><a href="#">Grille</a></li><li><a href="#">Résultats</a></li></ul></div>
     <div class="footer-col"><h4>Pilotes</h4><ul><li><a href="#">Profils</a></li><li><a href="#">Statistiques</a></li></ul></div>
   </div>
-  <div class="footer-bottom"><span id="footer-copy">© 2026 MotoGP™ </span></div>
+  <div class="footer-bottom"><span id="footer-copy">© 2026 MotoGP™ RP</span></div>
 </div></footer>
 
 <!-- ADMIN LOGIN MODAL -->
@@ -662,8 +662,11 @@ function doPost(e) {
 
   </div>
   <div class="ep-footer">
-    <button class="btn-publish" onclick="publishAll()">🚀 Publier sur le Sheet</button>
-    <button class="btn-save-settings" onclick="saveSettings()" style="flex:0;padding:11px 14px;font-size:11px">💾 Style</button>
+    <div id="publish-log" style="display:none;background:var(--card);border:1px solid var(--border);border-radius:5px;padding:10px;margin-bottom:10px;max-height:140px;overflow-y:auto"></div>
+    <div style="display:flex;gap:8px">
+      <button class="btn-publish" onclick="publishAll()">🚀 Publier sur le Sheet</button>
+      <button class="btn-save-settings" onclick="saveSettings()" style="flex:0;padding:11px 14px;font-size:11px">💾 Style</button>
+    </div>
   </div>
 </div>
 
@@ -1189,19 +1192,19 @@ function jsonpWrite(section, data){
     window[cbName]=function(result){
       done=true;delete window[cbName];
       if(script.parentNode)script.parentNode.removeChild(script);
-      if(result.ok)resolve();
-      else reject(new Error(result.error||'Erreur '+section));
+      if(result&&result.ok)resolve();
+      else reject(new Error(result&&result.error?result.error:'Réponse invalide pour '+section));
     };
     script.onerror=function(){
       done=true;delete window[cbName];
       if(script.parentNode)script.parentNode.removeChild(script);
-      reject(new Error('Impossible d\'écrire '+section));
+      reject(new Error('Script introuvable pour '+section+' — vérifie le déploiement Apps Script'));
     };
     setTimeout(function(){
       if(!done){
         delete window[cbName];
         if(script.parentNode)script.parentNode.removeChild(script);
-        reject(new Error('Timeout '+section));
+        reject(new Error('Timeout '+section+' — Apps Script trop lent ou URL incorrecte'));
       }
     },15000);
     script.src=FORCE_URL+'?action=write&section='+encodeURIComponent(section)+'&data='+encodeURIComponent(JSON.stringify(data))+'&callback='+cbName;
@@ -1210,39 +1213,82 @@ function jsonpWrite(section, data){
 }
 
 // ── PUBLISH TO SHEET ──────────────────────────────
+let publishPaused = false;
+
 async function publishAll(){
   collectAllTabs();
-  renderAll();
-  const btn=document.querySelector('.btn-publish');
-  btn.disabled=true;
-  setStatus('loading','Publication...');
 
-  const configRows=Object.entries(DATA.config||{}).map(([cle,valeur])=>({cle,valeur}));
+  // Snapshot des données AVANT tout traitement async
+  const snap = {
+    config:     Object.entries(DATA.config||{}).map(([cle,valeur])=>({cle,valeur})),
+    actualites: JSON.parse(JSON.stringify(DATA.actualites||[])),
+    grille:     JSON.parse(JSON.stringify(DATA.grille||[])),
+    resultats:  JSON.parse(JSON.stringify(DATA.resultats||[])),
+    classement: JSON.parse(JSON.stringify(DATA.classement||[])),
+    pilotes:    JSON.parse(JSON.stringify(DATA.pilotes||[]))
+  };
+
+  renderAll();
+
+  const btn=document.querySelector('.btn-publish');
+  const log=document.getElementById('publish-log');
+  btn.disabled=true;
+  if(log){log.innerHTML='';log.style.display='block';}
+  publishPaused=true; // Suspend l'auto-refresh
+
+  function logLine(msg,ok){
+    if(!log)return;
+    const line=document.createElement('div');
+    line.style.cssText='padding:3px 0;font-size:12px;color:'+(ok===true?'#4ade80':ok===false?'#f87171':'#fbbf24');
+    line.textContent=msg;
+    log.appendChild(line);
+  }
+
   const sections=[
-    ['config',    configRows],
-    ['actualites',DATA.actualites||[]],
-    ['grille',    DATA.grille||[]],
-    ['resultats', DATA.resultats||[]],
-    ['classement',DATA.classement||[]],
-    ['pilotes',   DATA.pilotes||[]]
+    ['config',    snap.config],
+    ['actualites',snap.actualites],
+    ['grille',    snap.grille],
+    ['resultats', snap.resultats],
+    ['classement',snap.classement],
+    ['pilotes',   snap.pilotes]
   ];
 
-  try{
-    for(const [name,data] of sections){
-      btn.textContent='⏳ '+name+'...';
+  let allOk=true;
+  for(const [name,data] of sections){
+    btn.textContent='⏳ '+name+'...';
+    logLine('⏳ Envoi '+name+'...',null);
+    try{
       await jsonpWrite(name,data);
+      if(log){
+        const last=log.lastChild;
+        if(last)last.textContent='✓ '+name+' ('+data.length+' lignes)';
+        if(last)last.style.color='#4ade80';
+      }
+    }catch(e){
+      allOk=false;
+      if(log){
+        const last=log.lastChild;
+        if(last)last.textContent='❌ '+name+' : '+e.message;
+        if(last)last.style.color='#f87171';
+      }
+      logLine('⚠ Publication arrêtée — corrige l\'erreur ci-dessus',false);
+      setStatus('err','Erreur : '+e.message);
+      break;
     }
+  }
+
+  if(allOk){
+    logLine('🚀 Tout publié avec succès !',true);
     setStatus('ok','Publié ✓ — '+new Date().toLocaleTimeString('fr-FR'));
     showToast('🚀 Publié sur Google Sheets !');
     // Recharger pour confirmer
     await loadFromScript(FORCE_URL);
     renderAll();
-  }catch(e){
-    setStatus('err','Erreur : '+e.message);
-    showToast('❌ '+e.message);
-  }finally{
-    btn.disabled=false;btn.textContent='🚀 Publier sur le Sheet';
   }
+
+  publishPaused=false; // Reprend l'auto-refresh
+  btn.disabled=false;
+  btn.textContent='🚀 Publier sur le Sheet';
 }
 
 function saveSettings(){
@@ -1344,7 +1390,7 @@ function updateSheetLink(){
   charger(false);
 
   // Auto-refresh toutes les X secondes (silencieux, sans remettre les démos)
-  setInterval(function(){ charger(true); }, AUTO_REFRESH_SEC * 1000);
+  setInterval(function(){ if(!publishPaused) charger(true); }, AUTO_REFRESH_SEC * 1000);
 })();
 </script>
 </body>
