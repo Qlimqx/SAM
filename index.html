@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>S.A.M San Andreas Motors</title>
+<title>MotoGP™ RP – Grand Prix</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700;1,900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{--accent:#e30613;--accent-dim:rgba(227,6,19,.15);--bg:#09090b;--card:#111116;--card2:#17171d;--border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.12);--text:#f0f0f5;--muted:#666678;--sub:#9999af;--gold:#f5c842;--silver:#b0b8c4;--bronze:#cd7f32;--panel-w:400px}
@@ -524,8 +524,8 @@ function doPost(e) {
 <nav class="navbar">
   <div class="navbar-inner">
     <div class="logo" onclick="logoClick()" title="Cliquez 3× pour l'accès admin">
-      <span class="badge" id="nav-series">S.A.M™</span>
-      <span style="background:none;color:var(--text);font-size:22px" id="nav-title">San Adreas Motors</span>
+      <span class="badge" id="nav-series">MotoGP™</span>
+      <span style="background:none;color:var(--text);font-size:22px" id="nav-title">GRAND PRIX</span>
     </div>
     <div class="nav-links">
       <a href="#hero" class="active">Accueil</a>
@@ -557,7 +557,7 @@ function doPost(e) {
   <div class="hero-content">
     <div>
       <div class="hero-eyebrow" id="hero-eyebrow">Manche 5 — Saison 2026</div>
-      <h1 class="hero-title" id="hero-title">San Adreas Motors de France</h1>
+      <h1 class="hero-title" id="hero-title">Grand Prix de France</h1>
       <div class="hero-subtitle" id="hero-subtitle">Circuit Bugatti — Le Mans</div>
       <div class="hero-meta">
         <div class="meta-item"><div class="meta-lbl">Date</div><div class="meta-val" id="hero-date">9–11 mai 2026</div></div>
@@ -675,7 +675,7 @@ function doPost(e) {
 
         <div class="form-section-title">Contact</div>
         <div class="form-field">
-          <label>Téléphone <span>*</span></label>
+          <label>Discord / Email <span>*</span></label>
           <input id="f-contact" type="text" placeholder="Ton pseudo Discord ou email">
           <div class="field-note">Utilisé uniquement pour vous contacter concernant votre inscription.</div>
         </div>
@@ -752,7 +752,7 @@ function doPost(e) {
 
     <!-- GP -->
     <div class="ep-section active" id="tab-gp">
-      <div class="ep-field"><label>Nom du San Adreas Motors</label><input id="e-gp-name" type="text"></div>
+      <div class="ep-field"><label>Nom du Grand Prix</label><input id="e-gp-name" type="text"></div>
       <div class="ep-field"><label>Circuit / Lieu</label><input id="e-gp-subtitle" type="text"></div>
       <div class="ep-row">
         <div class="ep-field"><label>Manche N°</label><input id="e-gp-round" type="text"></div>
@@ -894,8 +894,8 @@ function doPost(e) {
 <script>
 // ── DEMO DATA (fallback) ──────────────────────────
 const DEMO = {
-  config:{gp_name:"San Adreas Motors de France",gp_subtitle:"Circuit Bugatti — Le Mans",gp_round:"5",gp_season:"2026",gp_date:"9–11 mai 2026",gp_flag:"🇫🇷",gp_weather:"Sec / 24°C",gp_laps:"27 tours",gp_dist:"118.8 km",gp_status:"finished",gp_hero_image:"",branding_series:"S.A.M™",branding_nav:"San Adreas Motors",branding_copy:"© 2026 S.A.M™ RP",
-    rule_intro:"Bienvenue au championnat S.A.M™ RP. Voici les conditions financières d'engagement pour la saison en cours.",
+  config:{gp_name:"Grand Prix de France",gp_subtitle:"Circuit Bugatti — Le Mans",gp_round:"5",gp_season:"2026",gp_date:"9–11 mai 2026",gp_flag:"🇫🇷",gp_weather:"Sec / 24°C",gp_laps:"27 tours",gp_dist:"118.8 km",gp_status:"finished",gp_hero_image:"",branding_series:"MotoGP™",branding_nav:"GRAND PRIX",branding_copy:"© 2026 MotoGP™ RP",
+    rule_intro:"Bienvenue au championnat MotoGP™ RP. Voici les conditions financières d'engagement pour la saison en cours.",
     rule_inscription:"200 000",rule_caution:"30 000",
     rule_prime_victoire:"20 000",rule_prime_podium:"12 000",rule_prime_top8:"6 000",rule_prime_participation:"2 000",rule_prime_meca_parfait:"8 000",rule_prime_meca_part:"3 000",
     rule_champion:"80 000",rule_vice:"45 000",rule_3eme:"25 000",rule_4_6:"10 000",
@@ -906,7 +906,7 @@ const DEMO = {
     {jour:"Samedi",heure:"10:10 – 10:40",session:"Essais Libres 3",statut:"finished"},
     {jour:"Samedi",heure:"14:50",session:"Sprint Race",statut:"finished"},
     {jour:"Dimanche",heure:"11:00",session:"Warm Up",statut:"finished"},
-    {jour:"Dimanche",heure:"14:00",session:"San Adreas Motors",statut:"finished"},
+    {jour:"Dimanche",heure:"14:00",session:"Grand Prix",statut:"finished"},
   ],
   actualites:[
     {titre:"Martín remporte un GP marqué par la chute de M.Márquez",categorie:"COURSE",date:"10 mai 2026",emoji:"🏆",description:"Le Champion du Monde 2024 signe un succès devant Bezzecchi et Ogura.",une:"true"},
@@ -951,7 +951,7 @@ const DEMO = {
 // ── DEMO PREVIEW DATA ─────────────────────────────
 const PREVIEWS = {
   config:`<span class="hdr">cle                  valeur</span>
-<span class="val">gp_name              San Adreas Motors de France</span>
+<span class="val">gp_name              Grand Prix de France</span>
 <span class="val">gp_subtitle          Circuit Bugatti — Le Mans</span>
 <span class="val">gp_round             5</span>
 <span class="val">gp_season            2026</span>
@@ -961,9 +961,9 @@ const PREVIEWS = {
 <span class="val">gp_laps              27 tours</span>
 <span class="val">gp_dist              118.8 km</span>
 <span class="val">gp_status            finished  <span style="color:var(--muted)">← upcoming / live / finished</span></span>
-<span class="val">branding_series      S.A.M™</span>
-<span class="val">branding_nav         San Adreas Motors</span>
-<span class="val">branding_copy        © 2026 S.A.M™ RP</span>`,
+<span class="val">branding_series      MotoGP™</span>
+<span class="val">branding_nav         GRAND PRIX</span>
+<span class="val">branding_copy        © 2026 MotoGP™ RP</span>`,
   actualites:`<span class="hdr">titre                     categorie  date          emoji  description          une</span>
 <span class="val">Martín remporte le GP...  COURSE     10 mai 2026   🏆     Succès au Mans...     true</span>
 <span class="val">Acosta en pole...         QUALIF     9 mai 2026    ⚡     Premier rang...       false</span>`,
@@ -1003,7 +1003,7 @@ let logoClicks = 0, logoTimer = null;
 let ARCHIVES = [];
 let IS_ARCHIVE = false;
 let CURRENT_ARCHIVE_ID = null;
-let SETTINGS = {accentColor:'#e30613',series:'S.A.M™',navTitle:'San Adreas Motors',copy:'© 2026 S.A.M™ RP',sections:{news:true,grid:true,results:true,standings:true,riders:true}};
+let SETTINGS = {accentColor:'#e30613',series:'MotoGP™',navTitle:'GRAND PRIX',copy:'© 2026 MotoGP™ RP',sections:{news:true,grid:true,results:true,standings:true,riders:true}};
 
 // ── COPY SCRIPT ───────────────────────────────────
 function copyScript(){
@@ -1178,7 +1178,7 @@ function cfg(key,fallback=''){
 function set(id,val){const el=document.getElementById(id);if(el)el.innerHTML=val;}
 
 function renderHero(){
-  const name=cfg('gp_name','San Adreas Motors');
+  const name=cfg('gp_name','Grand Prix');
   set('hero-eyebrow',`Manche ${cfg('gp_round','?')} — Saison ${cfg('gp_season','2026')}`);
   set('hero-title',name);
   set('hero-subtitle',cfg('gp_subtitle',''));
@@ -1199,11 +1199,15 @@ function renderHero(){
 }
 
 function renderBranding(){
-  const s=SETTINGS.series||cfg('branding_series','S.A.M™');
-  const n=SETTINGS.navTitle||cfg('branding_nav','San Adreas Motors');
-  const c=SETTINGS.copy||cfg('branding_copy','© 2026 S.A.M™ RP');
+  // Priorité : DATA.config (Sheet) > SETTINGS > défauts
+  const s=cfg('branding_series') || SETTINGS.series || 'MotoGP™';
+  const n=cfg('branding_nav')    || SETTINGS.navTitle || 'GRAND PRIX';
+  const c=cfg('branding_copy')   || SETTINGS.copy || '© 2026 MotoGP™ RP';
   ['nav-series','footer-series'].forEach(id=>set(id,s));
-  set('nav-title',n);set('footer-copy',c);
+  set('nav-title',n);
+  set('footer-copy',c);
+  // Aussi mettre à jour le titre de la page
+  document.title = cfg('gp_name','Grand Prix') + ' — ' + s;
 }
 
 function renderNews(){
@@ -1812,7 +1816,7 @@ function renderGpSelector(){
     ?'<div style="padding:12px 14px;font-size:12px;color:var(--muted);text-align:center">Aucune archive pour l\'instant<br><span style="font-size:11px">Utilise "Archiver ce GP" dans l\'admin</span></div>'
     :ARCHIVES.slice().reverse().map(function(a){return`<div class="gp-dd-item${IS_ARCHIVE&&CURRENT_ARCHIVE_ID===a.id?' active':''}" onclick="selectGP('${a.id}')"><span class="gp-dot arch"></span><div style="flex:1"><div>${a.nom}</div><div style="font-size:11px;color:var(--muted)">${a.date} · Manche ${a.round} · ${a.saison}</div></div></div>`;}).join('');
   dd.innerHTML=`
-    <div class="gp-dd-hdr">San Adreas Motors en cours</div>
+    <div class="gp-dd-hdr">Grand Prix en cours</div>
     <div class="gp-dd-item${!IS_ARCHIVE?' active':''}" onclick="selectGP('current')">
       <span class="gp-dot live"></span>
       <div style="flex:1"><div>GP en cours</div><div style="font-size:11px;color:var(--muted)">Données live</div></div>
