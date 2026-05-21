@@ -550,21 +550,33 @@ function doPost(e) {
   </div>
 </nav>
 
+<!-- LOADING OVERLAY -->
+<div id="loading-overlay" style="position:fixed;inset:0;background:var(--bg);z-index:500;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;transition:opacity .4s">
+  <div style="font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;font-style:italic;text-transform:uppercase;color:var(--text)" id="loading-fed-name">Chargement...</div>
+  <div style="width:200px;height:3px;background:var(--border2);border-radius:2px;overflow:hidden">
+    <div style="height:100%;background:var(--accent);border-radius:2px;animation:loadBar 1.5s ease infinite" id="load-bar"></div>
+  </div>
+  <div style="font-size:12px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase" id="loading-status">Connexion au serveur...</div>
+</div>
+<style>
+@keyframes loadBar{0%{width:0;margin-left:0}50%{width:60%;margin-left:20%}100%{width:0;margin-left:100%}}
+</style>
+
 <!-- HERO -->
 <section class="hero" id="hero">
   <div class="hero-bg"></div><div class="hero-img" id="hero-img"></div><div class="hero-grid-lines"></div><div class="hero-accent-line"></div>
-  <div class="hero-bg-num" id="hero-bg-num">5</div>
+  <div class="hero-bg-num" id="hero-bg-num"></div>
   <div class="hero-content">
     <div>
-      <div class="hero-eyebrow" id="hero-eyebrow">Manche 5 — Saison 2026</div>
-      <h1 class="hero-title" id="hero-title">Grand Prix de France</h1>
-      <div class="hero-subtitle" id="hero-subtitle">Circuit Bugatti — Le Mans</div>
+      <div class="hero-eyebrow" id="hero-eyebrow"></div>
+      <h1 class="hero-title" id="hero-title"></h1>
+      <div class="hero-subtitle" id="hero-subtitle"></div>
       <div class="hero-meta">
-        <div class="meta-item"><div class="meta-lbl">Date</div><div class="meta-val" id="hero-date">9–11 mai 2026</div></div>
+        <div class="meta-item"><div class="meta-lbl">Date</div><div class="meta-val" id="hero-date"></div></div>
         <div class="meta-sep"></div>
-        <div class="meta-item"><div class="meta-lbl">Tours</div><div class="meta-val" id="hero-laps">27 tours</div></div>
+        <div class="meta-item"><div class="meta-lbl">Tours</div><div class="meta-val" id="hero-laps"></div></div>
         <div class="meta-sep"></div>
-        <div><div class="status-badge s-finished" id="status-badge">✓ Terminé</div></div>
+        <div><div class="status-badge s-finished" id="status-badge"></div></div>
       </div>
     </div>
   </div>
@@ -706,13 +718,13 @@ function doPost(e) {
 <footer class="footer"><div class="footer-inner">
   <div class="footer-top">
     <div class="footer-brand">
-      <div class="logo"><span class="badge" id="footer-series">MotoGP™</span><span style="background:none;color:var(--text);font-size:22px">RP</span></div>
-      <p>Site de roleplay. Données gérées via Google Sheets. Non officiel.</p>
+      <div class="logo"><span class="badge" id="footer-series">S.A.M™</span><span style="background:none;color:var(--text);font-size:22px">S.A.M</span></div>
+      <p></p>
     </div>
     <div class="footer-col"><h4>Événement</h4><ul><li><a href="#">Programme</a></li><li><a href="#">Grille</a></li><li><a href="#">Résultats</a></li></ul></div>
     <div class="footer-col"><h4>Pilotes</h4><ul><li><a href="#">Profils</a></li><li><a href="#">Statistiques</a></li></ul></div>
   </div>
-  <div class="footer-bottom"><span id="footer-copy">© 2026 MotoGP™ RP</span></div>
+  <div class="footer-bottom"><span id="footer-copy">© 2026 S.A.M™ </span></div>
 </div></footer>
 
 <!-- ADMIN LOGIN MODAL -->
@@ -1185,15 +1197,16 @@ function renderHero(){
 }
 
 function renderBranding(){
-  // Priorité : DATA.config (Sheet) > SETTINGS > défauts
   const s=cfg('branding_series') || SETTINGS.series || 'MotoGP™';
   const n=cfg('branding_nav')    || SETTINGS.navTitle || 'GRAND PRIX';
   const c=cfg('branding_copy')   || SETTINGS.copy || '© 2026 MotoGP™ RP';
   ['nav-series','footer-series'].forEach(id=>set(id,s));
   set('nav-title',n);
   set('footer-copy',c);
-  // Aussi mettre à jour le titre de la page
   document.title = cfg('gp_name','Grand Prix') + ' — ' + s;
+  // Mettre à jour le nom dans le loader
+  const ln=document.getElementById('loading-fed-name');
+  if(ln)ln.textContent=s+' '+n;
 }
 
 function renderNews(){
@@ -1853,9 +1866,19 @@ function updateSheetLink(){
   applyAccent(SETTINGS.accentColor);
   setStatus('loading','Chargement des données...');
 
+  function hideLoader(){
+    const ol=document.getElementById('loading-overlay');
+    if(ol){ol.style.opacity='0';setTimeout(()=>ol.style.display='none',400);}
+  }
+
   function charger(silencieux){
+    if(!silencieux){
+      const ls=document.getElementById('loading-status');
+      if(ls)ls.textContent='Chargement des données...';
+    }
     return loadFromScript(FORCE_URL).then(()=>{
       renderAll();
+      hideLoader();
       const heure = new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
       setStatus('ok','Actualisé à ' + heure);
       updateSheetLink();
@@ -1863,6 +1886,7 @@ function updateSheetLink(){
       if(!silencieux){
         DATA=JSON.parse(JSON.stringify(DEMO));
         renderAll();
+        hideLoader();
         setStatus('err','Impossible de joindre le script');
       }
     });
