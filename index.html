@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fédération DE COURSE</title>
+<title>Fédération de Course</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700;1,900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -230,7 +230,7 @@ section{padding:96px 0}
     <div class="nav-logo-img placeholder" id="nav-logo-wrap">🏎</div>
     <div class="nav-logo-text">
       <span class="nav-logo-name" id="nav-fed-name">FÉDÉRATION</span>
-      <span class="nav-logo-sub" id="nav-fed-sub">Course Méchanique</span>
+      <span class="nav-logo-sub" id="nav-fed-sub">Sport Mécanique</span>
     </div>
   </div>
   <div class="nav-links">
@@ -258,7 +258,7 @@ section{padding:96px 0}
       <span class="line1" id="hero-line1">FÉDÉRATION</span>
       <span class="line2" id="hero-line2">DE COURSE</span>
     </h1>
-    <p class="hero-subtitle" id="hero-subtitle">L'autorité suprême du sport automobile en jeu de rôle</p>
+    <p class="hero-subtitle" id="hero-subtitle">L'autorité suprême du sport mécanique</p>
     <div class="hero-ctas">
       <a href="#" class="btn-hero-primary" id="hero-btn-champ">🏁 Voir le Championnat</a>
       <a href="#" class="btn-hero-secondary" onclick="scrollToSection('about');return false">En savoir plus</a>
@@ -346,8 +346,8 @@ section{padding:96px 0}
       <div class="about-visual reveal reveal-delay-2">
         <div class="about-box">
           <div class="about-logo-display" id="about-logo-display">🏎</div>
-          <div class="about-fed-name" id="about-fed-name-box">FÉDÉRATION</div>
-          <div class="about-fed-sub" id="about-fed-sub-box">Course Méchanique</div>
+          <div class="about-fed-name" id="about-fed-name-box">FÉDÉRATION RP</div>
+          <div class="about-fed-sub" id="about-fed-sub-box">Course Automobile</div>
           <div class="about-divider"></div>
           <div class="about-motto" id="about-motto">"L'excellence, la compétition, le respect"</div>
         </div>
@@ -366,7 +366,7 @@ section{padding:96px 0}
         <div class="nav-logo">
           <div class="nav-logo-text">
             <span class="nav-logo-name" id="footer-fed-name">FÉDÉRATION</span>
-            <span class="nav-logo-sub" id="footer-fed-sub">Course Méchanique</span>
+            <span class="nav-logo-sub" id="footer-fed-sub">Sport Mécanique</span>
           </div>
         </div>
         <p id="footer-desc">L'autorité officielle du sport mécanique.</p>
@@ -390,7 +390,7 @@ section{padding:96px 0}
       </div>
     </div>
     <div class="footer-bottom">
-      <span id="footer-copy">© 2026 S.A.M  FÉDÉRATION</span>
+      <span id="footer-copy">© 2026 Fédération — Tous droits réservés</span>
       <span class="footer-gold" id="footer-season">Saison 2026</span>
     </div>
   </div>
@@ -417,11 +417,11 @@ section{padding:96px 0}
 
     <!-- GÉNÉRAL -->
     <div class="ap-section active" id="tab-general">
-      <div class="ap-field"><label>Nom de la fédération</label><input id="e-fed-name" type="text" placeholder="FÉDÉRATION"></div>
-      <div class="ap-field"><label>Sous-titre</label><input id="e-fed-sub" type="text" placeholder="Course Méchanique"></div>
+      <div class="ap-field"><label>Nom de la fédération</label><input id="e-fed-name" type="text" placeholder="FÉDÉRATION RP"></div>
+      <div class="ap-field"><label>Sous-titre</label><input id="e-fed-sub" type="text" placeholder="Course Automobile"></div>
       <div class="ap-field"><label>Logo (URL image)</label><input id="e-logo-url" type="text" placeholder="https://... ou emoji 🏎"></div>
       <div class="ap-field"><label>Saison actuelle</label><input id="e-saison" type="text" placeholder="Saison 2026"></div>
-      <div class="ap-field"><label>Copyright footer</label><input id="e-footer-copy" type="text" placeholder="© 2026 FÉDÉRATION"></div>
+      <div class="ap-field"><label>Copyright footer</label><input id="e-footer-copy" type="text" placeholder="© 2026 Fédération RP"></div>
       <div class="ap-field"><label>Description footer</label><textarea id="e-footer-desc" placeholder="Description de la fédération..."></textarea></div>
       <div class="ap-divider">Ticker (bandeau défilant)</div>
       <div id="ticker-edit-list"></div>
@@ -432,7 +432,7 @@ section{padding:96px 0}
     <div class="ap-section" id="tab-hero">
       <div class="ap-field"><label>Badge (texte petit)</label><input id="e-hero-badge" type="text" placeholder="Saison 2026 — Officiellement Lancée"></div>
       <div class="ap-field"><label>Titre ligne 1</label><input id="e-hero-line1" type="text" placeholder="FÉDÉRATION"></div>
-      <div class="ap-field"><label>Titre ligne 2 (en or)</label><input id="e-hero-line2" type="text" placeholder="DE COURSE"></div>
+      <div class="ap-field"><label>Titre ligne 2 (en or)</label><input id="e-hero-line2" type="text" placeholder="DE COURSE RP"></div>
       <div class="ap-field"><label>Sous-titre</label><input id="e-hero-subtitle" type="text" placeholder="L'autorité suprême..."></div>
       <div class="ap-divider">Arrière-plan</div>
       <div class="ap-field"><label>URL vidéo YouTube (embed)</label><input id="e-hero-video" type="text" placeholder="https://www.youtube.com/embed/XXXX?autoplay=1&mute=1&loop=1"></div>
@@ -490,10 +490,10 @@ const ADMIN_PW = 'admin'; // ← Change ici
 
 const DEFAULT = {
   fedName: 'FÉDÉRATION',
-  fedSub: 'Course Méchanique',
+  fedSub: 'Sport Mécanique',
   logoUrl: '',
   saison: 'Saison 2026',
-  footerCopy: '© 2026 S.A.M  FÉDÉRATION',
+  footerCopy: '© 2026 Fédération — Tous droits réservés',
   footerDesc: "L'autorité officielle du sport mécanique.",
   ticker: [
     '🏆 Saison 2026 officiellement lancée',
@@ -506,14 +506,14 @@ const DEFAULT = {
     badge: 'Saison 2026 — Officiellement Lancée',
     line1: 'FÉDÉRATION',
     line2: 'DE COURSE',
-    subtitle: "L'autorité suprême du sport automobile en jeu de rôle",
+    subtitle: "L'autorité suprême du sport mécanique",
     videoUrl: '',
     imgUrl: '',
   },
   champ: {
     url: './championnat.html',
     tag: 'Championnat Principal',
-    name: 'MotoGP™\nGrand Prix',
+    name: 'Grand Prix\nChampionnat',
     desc: 'La compétition reine de la fédération. Pilotes, mécaniciens et écuries s\'affrontent sur les circuits du monde entier pour décrocher le titre suprême.',
     imgUrl: '',
     stats: [
@@ -535,8 +535,8 @@ const DEFAULT = {
   ],
   about: {
     title: 'La Fédération',
-    p1: "La FÉDÉRATION est l'organe gouvernant officiel du sport automobile dans notre univers de roleplay. Fondée pour encadrer et promouvoir la compétition, elle veille au respect des règles et à l'équité entre tous les participants.",
-    p2: "Notre mission est de garantir des compétitions de haut niveau, de soutenir les écuries et les pilotes dans leur développement, et d'assurer le spectacle pour tous les passionnés de Course Méchanique.",
+    p1: "La Fédération est l'organe gouvernant officiel du sport mécanique. Fondée pour encadrer et promouvoir la compétition, elle veille au respect des règles et à l'équité entre tous les participants.",
+    p2: "Notre mission est de garantir des compétitions de haut niveau, de soutenir les écuries et les pilotes dans leur développement, et d'assurer le spectacle pour tous les passionnés de sport mécanique.",
     p3: "",
     motto: '"L\'excellence, la compétition, le respect"',
   }
@@ -841,8 +841,91 @@ function resetAdmin() {
 }
 
 // ═══════════════════════════════════════════════════════
-// STORAGE
+// LIVE CHAMPIONSHIP DATA
 // ═══════════════════════════════════════════════════════
+const CHAMP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwVLUteLf-EnBZ1eeodPFUkh0VojbN3xxSJef2kjdqSfG4MZUiSBS7AuEQ1VfU8qq5S3Q/exec';
+
+let CHAMP_DATA = null;
+
+function fetchChampData() {
+  return new Promise(function(resolve) {
+    const cb = 'fedCb_' + Date.now();
+    const script = document.createElement('script');
+    let done = false;
+    window[cb] = function(data) {
+      done = true; delete window[cb];
+      if (script.parentNode) script.parentNode.removeChild(script);
+      CHAMP_DATA = data;
+      resolve(data);
+    };
+    script.onerror = function() {
+      done = true; delete window[cb];
+      if (script.parentNode) script.parentNode.removeChild(script);
+      resolve(null);
+    };
+    setTimeout(function() {
+      if (!done) { delete window[cb]; resolve(null); }
+    }, 8000);
+    script.src = CHAMP_SCRIPT_URL + '?callback=' + cb;
+    document.head.appendChild(script);
+  });
+}
+
+function parseChampStats(data) {
+  if (!data) return;
+  // Config (key-value)
+  const cfg = {};
+  (data.config || []).forEach(function(r) { if (r.cle) cfg[r.cle] = r.valeur || ''; });
+
+  const classement = data.classement || [];
+  const pilotes    = data.pilotes || [];
+  const grille     = data.grille || [];
+
+  // Unique teams
+  const teams = new Set(classement.map(function(r) { return r.equipe; }).filter(Boolean));
+
+  // Build live stats
+  const liveStats = [];
+
+  if (cfg.gp_round) {
+    liveStats.push({num: 'M' + cfg.gp_round, lbl: 'Manche en cours · ' + (cfg.gp_season || '2026')});
+  }
+  if (classement.length > 0) {
+    liveStats.push({num: String(classement.length), lbl: 'Pilotes au championnat'});
+  }
+  if (teams.size > 0) {
+    liveStats.push({num: String(teams.size), lbl: 'Écuries engagées'});
+  }
+  if (grille.length > 0) {
+    liveStats.push({num: String(grille.length), lbl: 'Pilotes sur la grille'});
+  }
+
+  // Override stats if we got live data
+  if (liveStats.length > 0) {
+    D.stats = liveStats;
+    renderStats();
+  }
+
+  // Update champ card stats
+  if (classement.length > 0) {
+    const leader = classement[0];
+    D.champ.stats = [
+      {icon: '🏆', val: leader.pilote || '—', lbl: 'Leader championnat'},
+      {icon: '⭐', val: leader.points || '—', lbl: 'Points leader'},
+      {icon: '🏁', val: cfg.gp_round ? 'Manche ' + cfg.gp_round : '—', lbl: 'Manche en cours'},
+    ];
+    renderChamp();
+  }
+
+  // Update ticker with live GP name
+  if (cfg.gp_name && cfg.gp_round) {
+    const liveMsg = '🔴 En cours : ' + cfg.gp_name + ' — Manche ' + cfg.gp_round;
+    if (!D.ticker.includes(liveMsg)) {
+      D.ticker.unshift(liveMsg);
+      renderTicker();
+    }
+  }
+}
 function save() { try { localStorage.setItem('fed-rp-data', JSON.stringify(D)); } catch(e){} }
 function load() { try { const s=localStorage.getItem('fed-rp-data'); if(s) D={...DEFAULT,...JSON.parse(s),hero:{...DEFAULT.hero,...JSON.parse(s).hero},champ:{...DEFAULT.champ,...JSON.parse(s).champ},about:{...DEFAULT.about,...JSON.parse(s).about}}; } catch(e){} }
 
@@ -861,6 +944,17 @@ function showToast(msg) {
 load();
 renderAll();
 setTimeout(triggerReveal, 100);
+
+// Charger les données live du championnat
+fetchChampData().then(function(data) {
+  if (data) {
+    parseChampStats(data);
+    // Auto-refresh toutes les 60 secondes
+    setInterval(function() {
+      fetchChampData().then(function(d) { if(d) parseChampStats(d); });
+    }, 60000);
+  }
+});
 </script>
 </body>
 </html>
