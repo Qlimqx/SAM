@@ -78,7 +78,6 @@ input,select,textarea{font-family:inherit}
 .hero-bg{position:absolute;inset:0;background:linear-gradient(135deg,#0d0d12 0%,#1a1428 50%,#0a1222 100%)}
 .hero-grid-lines{position:absolute;inset:0;opacity:.04;background-image:repeating-linear-gradient(0deg,transparent,transparent 59px,#fff 59px,#fff 60px),repeating-linear-gradient(90deg,transparent,transparent 79px,#fff 79px,#fff 80px)}
 .hero-accent-line{position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent)}
-.hero-img{position:absolute;inset:0;background-size:cover;background-position:center;background-repeat:no-repeat;opacity:.35;transition:opacity .3s}
 .hero-bg-num{position:absolute;right:-20px;bottom:-40px;font-family:'Barlow Condensed',sans-serif;font-size:380px;font-weight:900;font-style:italic;color:rgba(255,255,255,.025);line-height:1;user-select:none;pointer-events:none}
 .hero-content{position:relative;max-width:1280px;width:100%;margin:0 auto;padding:48px 24px 40px;display:flex;align-items:flex-end;justify-content:space-between;gap:40px}
 .hero-eyebrow{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;display:flex;align-items:center;gap:10px}
@@ -251,80 +250,8 @@ input,select,textarea{font-family:inherit}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px}
 @keyframes spin{to{transform:rotate(360deg)}}
-/* ── PROGRAMME ── */
-.programme-grid{display:flex;flex-direction:column;gap:8px}
-.prog-day{margin-bottom:20px}
-.prog-day-label{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;display:flex;align-items:center;gap:8px}
-.prog-day-label::after{content:'';flex:1;height:1px;background:var(--border)}
-.prog-session{background:var(--card);border:1px solid var(--border);border-radius:7px;padding:14px 18px;display:flex;align-items:center;gap:18px;transition:border-color .2s}
-.prog-session:hover{border-color:var(--border2)}
-.prog-time{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;letter-spacing:.04em;min-width:80px;color:var(--text)}
-.prog-name{font-weight:600;font-size:15px;flex:1}
-.prog-badge{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border-radius:3px}
-.prog-finished{background:rgba(100,200,100,.1);color:#6dcc6d;border:1px solid rgba(100,200,100,.2)}
-.prog-live{background:rgba(227,6,19,.2);color:#ff3d4e;border:1px solid rgba(227,6,19,.4)}
-.prog-upcoming{background:rgba(255,165,0,.1);color:#ffa500;border:1px solid rgba(255,165,0,.25)}
-/* ── RÈGLEMENT ─────────────────────────────────────── */
-.regl-intro{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px 24px;margin-bottom:20px;font-size:14px;color:var(--sub);line-height:1.8}
-.regl-intro strong{color:var(--text)}
-.regl-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
-@media(max-width:720px){.regl-grid{grid-template-columns:1fr}}
-.regl-card{background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden}
-.regl-card-hdr{padding:14px 18px;background:var(--card2);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
-.regl-card-hdr h3{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;text-transform:uppercase;font-style:italic}
-.regl-row{display:flex;align-items:flex-start;justify-content:space-between;padding:12px 18px;border-bottom:1px solid var(--border);gap:12px}
-.regl-row:last-child{border-bottom:none}
-.regl-row-info{flex:1}
-.regl-row-label{font-size:13px;font-weight:600;color:var(--text)}
-.regl-row-note{font-size:11px;color:var(--muted);margin-top:1px}
-.regl-row-val{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;white-space:nowrap;color:var(--text);text-align:right}
-.regl-row-val.big{font-size:28px;color:var(--accent)}
-.regl-sep{padding:10px 18px;background:rgba(255,255,255,.02);border-bottom:1px solid var(--border);font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:8px}
-.regl-sep::after{content:'';flex:1;height:1px;background:var(--accent);opacity:.2}
-.regl-champ{margin-bottom:20px}
-.regl-champ-title{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;font-style:italic;text-transform:uppercase;display:flex;align-items:center;gap:10px;margin-bottom:12px}
-.regl-champ-title::before{content:'';display:block;width:4px;height:20px;background:var(--accent);border-radius:2px}
-.regl-podium-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
-.regl-pod{background:var(--card);border:1px solid var(--border);border-radius:7px;padding:14px 12px;text-align:center;transition:border-color .2s}
-.regl-pod.rk1{border-color:rgba(245,200,66,.3);background:rgba(245,200,66,.04)}
-.regl-pod.rk2{border-color:rgba(176,190,197,.25)}
-.regl-pod.rk3{border-color:rgba(205,127,50,.25)}
-.regl-pod-icon{font-size:20px;margin-bottom:4px}
-.regl-pod-label{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
-.regl-pod-val{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900}
-.regl-pod.rk1 .regl-pod-val{color:var(--gold)}
-.regl-pod.rk2 .regl-pod-val{color:var(--silver)}
-.regl-pod.rk3 .regl-pod-val{color:var(--bronze)}
-
-/* ── FORMULAIRE INSCRIPTION ─────────────────────── */
-.form-card{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-top:20px}
-.form-card-hdr{background:var(--card2);border-bottom:1px solid var(--border);padding:18px 24px;display:flex;align-items:center;gap:10px}
-.form-card-hdr h3{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;font-style:italic;text-transform:uppercase}
-.form-card-hdr p{font-size:12px;color:var(--sub);margin-top:2px}
-.form-body{padding:24px}
-.form-section-title{font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;margin-top:20px;display:flex;align-items:center;gap:8px}
-.form-section-title:first-child{margin-top:0}
-.form-section-title::after{content:'';flex:1;height:1px;background:var(--accent);opacity:.2}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:4px}
-@media(max-width:600px){.form-grid{grid-template-columns:1fr}}
-.form-field{margin-bottom:14px}
-.form-field label{display:block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
-.form-field label span{color:var(--accent);margin-left:2px}
-.form-field input{width:100%;background:var(--card2);border:1px solid var(--border2);color:var(--text);padding:11px 14px;border-radius:6px;font-size:14px;transition:border-color .15s}
-.form-field input:focus{border-color:var(--accent);outline:none}
-.form-field input::placeholder{color:var(--muted)}
-.form-field .field-note{font-size:11px;color:var(--muted);margin-top:5px}
-.btn-submit{width:100%;background:var(--accent);color:#fff;padding:14px;border-radius:7px;font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;transition:opacity .15s;margin-top:8px;border:none;cursor:pointer}
-.btn-submit:hover{opacity:.87}
-.btn-submit:disabled{opacity:.4;cursor:not-allowed}
-.form-success{display:none;text-align:center;padding:40px 24px}
-.form-success.show{display:block}
-.success-icon{font-size:56px;margin-bottom:16px}
-.success-title{font-family:'Barlow Condensed',sans-serif;font-size:36px;font-weight:900;font-style:italic;text-transform:uppercase;color:var(--green);margin-bottom:8px}
-.success-ecurie{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:700;color:var(--text);margin-bottom:12px}
-.success-text{font-size:14px;color:var(--sub);line-height:1.7}
-.form-error{background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.25);color:#f87171;border-radius:6px;padding:10px 14px;font-size:13px;margin-bottom:14px;display:none}
-.form-error.show{display:block}
+/* ── ADMIN LOGIN ── */
+.admin-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:400;display:flex;align-items:center;justify-content:center;padding:20px}
 .admin-modal{background:#13131a;border:1px solid var(--border2);border-radius:12px;width:100%;max-width:340px;padding:32px;text-align:center}
 .admin-modal h3{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:800;font-style:italic;text-transform:uppercase;margin-bottom:8px}
 .admin-modal p{font-size:13px;color:var(--sub);margin-bottom:20px}
@@ -362,28 +289,8 @@ input,select,textarea{font-family:inherit}
 .btn-publish:hover{opacity:.85}
 .btn-publish:disabled{opacity:.5;cursor:not-allowed}
 
-.gp-selector{position:relative;flex-shrink:0}
-.gp-sel-btn{background:var(--card);border:1px solid var(--border2);color:var(--text);font-size:12px;font-weight:600;padding:7px 12px;border-radius:5px;cursor:pointer;display:flex;align-items:center;gap:8px;transition:border-color .15s;white-space:nowrap;max-width:180px}
-.gp-sel-btn:hover,.gp-sel-btn.open{border-color:var(--accent)}
-.gp-sel-btn span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.gp-arrow{font-size:9px;color:var(--muted);flex-shrink:0;transition:transform .2s}
-.gp-sel-btn.open .gp-arrow{transform:rotate(180deg)}
-.gp-dropdown{position:absolute;top:calc(100% + 8px);right:0;background:#111118;border:1px solid var(--border2);border-radius:8px;min-width:240px;z-index:150;overflow:hidden;box-shadow:0 12px 32px rgba(0,0,0,.6);display:none}
-.gp-dropdown.open{display:block}
-.gp-dd-hdr{padding:8px 14px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);background:rgba(0,0,0,.3)}
-.gp-dd-item{padding:10px 14px;cursor:pointer;font-size:13px;font-weight:500;display:flex;align-items:center;gap:10px;transition:background .15s;border-bottom:1px solid var(--border)}
-.gp-dd-item:last-child{border-bottom:none}
-.gp-dd-item:hover{background:rgba(255,255,255,.05)}
-.gp-dd-item.active{color:var(--accent)}
-.gp-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-.gp-dot.live{background:#4ade80;box-shadow:0 0 6px #4ade80}
-.gp-dot.arch{background:var(--muted)}
-.gp-dd-meta{font-size:10px;color:var(--muted);margin-left:auto;flex-shrink:0;text-align:right}
-.archive-badge{background:rgba(245,200,66,.12);border:1px solid rgba(245,200,66,.3);color:var(--gold);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:5px 12px;border-radius:4px;display:none;align-items:center;gap:6px;flex-shrink:0}
-.archive-badge.show{display:flex}
-.btn-archive{width:100%;background:rgba(245,200,66,.1);border:1px solid rgba(245,200,66,.25);color:var(--gold);padding:10px;border-radius:5px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:all .15s;margin-top:8px}
-.btn-archive:hover{background:rgba(245,200,66,.2)}
-.btn-archive:disabled{opacity:.5;cursor:not-allowed}
+/* ── LOGO CLICK HINT ── */
+.logo{cursor:pointer;user-select:none}
 </style>
 </head>
 <body>
@@ -515,7 +422,7 @@ function doPost(e) {
       <span id="status-label">Chargement...</span>
     </div>
     <div class="topbar-right">
-      <a href="#" onclick="openReglement();return false" style="color:var(--accent);font-weight:700">📋 Inscription & Règlement</a>
+      <a href="#">Tickets</a><a href="#">Boutique</a><a href="#">VideoPass</a>
     </div>
   </div>
 </div>
@@ -536,60 +443,45 @@ function doPost(e) {
       <a href="#riders">Pilotes</a>
     </div>
     <div class="nav-right">
-      <div class="archive-badge" id="archive-badge">📦 <span>Archive</span></div>
-      <div class="gp-selector">
-        <button class="gp-sel-btn" id="gp-sel-btn" onclick="toggleGpDropdown()">
-          <span id="gp-sel-label">GP en cours</span>
-          <span class="gp-arrow">▾</span>
-        </button>
-        <div class="gp-dropdown" id="gp-dropdown"></div>
-      </div>
       <button class="btn-reload" id="btn-reload" onclick="reloadData()">↺ Recharger</button>
       <button class="btn-edit" id="btn-edit" onclick="toggleEdit()" style="display:none"><span class="edit-dot"></span>Admin</button>
     </div>
   </div>
 </nav>
 
-<!-- LOADING OVERLAY -->
-<div id="loading-overlay" style="position:fixed;inset:0;background:var(--bg);z-index:500;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;transition:opacity .4s">
-  <div style="font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;font-style:italic;text-transform:uppercase;color:var(--text)" id="loading-fed-name">Chargement...</div>
-  <div style="width:200px;height:3px;background:var(--border2);border-radius:2px;overflow:hidden">
-    <div style="height:100%;background:var(--accent);border-radius:2px;animation:loadBar 1.5s ease infinite" id="load-bar"></div>
-  </div>
-  <div style="font-size:12px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase" id="loading-status">Connexion au serveur...</div>
-</div>
-<style>
-@keyframes loadBar{0%{width:0;margin-left:0}50%{width:60%;margin-left:20%}100%{width:0;margin-left:100%}}
-</style>
-
 <!-- HERO -->
 <section class="hero" id="hero">
-  <div class="hero-bg"></div><div class="hero-img" id="hero-img"></div><div class="hero-grid-lines"></div><div class="hero-accent-line"></div>
-  <div class="hero-bg-num" id="hero-bg-num"></div>
+  <div class="hero-bg"></div><div class="hero-grid-lines"></div><div class="hero-accent-line"></div>
+  <div class="hero-bg-num" id="hero-bg-num">5</div>
   <div class="hero-content">
     <div>
-      <div class="hero-eyebrow" id="hero-eyebrow"></div>
-      <h1 class="hero-title" id="hero-title"></h1>
-      <div class="hero-subtitle" id="hero-subtitle"></div>
+      <div class="hero-eyebrow" id="hero-eyebrow">Manche 5 — Saison 2026</div>
+      <h1 class="hero-title" id="hero-title">Grand Prix de France</h1>
+      <div class="hero-subtitle" id="hero-subtitle">Circuit Bugatti — Le Mans</div>
       <div class="hero-meta">
-        <div class="meta-item"><div class="meta-lbl">Date</div><div class="meta-val" id="hero-date"></div></div>
+        <div class="meta-item"><div class="meta-lbl">Date</div><div class="meta-val" id="hero-date">9–11 mai 2026</div></div>
         <div class="meta-sep"></div>
-        <div class="meta-item"><div class="meta-lbl">Tours</div><div class="meta-val" id="hero-laps"></div></div>
+        <div class="meta-item"><div class="meta-lbl">Tours</div><div class="meta-val" id="hero-laps">27 tours</div></div>
         <div class="meta-sep"></div>
-        <div><div class="status-badge s-finished" id="status-badge"></div></div>
+        <div class="meta-item"><div class="meta-lbl">Distance</div><div class="meta-val" id="hero-dist">118.8 km</div></div>
+        <div class="meta-sep"></div>
+        <div class="meta-item"><div class="meta-lbl">Météo</div><div class="meta-val" id="hero-weather">Sec / 24°C</div></div>
+        <div class="meta-sep"></div>
+        <div><div class="status-badge s-finished" id="status-badge">✓ Terminé</div></div>
       </div>
     </div>
+    <div><div style="font-size:80px;line-height:1" id="hero-flag">🇫🇷</div></div>
   </div>
 </section>
 
 <!-- EVENT TABS -->
 <div class="event-tabs"><div class="tabs-inner">
-  <button class="tab-btn active" data-sections="news">Programme</button>
-  <button class="tab-btn" data-sections="grid">Grille de départ</button>
-  <button class="tab-btn" data-sections="results">Résultats</button>
-  <button class="tab-btn" data-sections="standings">Classement</button>
-  <button class="tab-btn" data-sections="riders">Pilotes</button>
-  <button class="tab-btn" data-sections="inscription" style="color:var(--accent)">📋 Inscription</button>
+  <button class="tab-btn active">Programme</button>
+  <button class="tab-btn">Grille de départ</button>
+  <button class="tab-btn">Résultats</button>
+  <button class="tab-btn">Classement</button>
+  <button class="tab-btn">Infos circuit</button>
+  <button class="tab-btn">Statistiques</button>
 </div></div>
 
 <!-- NEWS -->
@@ -634,97 +526,17 @@ function doPost(e) {
   </div>
 </section>
 
-<!-- INSCRIPTION / RÈGLEMENT -->
-<section class="section" id="inscription">
-  <div class="section-inner">
-    <div class="section-header">
-      <h2 class="section-title">Inscription & Règlement Financier</h2>
-    </div>
-    <div id="reglement-content"></div>
-
-    <!-- FORMULAIRE PRÉ-INSCRIPTION -->
-    <div class="form-card" id="inscription-form-wrap">
-      <div class="form-card-hdr">
-        <div>
-          <h3>🏁 Formulaire de Pré-Inscription</h3>
-          <p>Remplis ce formulaire pour inscrire ton écurie au championnat. Toutes les inscriptions seront étudiées.</p>
-        </div>
-      </div>
-
-      <!-- FORMULAIRE -->
-      <div class="form-body" id="form-body">
-        <div class="form-error" id="form-error"></div>
-
-        <div class="form-section-title">Écurie</div>
-        <div class="form-field">
-          <label>Nom de l'écurie <span>*</span></label>
-          <input id="f-ecurie" type="text" placeholder="ex : Scuderia RP Racing">
-        </div>
-
-        <div class="form-section-title">Pilotes</div>
-        <div class="form-grid">
-          <div class="form-field">
-            <label>Pilote 1 <span>*</span></label>
-            <input id="f-pilote1" type="text" placeholder="Nom du pilote principal">
-          </div>
-          <div class="form-field">
-            <label>Pilote 2</label>
-            <input id="f-pilote2" type="text" placeholder="Nom du 2ème pilote (optionnel)">
-          </div>
-        </div>
-
-        <div class="form-section-title">Mécaniciens</div>
-        <div class="form-grid">
-          <div class="form-field">
-            <label>Mécanicien 1 <span>*</span></label>
-            <input id="f-meca1" type="text" placeholder="Nom du mécanicien principal">
-          </div>
-          <div class="form-field">
-            <label>Mécanicien 2</label>
-            <input id="f-meca2" type="text" placeholder="2ème mécanicien (optionnel)">
-          </div>
-        </div>
-
-        <div class="form-section-title">Contact</div>
-        <div class="form-field">
-          <label>Discord / Email <span>*</span></label>
-          <input id="f-contact" type="text" placeholder="Ton pseudo Discord ou email">
-          <div class="field-note">Utilisé uniquement pour vous contacter concernant votre inscription.</div>
-        </div>
-
-        <button class="btn-submit" id="btn-submit" onclick="submitInscription()">
-          🏁 Envoyer ma pré-inscription
-        </button>
-      </div>
-
-      <!-- SUCCÈS -->
-      <div class="form-success" id="form-success">
-        <div class="success-icon">✅</div>
-        <div class="success-title">Pré-inscription reçue !</div>
-        <div class="success-ecurie" id="success-ecurie-name"></div>
-        <div class="success-text">
-          Merci pour ta pré-inscription !<br>
-          Ton dossier a été transmis aux organisateurs.<br>
-          Tu seras contacté(e) prochainement via les coordonnées fournies.
-        </div>
-        <button onclick="resetForm()" style="margin-top:20px;background:none;border:1px solid var(--border2);color:var(--sub);padding:10px 20px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer">Inscrire une autre écurie</button>
-      </div>
-    </div>
-
-  </div>
-</section>
-
 <!-- FOOTER -->
 <footer class="footer"><div class="footer-inner">
   <div class="footer-top">
     <div class="footer-brand">
-      <div class="logo"><span class="badge" id="footer-series">S.A.M™</span><span style="background:none;color:var(--text);font-size:22px">S.A.M</span></div>
+      <div class="logo"><span class="badge" id="footer-series">MotoGP™</span><span style="background:none;color:var(--text);font-size:22px">S.A.M</span></div>
       <p></p>
     </div>
     <div class="footer-col"><h4>Événement</h4><ul><li><a href="#">Programme</a></li><li><a href="#">Grille</a></li><li><a href="#">Résultats</a></li></ul></div>
     <div class="footer-col"><h4>Pilotes</h4><ul><li><a href="#">Profils</a></li><li><a href="#">Statistiques</a></li></ul></div>
   </div>
-  <div class="footer-bottom"><span id="footer-copy">© 2026 S.A.M™ </span></div>
+  <div class="footer-bottom"><span id="footer-copy">© 2026 MotoGP™ </span></div>
 </div></footer>
 
 <!-- ADMIN LOGIN MODAL -->
@@ -758,7 +570,6 @@ function doPost(e) {
     <button class="ep-tab" onclick="switchTab('classement',this)">Classement</button>
     <button class="ep-tab" onclick="switchTab('pilotes',this)">Pilotes</button>
     <button class="ep-tab" onclick="switchTab('style',this)">Style</button>
-    <button class="ep-tab" onclick="switchTab('reglement',this)">Règlement</button>
   </div>
   <div class="ep-body">
 
@@ -786,9 +597,6 @@ function doPost(e) {
           <option value="upcoming">⏱ À venir</option>
         </select>
       </div>
-      <div class="ep-field"><label>Image de fond (URL)</label><input id="e-gp-image" type="text" placeholder="https://... colle un lien image" oninput="updateImgPreview(this.value)"></div>
-      <div id="hero-img-preview" style="display:none;margin-top:-8px;margin-bottom:8px;border-radius:6px;overflow:hidden;height:80px;background-size:cover;background-position:center;border:1px solid var(--border)"></div>
-      <button class="btn-archive" id="btn-archive" onclick="archiveCurrentGP()">📦 Archiver ce GP</button>
     </div>
 
     <!-- ACTUALITÉS -->
@@ -849,42 +657,10 @@ function doPost(e) {
       <div class="section-toggle"><label>Pilotes</label><button class="toggle-sw on" id="tog-riders" onclick="toggleSec('riders',this)"></button></div>
     </div>
 
-    <!-- RÈGLEMENT -->
-    <div class="ep-section" id="tab-reglement">
-      <div class="ep-field"><label>Texte d'introduction</label><input id="e-rule-intro" type="text" placeholder="Bienvenue au championnat..."></div>
-      <div class="ep-divider">Frais d'entrée</div>
-      <div class="ep-field"><label>Inscription ($)</label><input id="e-rule-inscription" type="text" placeholder="200 000"></div>
-      <div class="ep-divider">Primes par course — Pilotes</div>
-      <div class="ep-row">
-        <div class="ep-field"><label>Victoire ($)</label><input id="e-rule-prime-victoire" type="text" placeholder="20 000"></div>
-        <div class="ep-field"><label>Podium ($)</label><input id="e-rule-prime-podium" type="text" placeholder="12 000"></div>
-      </div>
-      <div class="ep-divider">Primes par course — Mécaniciens</div>
-      <div class="ep-field"><label>Participation méca ($)</label><input id="e-rule-prime-meca-part" type="text" placeholder="3 000"></div>
-      <div class="ep-divider">Championnat — Pilotes</div>
-      <div class="ep-row">
-        <div class="ep-field"><label>Champion ($)</label><input id="e-rule-champion" type="text" placeholder="80 000"></div>
-        <div class="ep-field"><label>Vice-Champion ($)</label><input id="e-rule-vice" type="text" placeholder="45 000"></div>
-      </div>
-      <div class="ep-row">
-        <div class="ep-field"><label>3ème ($)</label><input id="e-rule-3eme" type="text" placeholder="25 000"></div>
-        <div class="ep-field"><label>4ème–6ème ($)</label><input id="e-rule-4-6" type="text" placeholder="10 000"></div>
-      </div>
-      <div class="ep-divider">Championnat — Écuries</div>
-      <div class="ep-row">
-        <div class="ep-field"><label>Écurie 1ère ($)</label><input id="e-rule-ecurie-champion" type="text" placeholder="150 000"></div>
-        <div class="ep-field"><label>Écurie 2ème ($)</label><input id="e-rule-ecurie-vice" type="text" placeholder="75 000"></div>
-      </div>
-      <div class="ep-row">
-        <div class="ep-field"><label>Écurie 3ème ($)</label><input id="e-rule-ecurie-3eme" type="text" placeholder="35 000"></div>
-        <div class="ep-field"><label>Écuries 4e–6e ($)</label><input id="e-rule-ecurie-4-6" type="text" placeholder="15 000"></div>
-      </div>
-    </div>
-    <div id="publish-log" style="display:none;background:var(--card);border:1px solid var(--border);border-radius:5px;padding:10px;margin-bottom:10px;max-height:140px;overflow-y:auto"></div>
-    <div style="display:flex;gap:8px">
-      <button class="btn-publish" onclick="publishAll()">🚀 Publier sur le Sheet</button>
-      <button class="btn-save-settings" onclick="saveSettings()" style="flex:0;padding:11px 14px;font-size:11px">💾 Style</button>
-    </div>
+  </div>
+  <div class="ep-footer">
+    <button class="btn-publish" onclick="publishAll()">🚀 Publier sur le Sheet</button>
+    <button class="btn-save-settings" onclick="saveSettings()" style="flex:0;padding:11px 14px;font-size:11px">💾 Style</button>
   </div>
 </div>
 
@@ -896,20 +672,7 @@ function doPost(e) {
 <script>
 // ── DEMO DATA (fallback) ──────────────────────────
 const DEMO = {
-  config:{gp_name:"Grand Prix de France",gp_subtitle:"Circuit Bugatti — Le Mans",gp_round:"5",gp_season:"2026",gp_date:"9–11 mai 2026",gp_flag:"🇫🇷",gp_weather:"Sec / 24°C",gp_laps:"27 tours",gp_dist:"118.8 km",gp_status:"finished",gp_hero_image:"",branding_series:"MotoGP™",branding_nav:"GRAND PRIX",branding_copy:"© 2026 MotoGP™ RP",
-    rule_intro:"Bienvenue au championnat MotoGP™ RP. Voici les conditions financières d'engagement pour la saison en cours.",
-    rule_inscription:"200 000",rule_caution:"30 000",
-    rule_prime_victoire:"20 000",rule_prime_podium:"12 000",rule_prime_top8:"6 000",rule_prime_participation:"2 000",rule_prime_meca_parfait:"8 000",rule_prime_meca_part:"3 000",
-    rule_champion:"80 000",rule_vice:"45 000",rule_3eme:"25 000",rule_4_6:"10 000",
-    rule_ecurie_champion:"150 000",rule_ecurie_vice:"75 000",rule_ecurie_3eme:"35 000",rule_ecurie_4_6:"15 000"},
-  programme:[
-    {jour:"Vendredi",heure:"09:00 – 09:45",session:"Essais Libres 1",statut:"finished"},
-    {jour:"Vendredi",heure:"13:30 – 14:15",session:"Essais Libres 2",statut:"finished"},
-    {jour:"Samedi",heure:"10:10 – 10:40",session:"Essais Libres 3",statut:"finished"},
-    {jour:"Samedi",heure:"14:50",session:"Sprint Race",statut:"finished"},
-    {jour:"Dimanche",heure:"11:00",session:"Warm Up",statut:"finished"},
-    {jour:"Dimanche",heure:"14:00",session:"Grand Prix",statut:"finished"},
-  ],
+  config:{gp_name:"Grand Prix de France",gp_subtitle:"Circuit Bugatti — Le Mans",gp_round:"5",gp_season:"2026",gp_date:"9–11 mai 2026",gp_flag:"🇫🇷",gp_weather:"Sec / 24°C",gp_laps:"27 tours",gp_dist:"118.8 km",gp_status:"finished",branding_series:"MotoGP™",branding_nav:"GRAND PRIX",branding_copy:"© 2026 MotoGP™ RP"},
   actualites:[
     {titre:"Martín remporte un GP marqué par la chute de M.Márquez",categorie:"COURSE",date:"10 mai 2026",emoji:"🏆",description:"Le Champion du Monde 2024 signe un succès devant Bezzecchi et Ogura.",une:"true"},
     {titre:"M.Márquez opéré après sa spectaculaire sortie",categorie:"SANTÉ",date:"10 mai 2026",emoji:"🏥",description:"Double intervention chirurgicale pour le champion, forfait plusieurs Grands Prix.",une:"false"},
@@ -992,7 +755,7 @@ function showDemo(tab,btn){
 showDemo('config',document.querySelector('.sheet-tab-btn.active'));
 
 // ── URL DU SCRIPT (à changer si tu redéploies) ────
-const FORCE_URL = 'https://script.google.com/macros/s/AKfycbwVLUteLf-EnBZ1eeodPFUkh0VojbN3xxSJef2kjdqSfG4MZUiSBS7AuEQ1VfU8qq5S3Q/exec';
+const FORCE_URL = 'https://script.google.com/macros/s/AKfycbz71bs_E8eXsAqwN6yLidbPAxJjNdWn0Zv8SmTufQla2a4IBDD05u-hrGER0gJIZf9xMg/exec';
 const AUTO_REFRESH_SEC = 30;
 const ADMIN_PASSWORD = 'admin'; // ← Change ce mot de passe ici
 
@@ -1002,9 +765,6 @@ let SCRIPT_URL = FORCE_URL;
 let editOpen = false;
 let isAdmin = false;
 let logoClicks = 0, logoTimer = null;
-let ARCHIVES = [];
-let IS_ARCHIVE = false;
-let CURRENT_ARCHIVE_ID = null;
 let SETTINGS = {accentColor:'#e30613',series:'MotoGP™',navTitle:'GRAND PRIX',copy:'© 2026 MotoGP™ RP',sections:{news:true,grid:true,results:true,standings:true,riders:true}};
 
 // ── COPY SCRIPT ───────────────────────────────────
@@ -1113,60 +873,8 @@ function showSetup(){
 
 // ── RENDER ────────────────────────────────────────
 function renderAll(){
-  renderHero();renderNews();renderGrid();renderResults();renderStandings();renderRiders();renderBranding();renderSections();renderReglement();
+  renderHero();renderNews();renderGrid();renderResults();renderStandings();renderRiders();renderBranding();renderSections();
   applyAccent(SETTINGS.accentColor);
-}
-
-function fmt(val){
-  const n=parseInt(String(val||'').replace(/[\s\u00a0]/g,''));
-  if(isNaN(n))return val||'—';
-  return n.toLocaleString('fr-FR')+' $';
-}
-
-function openReglement(){
-  const t=document.querySelector('.tab-btn[data-sections="inscription"]');
-  if(t)showTab(t);
-  setTimeout(()=>document.getElementById('inscription')?.scrollIntoView({behavior:'smooth',block:'start'}),50);
-}
-
-function renderReglement(){
-  const c=DATA.config||{};
-  const el=document.getElementById('reglement-content');
-  if(!el)return;
-  el.innerHTML=`
-    ${c.rule_intro?`<div class="regl-intro">${c.rule_intro}</div>`:''}
-    <div class="regl-grid">
-      <div class="regl-card">
-        <div class="regl-card-hdr"><span>💰</span><h3>Frais d'Entrée par Écurie</h3></div>
-        <div class="regl-row"><div class="regl-row-info"><div class="regl-row-label">Frais d'inscription</div><div class="regl-row-note">Par écurie, non remboursable</div></div><div class="regl-row-val big">${fmt(c.rule_inscription||'200000')}</div></div>
-      </div>
-      <div class="regl-card">
-        <div class="regl-card-hdr"><span>🏁</span><h3>Primes par Course</h3></div>
-        <div class="regl-sep">Pilotes</div>
-        <div class="regl-row"><div class="regl-row-info"><div class="regl-row-label">🥇 Victoire</div><div class="regl-row-note">1ère place</div></div><div class="regl-row-val" style="color:var(--gold)">${fmt(c.rule_prime_victoire||'20000')}</div></div>
-        <div class="regl-row"><div class="regl-row-info"><div class="regl-row-label">🥈🥉 Podium</div><div class="regl-row-note">2ème ou 3ème place</div></div><div class="regl-row-val">${fmt(c.rule_prime_podium||'12000')}</div></div>
-        <div class="regl-sep">Mécaniciens</div>
-        <div class="regl-row"><div class="regl-row-info"><div class="regl-row-label">Participation méca</div><div class="regl-row-note">Présence au stand</div></div><div class="regl-row-val">${fmt(c.rule_prime_meca_part||'3000')}</div></div>
-      </div>
-    </div>
-    <div class="regl-champ">
-      <div class="regl-champ-title">Primes Fin de Championnat — Pilotes</div>
-      <div class="regl-podium-grid">
-        <div class="regl-pod rk1"><div class="regl-pod-icon">🏆</div><div class="regl-pod-label">Champion</div><div class="regl-pod-val">${fmt(c.rule_champion||'80000')}</div></div>
-        <div class="regl-pod rk2"><div class="regl-pod-icon">🥈</div><div class="regl-pod-label">Vice-Champion</div><div class="regl-pod-val">${fmt(c.rule_vice||'45000')}</div></div>
-        <div class="regl-pod rk3"><div class="regl-pod-icon">🥉</div><div class="regl-pod-label">3ème</div><div class="regl-pod-val">${fmt(c.rule_3eme||'25000')}</div></div>
-        <div class="regl-pod"><div class="regl-pod-icon">🎖</div><div class="regl-pod-label">4ème – 6ème</div><div class="regl-pod-val">${fmt(c.rule_4_6||'10000')}</div></div>
-      </div>
-    </div>
-    <div class="regl-champ">
-      <div class="regl-champ-title">Primes Fin de Championnat — Écuries</div>
-      <div class="regl-podium-grid">
-        <div class="regl-pod rk1"><div class="regl-pod-icon">🏆</div><div class="regl-pod-label">Écurie Championne</div><div class="regl-pod-val">${fmt(c.rule_ecurie_champion||'150000')}</div></div>
-        <div class="regl-pod rk2"><div class="regl-pod-icon">🥈</div><div class="regl-pod-label">Écurie 2ème</div><div class="regl-pod-val">${fmt(c.rule_ecurie_vice||'75000')}</div></div>
-        <div class="regl-pod rk3"><div class="regl-pod-icon">🥉</div><div class="regl-pod-label">Écurie 3ème</div><div class="regl-pod-val">${fmt(c.rule_ecurie_3eme||'35000')}</div></div>
-        <div class="regl-pod"><div class="regl-pod-icon">🎖</div><div class="regl-pod-label">Écuries 4e – 6e</div><div class="regl-pod-val">${fmt(c.rule_ecurie_4_6||'15000')}</div></div>
-      </div>
-    </div>`;
 }
 
 function cfg(key,fallback=''){
@@ -1183,11 +891,6 @@ function renderHero(){
   set('hero-date',cfg('gp_date',''));set('hero-laps',cfg('gp_laps',''));
   set('hero-dist',cfg('gp_dist',''));set('hero-weather',cfg('gp_weather',''));
   set('hero-flag',cfg('gp_flag','🏁'));set('hero-bg-num',cfg('gp_round',''));
-  // Image de fond
-  const imgEl=document.getElementById('hero-img');
-  const imgUrl=cfg('gp_hero_image','');
-  if(imgUrl){imgEl.style.backgroundImage=`url('${imgUrl}')`;imgEl.classList.add('has-img');}
-  else{imgEl.style.backgroundImage='';imgEl.classList.remove('has-img');}
   const badge=document.getElementById('status-badge');badge.className='status-badge';
   const st=cfg('gp_status','finished');
   if(st==='live'){badge.classList.add('s-live');badge.innerHTML='<span class="ldot"></span>EN DIRECT';}
@@ -1197,16 +900,11 @@ function renderHero(){
 }
 
 function renderBranding(){
-  const s=cfg('branding_series') || SETTINGS.series || 'MotoGP™';
-  const n=cfg('branding_nav')    || SETTINGS.navTitle || 'GRAND PRIX';
-  const c=cfg('branding_copy')   || SETTINGS.copy || '© 2026 MotoGP™ RP';
+  const s=SETTINGS.series||cfg('branding_series','MotoGP™');
+  const n=SETTINGS.navTitle||cfg('branding_nav','GRAND PRIX');
+  const c=SETTINGS.copy||cfg('branding_copy','© 2026 MotoGP™ RP');
   ['nav-series','footer-series'].forEach(id=>set(id,s));
-  set('nav-title',n);
-  set('footer-copy',c);
-  document.title = cfg('gp_name','Grand Prix') + ' — ' + s;
-  // Mettre à jour le nom dans le loader
-  const ln=document.getElementById('loading-fed-name');
-  if(ln)ln.textContent=s+' '+n;
+  set('nav-title',n);set('footer-copy',c);
 }
 
 function renderNews(){
@@ -1378,27 +1076,11 @@ function fillAdminPanel(){
   sv('e-gp-date',c.gp_date);sv('e-gp-flag',c.gp_flag);
   sv('e-gp-weather',c.gp_weather);sv('e-gp-laps',c.gp_laps);sv('e-gp-dist',c.gp_dist);
   const sel=document.getElementById('e-gp-status');if(sel)sel.value=c.gp_status||'finished';
-  sv('e-gp-image',c.gp_hero_image||'');
-  updateImgPreview(c.gp_hero_image||'');
   sv('e-series',c.branding_series||SETTINGS.series);
   sv('e-navtitle',c.branding_nav||SETTINGS.navTitle);
   sv('e-copy',c.branding_copy||SETTINGS.copy);
   sv('e-color-text',SETTINGS.accentColor);
   const cp=document.getElementById('e-color-picker');if(cp)cp.value=SETTINGS.accentColor;
-  // Règlement
-  sv('e-rule-intro',c.rule_intro||'');
-  sv('e-rule-inscription',c.rule_inscription||'200 000');
-  sv('e-rule-prime-victoire',c.rule_prime_victoire||'20 000');
-  sv('e-rule-prime-podium',c.rule_prime_podium||'12 000');
-  sv('e-rule-prime-meca-part',c.rule_prime_meca_part||'3 000');
-  sv('e-rule-champion',c.rule_champion||'80 000');
-  sv('e-rule-vice',c.rule_vice||'45 000');
-  sv('e-rule-3eme',c.rule_3eme||'25 000');
-  sv('e-rule-4-6',c.rule_4_6||'10 000');
-  sv('e-rule-ecurie-champion',c.rule_ecurie_champion||'150 000');
-  sv('e-rule-ecurie-vice',c.rule_ecurie_vice||'75 000');
-  sv('e-rule-ecurie-3eme',c.rule_ecurie_3eme||'35 000');
-  sv('e-rule-ecurie-4-6',c.rule_ecurie_4_6||'15 000');
   ['actualites','grille','resultats','classement','pilotes'].forEach(k=>buildList(k));
 }
 
@@ -1430,13 +1112,6 @@ function buildList(tab){
     block.innerHTML=html;
     container.appendChild(block);
   });
-}
-
-function updateImgPreview(url){
-  const p=document.getElementById('hero-img-preview');
-  if(!p)return;
-  if(url){p.style.display='block';p.style.backgroundImage=`url('${url}')`;}
-  else{p.style.display='none';}
 }
 
 function escHtml(s){return s.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');}
@@ -1481,122 +1156,57 @@ function collectAllTabs(){
   c.gp_laps=document.getElementById('e-gp-laps')?.value||c.gp_laps;
   c.gp_dist=document.getElementById('e-gp-dist')?.value||c.gp_dist;
   c.gp_status=document.getElementById('e-gp-status')?.value||c.gp_status;
-  c.gp_hero_image=document.getElementById('e-gp-image')?.value||'';
   c.branding_series=document.getElementById('e-series')?.value||c.branding_series;
   c.branding_nav=document.getElementById('e-navtitle')?.value||c.branding_nav;
   c.branding_copy=document.getElementById('e-copy')?.value||c.branding_copy;
-  // Règlement
-  const rmap={'e-rule-intro':'rule_intro','e-rule-inscription':'rule_inscription','e-rule-prime-victoire':'rule_prime_victoire','e-rule-prime-podium':'rule_prime_podium','e-rule-prime-meca-part':'rule_prime_meca_part','e-rule-champion':'rule_champion','e-rule-vice':'rule_vice','e-rule-3eme':'rule_3eme','e-rule-4-6':'rule_4_6','e-rule-ecurie-champion':'rule_ecurie_champion','e-rule-ecurie-vice':'rule_ecurie_vice','e-rule-ecurie-3eme':'rule_ecurie_3eme','e-rule-ecurie-4-6':'rule_ecurie_4_6'};
-  Object.entries(rmap).forEach(([eid,ckey])=>{const v=document.getElementById(eid)?.value;if(v!==undefined)c[ckey]=v;});
   DATA.config=c;
 }
 
-// ── ÉCRITURE VIA JSONP GET (même technique que la lecture) ──
-function jsonpWrite(section, data){
-  return new Promise(function(resolve, reject){
-    var cbName='mgpW_'+Date.now()+'_'+Math.random().toString(36).substr(2,5);
-    var script=document.createElement('script');
-    var done=false;
-    window[cbName]=function(result){
-      done=true;delete window[cbName];
-      if(script.parentNode)script.parentNode.removeChild(script);
-      if(result&&result.ok)resolve();
-      else reject(new Error(result&&result.error?result.error:'Réponse invalide pour '+section));
-    };
-    script.onerror=function(){
-      done=true;delete window[cbName];
-      if(script.parentNode)script.parentNode.removeChild(script);
-      reject(new Error('Script introuvable pour '+section+' — vérifie le déploiement Apps Script'));
-    };
-    setTimeout(function(){
-      if(!done){
-        delete window[cbName];
-        if(script.parentNode)script.parentNode.removeChild(script);
-        reject(new Error('Timeout '+section+' — Apps Script trop lent ou URL incorrecte'));
-      }
-    },15000);
-    script.src=FORCE_URL+'?action=write&section='+encodeURIComponent(section)+'&b64='+encodeURIComponent(btoa(unescape(encodeURIComponent(JSON.stringify(data)))))+'&callback='+cbName;
-    document.head.appendChild(script);
-  });
-}
-
 // ── PUBLISH TO SHEET ──────────────────────────────
-let publishPaused = false;
-
 async function publishAll(){
   collectAllTabs();
+  renderAll();
+  const btn=document.querySelector('.btn-publish');
+  btn.disabled=true;btn.textContent='⏳ Envoi...';
+  setStatus('loading','Publication vers Google Sheets...');
 
-  // Snapshot des données AVANT tout traitement async
-  const snap = {
-    config:     Object.entries(DATA.config||{}).map(([cle,valeur])=>({cle,valeur})),
-    actualites: JSON.parse(JSON.stringify(DATA.actualites||[])),
-    grille:     JSON.parse(JSON.stringify(DATA.grille||[])),
-    resultats:  JSON.parse(JSON.stringify(DATA.resultats||[])),
-    classement: JSON.parse(JSON.stringify(DATA.classement||[])),
-    pilotes:    JSON.parse(JSON.stringify(DATA.pilotes||[]))
+  const configRows=Object.entries(DATA.config||{}).map(([cle,valeur])=>({cle,valeur}));
+  const payload={
+    config:configRows,
+    actualites:DATA.actualites||[],
+    grille:DATA.grille||[],
+    resultats:DATA.resultats||[],
+    classement:DATA.classement||[],
+    pilotes:DATA.pilotes||[]
   };
 
-  renderAll();
+  try{
+    // no-cors : la requête part sans blocage CORS, Apps Script reçoit et écrit
+    // On ne peut pas lire la réponse, mais l'écriture se fait quand même
+    await fetch(FORCE_URL,{
+      method:'POST',
+      mode:'no-cors',
+      body:JSON.stringify(payload),
+      headers:{'Content-Type':'text/plain'}
+    });
 
-  const btn=document.querySelector('.btn-publish');
-  const log=document.getElementById('publish-log');
-  btn.disabled=true;
-  if(log){log.innerHTML='';log.style.display='block';}
-  publishPaused=true; // Suspend l'auto-refresh
+    // Attendre que Apps Script finisse d'écrire dans le Sheet
+    btn.textContent='⏳ Écriture...';
+    await new Promise(r=>setTimeout(r,3500));
 
-  function logLine(msg,ok){
-    if(!log)return;
-    const line=document.createElement('div');
-    line.style.cssText='padding:3px 0;font-size:12px;color:'+(ok===true?'#4ade80':ok===false?'#f87171':'#fbbf24');
-    line.textContent=msg;
-    log.appendChild(line);
-  }
-
-  const sections=[
-    ['config',    snap.config],
-    ['actualites',snap.actualites],
-    ['grille',    snap.grille],
-    ['resultats', snap.resultats],
-    ['classement',snap.classement],
-    ['pilotes',   snap.pilotes]
-  ];
-
-  let allOk=true;
-  for(const [name,data] of sections){
-    btn.textContent='⏳ '+name+'...';
-    logLine('⏳ Envoi '+name+'...',null);
-    try{
-      await jsonpWrite(name,data);
-      if(log){
-        const last=log.lastChild;
-        if(last)last.textContent='✓ '+name+' ('+data.length+' lignes)';
-        if(last)last.style.color='#4ade80';
-      }
-    }catch(e){
-      allOk=false;
-      if(log){
-        const last=log.lastChild;
-        if(last)last.textContent='❌ '+name+' : '+e.message;
-        if(last)last.style.color='#f87171';
-      }
-      logLine('⚠ Publication arrêtée — corrige l\'erreur ci-dessus',false);
-      setStatus('err','Erreur : '+e.message);
-      break;
-    }
-  }
-
-  if(allOk){
-    logLine('🚀 Tout publié avec succès !',true);
-    setStatus('ok','Publié ✓ — '+new Date().toLocaleTimeString('fr-FR'));
-    showToast('🚀 Publié sur Google Sheets !');
     // Recharger pour confirmer
+    btn.textContent='⏳ Vérification...';
     await loadFromScript(FORCE_URL);
     renderAll();
+    setStatus('ok','Publié ✓ — '+new Date().toLocaleTimeString('fr-FR'));
+    showToast('🚀 Publié sur Google Sheets !');
+  }catch(e){
+    // no-cors ne lève jamais vraiment d'erreur réseau, mais au cas où
+    setStatus('err','Erreur : '+e.message);
+    showToast('❌ '+e.message);
+  }finally{
+    btn.disabled=false;btn.textContent='🚀 Publier sur le Sheet';
   }
-
-  publishPaused=false; // Reprend l'auto-refresh
-  btn.disabled=false;
-  btn.textContent='🚀 Publier sur le Sheet';
 }
 
 function saveSettings(){
@@ -1625,226 +1235,18 @@ function applyAccent(color){
   try{const r=parseInt(color.slice(1,3),16),g=parseInt(color.slice(3,5),16),b=parseInt(color.slice(5,7),16);document.documentElement.style.setProperty('--accent-dim',`rgba(${r},${g},${b},.15)`);}catch(e){}
 }
 
-// ── FORMULAIRE D'INSCRIPTION ──────────────────────
-async function submitInscription(){
-  const ecurie  = document.getElementById('f-ecurie')?.value.trim()||'';
-  const pilote1 = document.getElementById('f-pilote1')?.value.trim()||'';
-  const pilote2 = document.getElementById('f-pilote2')?.value.trim()||'';
-  const meca1   = document.getElementById('f-meca1')?.value.trim()||'';
-  const meca2   = document.getElementById('f-meca2')?.value.trim()||'';
-  const contact = document.getElementById('f-contact')?.value.trim()||'';
-
-  if(!ecurie)  { showFormError("Le nom de l'écurie est obligatoire."); return; }
-  if(!pilote1) { showFormError('Le nom du pilote 1 est obligatoire.'); return; }
-  if(!meca1)   { showFormError('Le nom du mécanicien 1 est obligatoire.'); return; }
-  if(!contact) { showFormError('Le contact (Discord/email) est obligatoire.'); return; }
-
-  const btn = document.getElementById('btn-submit');
-  btn.disabled=true; btn.textContent='⏳ Envoi en cours...';
-
-  const data={date:new Date().toLocaleString('fr-FR'),ecurie,pilote1,pilote2,meca1,meca2,contact,statut:'En attente'};
-
-  try{
-    await jsonpCall({action:'register',b64:btoa(unescape(encodeURIComponent(JSON.stringify(data))))});
-    document.getElementById('form-body').style.display='none';
-    document.getElementById('success-ecurie-name').textContent='🏎 Écurie : '+ecurie;
-    document.getElementById('form-success').classList.add('show');
-  }catch(e){
-    showFormError("Erreur lors de l'envoi. Réessaie dans quelques instants. ("+e.message+")");
-    btn.disabled=false; btn.textContent='🏁 Envoyer ma pré-inscription';
-  }
-}
-
-function showFormError(msg){
-  const el=document.getElementById('form-error');
-  if(el){el.textContent=msg;el.classList.add('show');}
-}
-
-function resetForm(){
-  ['f-ecurie','f-pilote1','f-pilote2','f-meca1','f-meca2','f-contact'].forEach(id=>{
-    const el=document.getElementById(id);if(el)el.value='';
-  });
-  document.getElementById('form-body').style.display='block';
-  document.getElementById('form-success').classList.remove('show');
-  document.getElementById('form-error')?.classList.remove('show');
-  const btn=document.getElementById('btn-submit');
-  if(btn){btn.disabled=false;btn.textContent='🏁 Envoyer ma pré-inscription';}
-}
-
-// ── JSONP GÉNÉRIQUE ───────────────────────────────
-function jsonpCall(params){
-  return new Promise(function(resolve,reject){
-    var cb='mgpA_'+Date.now()+'_'+Math.random().toString(36).substr(2,5);
-    var script=document.createElement('script');
-    var done=false;
-    window[cb]=function(data){done=true;delete window[cb];if(script.parentNode)script.parentNode.removeChild(script);resolve(data);};
-    script.onerror=function(){done=true;delete window[cb];if(script.parentNode)script.parentNode.removeChild(script);reject(new Error('Erreur réseau'));};
-    setTimeout(function(){if(!done){delete window[cb];if(script.parentNode)script.parentNode.removeChild(script);reject(new Error('Timeout'));}},15000);
-    var qs=Object.entries(Object.assign({},params,{callback:cb})).map(function(kv){return encodeURIComponent(kv[0])+'='+encodeURIComponent(kv[1]);}).join('&');
-    script.src=FORCE_URL+'?'+qs;
-    document.head.appendChild(script);
-  });
-}
-
-// ── ARCHIVES ──────────────────────────────────────
-async function loadArchivesList(){
-  try{
-    const r=await jsonpCall({action:'archives'});
-    ARCHIVES=r.archives||[];
-    renderGpSelector();
-  }catch(e){console.warn('Archives:',e.message);}
-}
-
-async function loadArchive(id){
-  setStatus('loading','Chargement archive...');
-  try{
-    const r=await jsonpCall({action:'getArchive',id:id});
-    DATA.config={};
-    (r.config||[]).forEach(function(row){if(row.cle)DATA.config[row.cle]=row.valeur||'';});
-    DATA.actualites=r.actualites||[];DATA.grille=r.grille||[];
-    DATA.resultats=r.resultats||[];DATA.classement=r.classement||[];DATA.pilotes=r.pilotes||[];
-    IS_ARCHIVE=true;CURRENT_ARCHIVE_ID=id;
-    renderAll();
-    const gpname=cfg('gp_name','Archive');
-    setStatus('ok','Archive : '+gpname);
-    const badge=document.getElementById('archive-badge');
-    if(badge){badge.classList.add('show');badge.querySelector('span').textContent=gpname;}
-    document.getElementById('btn-reload').style.display='none';
-    const t=document.querySelector('.tab-btn[data-sections="news"]');if(t)showTab(t);
-    renderGpSelector();
-  }catch(e){setStatus('err','Erreur : '+e.message);showToast('❌ '+e.message);}
-}
-
-async function selectGP(id){
-  closeGpDropdown();
-  if(id==='current'){
-    IS_ARCHIVE=false;CURRENT_ARCHIVE_ID=null;
-    document.getElementById('archive-badge').classList.remove('show');
-    document.getElementById('btn-reload').style.display='';
-    setStatus('loading','Chargement GP en cours...');
-    try{
-      await loadFromScript(FORCE_URL);
-      renderAll();
-      setStatus('ok','GP en cours — '+(new Date().toLocaleTimeString('fr-FR')));
-      const t=document.querySelector('.tab-btn[data-sections="news"]');if(t)showTab(t);
-    }catch(e){setStatus('err','Erreur');}
-    renderGpSelector();
-  }else{
-    await loadArchive(id);
-  }
-}
-
-async function archiveCurrentGP(){
-  const name=cfg('gp_name','ce GP');
-  if(!confirm('Archiver "'+name+'" ?\n\nLes données seront sauvegardées et consultables à tout moment.'))return;
-  const btn=document.getElementById('btn-archive');
-  btn.disabled=true;btn.textContent='⏳ Archivage...';
-
-  const round=String(cfg('gp_round','0')).padStart(2,'0');
-  const saison=cfg('gp_season','2026');
-  const id='gp'+round+'_'+saison;
-  const pfx='arc_'+id+'_';
-
-  const log=document.getElementById('publish-log');
-  if(log){log.innerHTML='';log.style.display='block';}
-  function logLine(msg,ok){
-    if(!log)return;
-    const line=document.createElement('div');
-    line.style.cssText='padding:3px 0;font-size:12px;color:'+(ok===true?'#4ade80':ok===false?'#f87171':'#fbbf24');
-    line.textContent=msg;log.appendChild(line);
-  }
-
-  try{
-    // 1. Créer l'entrée index dans l'onglet archives
-    logLine('⏳ Création de l\'index...',null);
-    const meta={id,nom:cfg('gp_name'),circuit:cfg('gp_subtitle'),date:cfg('gp_date'),round:cfg('gp_round'),saison};
-    const r=await jsonpCall({action:'archiveIndex',b64:btoa(unescape(encodeURIComponent(JSON.stringify(meta))))});
-    if(!r.ok)throw new Error(r.error||'Erreur création index');
-    if(log){const l=log.lastChild;if(l){l.textContent='✓ Index créé ('+id+')';l.style.color='#4ade80';}}
-
-    // 2. Sauvegarder chaque section dans un onglet préfixé (ex: arc_gp05_2026_grille)
-    const configRows=Object.entries(DATA.config||{}).map(([cle,valeur])=>({cle,valeur}));
-    const sections=[
-      [pfx+'config',    configRows],
-      [pfx+'actualites',DATA.actualites||[]],
-      [pfx+'grille',    DATA.grille||[]],
-      [pfx+'resultats', DATA.resultats||[]],
-      [pfx+'classement',DATA.classement||[]],
-      [pfx+'pilotes',   DATA.pilotes||[]]
-    ];
-    for(const [tabName,data] of sections){
-      const label=tabName.replace(pfx,'');
-      logLine('⏳ Sauvegarde '+label+'...',null);
-      await jsonpWrite(tabName,data);
-      if(log){const l=log.lastChild;if(l){l.textContent='✓ '+label;l.style.color='#4ade80';}}
-    }
-
-    logLine('📦 '+name+' archivé avec succès !',true);
-    showToast('📦 '+name+' archivé !');
-    await loadArchivesList();
-  }catch(e){
-    logLine('❌ '+e.message,false);
-    showToast('❌ '+e.message);
-  }finally{
-    btn.disabled=false;btn.textContent='📦 Archiver ce GP';
-  }
-}
-
-// ── GP SELECTOR UI ────────────────────────────────
-function toggleGpDropdown(){
-  const dd=document.getElementById('gp-dropdown');
-  const btn=document.getElementById('gp-sel-btn');
-  const open=dd.classList.contains('open');
-  dd.classList.toggle('open',!open);btn.classList.toggle('open',!open);
-}
-function closeGpDropdown(){
-  document.getElementById('gp-dropdown')?.classList.remove('open');
-  document.getElementById('gp-sel-btn')?.classList.remove('open');
-}
-function renderGpSelector(){
-  const label=document.getElementById('gp-sel-label');
-  const dd=document.getElementById('gp-dropdown');
-  if(!dd)return;
-  const currentName=IS_ARCHIVE?(ARCHIVES.find(function(a){return a.id===CURRENT_ARCHIVE_ID;})||{nom:'Archive'}).nom:'GP en cours';
-  if(label)label.textContent=currentName;
-  const archivesHtml=ARCHIVES.length===0
-    ?'<div style="padding:12px 14px;font-size:12px;color:var(--muted);text-align:center">Aucune archive pour l\'instant<br><span style="font-size:11px">Utilise "Archiver ce GP" dans l\'admin</span></div>'
-    :ARCHIVES.slice().reverse().map(function(a){return`<div class="gp-dd-item${IS_ARCHIVE&&CURRENT_ARCHIVE_ID===a.id?' active':''}" onclick="selectGP('${a.id}')"><span class="gp-dot arch"></span><div style="flex:1"><div>${a.nom}</div><div style="font-size:11px;color:var(--muted)">${a.date} · Manche ${a.round} · ${a.saison}</div></div></div>`;}).join('');
-  dd.innerHTML=`
-    <div class="gp-dd-hdr">Grand Prix en cours</div>
-    <div class="gp-dd-item${!IS_ARCHIVE?' active':''}" onclick="selectGP('current')">
-      <span class="gp-dot live"></span>
-      <div style="flex:1"><div>GP en cours</div><div style="font-size:11px;color:var(--muted)">Données live</div></div>
-    </div>
-    <div class="gp-dd-hdr" style="margin-top:2px">Archives (${ARCHIVES.length})</div>
-    ${archivesHtml}`;
-}
-document.addEventListener('click',function(e){if(!e.target.closest('.gp-selector'))closeGpDropdown();});
+// ── TOAST ─────────────────────────────────────────
 function showToast(msg){
   const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'),3000);
 }
 
-// ── TABS avec filtrage des sections ──────────────
-const ALL_SECTIONS=['news','grid','results','standings','riders','inscription'];
-
-function showTab(btn){
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  const target=btn.dataset.sections;
-  ALL_SECTIONS.forEach(id=>{
-    const el=document.getElementById(id);
-    if(!el)return;
-    const adminHidden=SETTINGS.sections&&SETTINGS.sections[id]===false;
-    if(adminHidden){el.classList.add('hidden');return;}
-    el.classList.toggle('hidden', id!==target);
-  });
-  const el=document.getElementById(target);
-  if(el)setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),50);
-}
-
+// ── TABS ──────────────────────────────────────────
 document.querySelectorAll('.tab-btn').forEach(btn=>{
-  btn.addEventListener('click',function(){ showTab(this); });
+  btn.addEventListener('click',function(){
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    this.classList.add('active');
+  });
 });
 
 // ── STATUS ────────────────────────────────────────
@@ -1866,19 +1268,9 @@ function updateSheetLink(){
   applyAccent(SETTINGS.accentColor);
   setStatus('loading','Chargement des données...');
 
-  function hideLoader(){
-    const ol=document.getElementById('loading-overlay');
-    if(ol){ol.style.opacity='0';setTimeout(()=>ol.style.display='none',400);}
-  }
-
   function charger(silencieux){
-    if(!silencieux){
-      const ls=document.getElementById('loading-status');
-      if(ls)ls.textContent='Chargement des données...';
-    }
     return loadFromScript(FORCE_URL).then(()=>{
       renderAll();
-      hideLoader();
       const heure = new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
       setStatus('ok','Actualisé à ' + heure);
       updateSheetLink();
@@ -1886,21 +1278,16 @@ function updateSheetLink(){
       if(!silencieux){
         DATA=JSON.parse(JSON.stringify(DEMO));
         renderAll();
-        hideLoader();
         setStatus('err','Impossible de joindre le script');
       }
     });
   }
 
-  // Auto-click Programme tab au chargement + charger les archives
-  charger(false).then(()=>{
-    const progTab=document.querySelector('.tab-btn[data-sections="news"]');
-    if(progTab)showTab(progTab);
-    loadArchivesList(); // Charge la liste des archives
-  });
+  // Chargement initial
+  charger(false);
 
-  // Auto-refresh toutes les X secondes (sauf archive et publication)
-  setInterval(function(){ if(!publishPaused&&!IS_ARCHIVE) charger(true); }, AUTO_REFRESH_SEC * 1000);
+  // Auto-refresh toutes les X secondes (silencieux, sans remettre les démos)
+  setInterval(function(){ charger(true); }, AUTO_REFRESH_SEC * 1000);
 })();
 </script>
 </body>
