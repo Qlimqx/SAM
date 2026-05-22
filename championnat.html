@@ -78,6 +78,7 @@ input,select,textarea{font-family:inherit}
 .hero-bg{position:absolute;inset:0;background:linear-gradient(135deg,#0d0d12 0%,#1a1428 50%,#0a1222 100%)}
 .hero-grid-lines{position:absolute;inset:0;opacity:.04;background-image:repeating-linear-gradient(0deg,transparent,transparent 59px,#fff 59px,#fff 60px),repeating-linear-gradient(90deg,transparent,transparent 79px,#fff 79px,#fff 80px)}
 .hero-accent-line{position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent)}
+.hero-img{position:absolute;inset:0;background-size:cover;background-position:center;background-repeat:no-repeat;opacity:.35;transition:opacity .3s}
 .hero-bg-num{position:absolute;right:-20px;bottom:-40px;font-family:'Barlow Condensed',sans-serif;font-size:380px;font-weight:900;font-style:italic;color:rgba(255,255,255,.025);line-height:1;user-select:none;pointer-events:none}
 .hero-content{position:relative;max-width:1280px;width:100%;margin:0 auto;padding:48px 24px 40px;display:flex;align-items:flex-end;justify-content:space-between;gap:40px}
 .hero-eyebrow{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;display:flex;align-items:center;gap:10px}
@@ -451,7 +452,7 @@ function doPost(e) {
 
 <!-- HERO -->
 <section class="hero" id="hero">
-  <div class="hero-bg"></div><div class="hero-grid-lines"></div><div class="hero-accent-line"></div>
+  <div class="hero-bg"></div><div class="hero-img" id="hero-img"></div><div class="hero-grid-lines"></div><div class="hero-accent-line"></div>
   <div class="hero-bg-num" id="hero-bg-num">5</div>
   <div class="hero-content">
     <div>
@@ -476,12 +477,12 @@ function doPost(e) {
 
 <!-- EVENT TABS -->
 <div class="event-tabs"><div class="tabs-inner">
-  <button class="tab-btn active">Programme</button>
-  <button class="tab-btn">Grille de départ</button>
-  <button class="tab-btn">Résultats</button>
-  <button class="tab-btn">Classement</button>
-  <button class="tab-btn">Infos circuit</button>
-  <button class="tab-btn">Statistiques</button>
+  <button class="tab-btn active" data-sections="all">Programme</button>
+  <button class="tab-btn" data-sections="grid">Grille de départ</button>
+  <button class="tab-btn" data-sections="results">Résultats</button>
+  <button class="tab-btn" data-sections="standings">Classement</button>
+  <button class="tab-btn" data-sections="riders">Pilotes</button>
+  <button class="tab-btn" data-sections="news">Actualités</button>
 </div></div>
 
 <!-- NEWS -->
@@ -597,6 +598,8 @@ function doPost(e) {
           <option value="upcoming">⏱ À venir</option>
         </select>
       </div>
+      <div class="ep-field"><label>Image de fond (URL)</label><input id="e-gp-image" type="text" placeholder="https://... colle un lien image" oninput="updateImgPreview(this.value)"></div>
+      <div id="hero-img-preview" style="display:none;margin-top:-8px;margin-bottom:8px;border-radius:6px;overflow:hidden;height:80px;background-size:cover;background-position:center;border:1px solid var(--border)"></div>
     </div>
 
     <!-- ACTUALITÉS -->
@@ -672,7 +675,7 @@ function doPost(e) {
 <script>
 // ── DEMO DATA (fallback) ──────────────────────────
 const DEMO = {
-  config:{gp_name:"Grand Prix de France",gp_subtitle:"Circuit Bugatti — Le Mans",gp_round:"5",gp_season:"2026",gp_date:"9–11 mai 2026",gp_flag:"🇫🇷",gp_weather:"Sec / 24°C",gp_laps:"27 tours",gp_dist:"118.8 km",gp_status:"finished",branding_series:"MotoGP™",branding_nav:"GRAND PRIX",branding_copy:"© 2026 MotoGP™ RP"},
+  config:{gp_name:"Grand Prix de France",gp_subtitle:"Circuit Bugatti — Le Mans",gp_round:"5",gp_season:"2026",gp_date:"9–11 mai 2026",gp_flag:"🇫🇷",gp_weather:"Sec / 24°C",gp_laps:"27 tours",gp_dist:"118.8 km",gp_status:"finished",gp_hero_image:"",branding_series:"MotoGP™",branding_nav:"GRAND PRIX",branding_copy:"© 2026 MotoGP™ RP"},
   actualites:[
     {titre:"Martín remporte un GP marqué par la chute de M.Márquez",categorie:"COURSE",date:"10 mai 2026",emoji:"🏆",description:"Le Champion du Monde 2024 signe un succès devant Bezzecchi et Ogura.",une:"true"},
     {titre:"M.Márquez opéré après sa spectaculaire sortie",categorie:"SANTÉ",date:"10 mai 2026",emoji:"🏥",description:"Double intervention chirurgicale pour le champion, forfait plusieurs Grands Prix.",une:"false"},
@@ -891,6 +894,11 @@ function renderHero(){
   set('hero-date',cfg('gp_date',''));set('hero-laps',cfg('gp_laps',''));
   set('hero-dist',cfg('gp_dist',''));set('hero-weather',cfg('gp_weather',''));
   set('hero-flag',cfg('gp_flag','🏁'));set('hero-bg-num',cfg('gp_round',''));
+  // Image de fond
+  const imgEl=document.getElementById('hero-img');
+  const imgUrl=cfg('gp_hero_image','');
+  if(imgUrl){imgEl.style.backgroundImage=`url('${imgUrl}')`;imgEl.classList.add('has-img');}
+  else{imgEl.style.backgroundImage='';imgEl.classList.remove('has-img');}
   const badge=document.getElementById('status-badge');badge.className='status-badge';
   const st=cfg('gp_status','finished');
   if(st==='live'){badge.classList.add('s-live');badge.innerHTML='<span class="ldot"></span>EN DIRECT';}
@@ -1076,6 +1084,8 @@ function fillAdminPanel(){
   sv('e-gp-date',c.gp_date);sv('e-gp-flag',c.gp_flag);
   sv('e-gp-weather',c.gp_weather);sv('e-gp-laps',c.gp_laps);sv('e-gp-dist',c.gp_dist);
   const sel=document.getElementById('e-gp-status');if(sel)sel.value=c.gp_status||'finished';
+  sv('e-gp-image',c.gp_hero_image||'');
+  updateImgPreview(c.gp_hero_image||'');
   sv('e-series',c.branding_series||SETTINGS.series);
   sv('e-navtitle',c.branding_nav||SETTINGS.navTitle);
   sv('e-copy',c.branding_copy||SETTINGS.copy);
@@ -1112,6 +1122,13 @@ function buildList(tab){
     block.innerHTML=html;
     container.appendChild(block);
   });
+}
+
+function updateImgPreview(url){
+  const p=document.getElementById('hero-img-preview');
+  if(!p)return;
+  if(url){p.style.display='block';p.style.backgroundImage=`url('${url}')`;}
+  else{p.style.display='none';}
 }
 
 function escHtml(s){return s.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');}
@@ -1156,6 +1173,7 @@ function collectAllTabs(){
   c.gp_laps=document.getElementById('e-gp-laps')?.value||c.gp_laps;
   c.gp_dist=document.getElementById('e-gp-dist')?.value||c.gp_dist;
   c.gp_status=document.getElementById('e-gp-status')?.value||c.gp_status;
+  c.gp_hero_image=document.getElementById('e-gp-image')?.value||'';
   c.branding_series=document.getElementById('e-series')?.value||c.branding_series;
   c.branding_nav=document.getElementById('e-navtitle')?.value||c.branding_nav;
   c.branding_copy=document.getElementById('e-copy')?.value||c.branding_copy;
@@ -1241,12 +1259,33 @@ function showToast(msg){
   setTimeout(()=>t.classList.remove('show'),3000);
 }
 
-// ── TABS ──────────────────────────────────────────
-document.querySelectorAll('.tab-btn').forEach(btn=>{
-  btn.addEventListener('click',function(){
-    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-    this.classList.add('active');
+// ── TABS avec filtrage des sections ──────────────
+const ALL_SECTIONS=['news','grid','results','standings','riders'];
+
+function showTab(btn){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const target=btn.dataset.sections;
+  ALL_SECTIONS.forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el)return;
+    // Respecte les toggles admin (hidden class = admin l'a caché)
+    const adminHidden=SETTINGS.sections&&SETTINGS.sections[id]===false;
+    if(adminHidden){el.classList.add('hidden');return;}
+    if(target==='all'){el.classList.remove('hidden');}
+    else{el.classList.toggle('hidden', id!==target);}
   });
+  // Scroll vers la section visible
+  if(target!=='all'){
+    const el=document.getElementById(target);
+    if(el)setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),50);
+  }else{
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+}
+
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click',function(){ showTab(this); });
 });
 
 // ── STATUS ────────────────────────────────────────
