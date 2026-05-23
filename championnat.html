@@ -841,24 +841,14 @@ function doPost(e) {
     <div class="ep-section" id="tab-reglement">
       <div class="ep-field"><label>Texte d'introduction</label><input id="e-rule-intro" type="text" placeholder="Bienvenue au championnat..."></div>
       <div class="ep-divider">Frais d'entrée</div>
-      <div class="ep-row">
-        <div class="ep-field"><label>Inscription ($)</label><input id="e-rule-inscription" type="text" placeholder="200 000"></div>
-        <div class="ep-field"><label>Caution ($)</label><input id="e-rule-caution" type="text" placeholder="30 000"></div>
-      </div>
+      <div class="ep-field"><label>Inscription ($)</label><input id="e-rule-inscription" type="text" placeholder="200 000"></div>
       <div class="ep-divider">Primes par course — Pilotes</div>
       <div class="ep-row">
         <div class="ep-field"><label>Victoire ($)</label><input id="e-rule-prime-victoire" type="text" placeholder="20 000"></div>
         <div class="ep-field"><label>Podium ($)</label><input id="e-rule-prime-podium" type="text" placeholder="12 000"></div>
       </div>
-      <div class="ep-row">
-        <div class="ep-field"><label>Top 8 ($)</label><input id="e-rule-prime-top8" type="text" placeholder="6 000"></div>
-        <div class="ep-field"><label>Participation ($)</label><input id="e-rule-prime-participation" type="text" placeholder="2 000"></div>
-      </div>
       <div class="ep-divider">Primes par course — Mécaniciens</div>
-      <div class="ep-row">
-        <div class="ep-field"><label>Stand parfait ($)</label><input id="e-rule-prime-meca-parfait" type="text" placeholder="8 000"></div>
-        <div class="ep-field"><label>Participation ($)</label><input id="e-rule-prime-meca-part" type="text" placeholder="3 000"></div>
-      </div>
+      <div class="ep-field"><label>Participation méca ($)</label><input id="e-rule-prime-meca-part" type="text" placeholder="3 000"></div>
       <div class="ep-divider">Championnat — Pilotes</div>
       <div class="ep-row">
         <div class="ep-field"><label>Champion ($)</label><input id="e-rule-champion" type="text" placeholder="80 000"></div>
@@ -1137,17 +1127,13 @@ function renderReglement(){
       <div class="regl-card">
         <div class="regl-card-hdr"><span>💰</span><h3>Frais d'Entrée par Écurie</h3></div>
         <div class="regl-row"><div class="regl-row-info"><div class="regl-row-label">Frais d'inscription</div><div class="regl-row-note">Par écurie, non remboursable</div></div><div class="regl-row-val big">${fmt(c.rule_inscription||'200000')}</div></div>
-        <div class="regl-row"><div class="regl-row-info"><div class="regl-row-label">Caution</div><div class="regl-row-note">Remboursable en fin de saison</div></div><div class="regl-row-val">${fmt(c.rule_caution||'30000')}</div></div>
       </div>
       <div class="regl-card">
         <div class="regl-card-hdr"><span>🏁</span><h3>Primes par Course</h3></div>
         <div class="regl-sep">Pilotes</div>
         <div class="regl-row"><div class="regl-row-info"><div class="regl-row-label">🥇 Victoire</div><div class="regl-row-note">1ère place</div></div><div class="regl-row-val" style="color:var(--gold)">${fmt(c.rule_prime_victoire||'20000')}</div></div>
         <div class="regl-row"><div class="regl-row-info"><div class="regl-row-label">🥈🥉 Podium</div><div class="regl-row-note">2ème ou 3ème place</div></div><div class="regl-row-val">${fmt(c.rule_prime_podium||'12000')}</div></div>
-        <div class="regl-row"><div class="regl-row-info"><div class="regl-row-label">Top 8</div><div class="regl-row-note">4ème à 8ème place</div></div><div class="regl-row-val">${fmt(c.rule_prime_top8||'6000')}</div></div>
-        <div class="regl-row"><div class="regl-row-info"><div class="regl-row-label">Participation</div><div class="regl-row-note">9ème et au-delà</div></div><div class="regl-row-val">${fmt(c.rule_prime_participation||'2000')}</div></div>
         <div class="regl-sep">Mécaniciens</div>
-        <div class="regl-row"><div class="regl-row-info"><div class="regl-row-label">Stand parfait</div><div class="regl-row-note">Sans faute d'arrêt</div></div><div class="regl-row-val">${fmt(c.rule_prime_meca_parfait||'8000')}</div></div>
         <div class="regl-row"><div class="regl-row-info"><div class="regl-row-label">Participation méca</div><div class="regl-row-note">Présence au stand</div></div><div class="regl-row-val">${fmt(c.rule_prime_meca_part||'3000')}</div></div>
       </div>
     </div>
@@ -1389,12 +1375,8 @@ function fillAdminPanel(){
   // Règlement
   sv('e-rule-intro',c.rule_intro||'');
   sv('e-rule-inscription',c.rule_inscription||'200 000');
-  sv('e-rule-caution',c.rule_caution||'30 000');
   sv('e-rule-prime-victoire',c.rule_prime_victoire||'20 000');
   sv('e-rule-prime-podium',c.rule_prime_podium||'12 000');
-  sv('e-rule-prime-top8',c.rule_prime_top8||'6 000');
-  sv('e-rule-prime-participation',c.rule_prime_participation||'2 000');
-  sv('e-rule-prime-meca-parfait',c.rule_prime_meca_parfait||'8 000');
   sv('e-rule-prime-meca-part',c.rule_prime_meca_part||'3 000');
   sv('e-rule-champion',c.rule_champion||'80 000');
   sv('e-rule-vice',c.rule_vice||'45 000');
@@ -1491,7 +1473,7 @@ function collectAllTabs(){
   c.branding_nav=document.getElementById('e-navtitle')?.value||c.branding_nav;
   c.branding_copy=document.getElementById('e-copy')?.value||c.branding_copy;
   // Règlement
-  const rmap={'e-rule-intro':'rule_intro','e-rule-inscription':'rule_inscription','e-rule-caution':'rule_caution','e-rule-prime-victoire':'rule_prime_victoire','e-rule-prime-podium':'rule_prime_podium','e-rule-prime-top8':'rule_prime_top8','e-rule-prime-participation':'rule_prime_participation','e-rule-prime-meca-parfait':'rule_prime_meca_parfait','e-rule-prime-meca-part':'rule_prime_meca_part','e-rule-champion':'rule_champion','e-rule-vice':'rule_vice','e-rule-3eme':'rule_3eme','e-rule-4-6':'rule_4_6','e-rule-ecurie-champion':'rule_ecurie_champion','e-rule-ecurie-vice':'rule_ecurie_vice','e-rule-ecurie-3eme':'rule_ecurie_3eme','e-rule-ecurie-4-6':'rule_ecurie_4_6'};
+  const rmap={'e-rule-intro':'rule_intro','e-rule-inscription':'rule_inscription','e-rule-prime-victoire':'rule_prime_victoire','e-rule-prime-podium':'rule_prime_podium','e-rule-prime-meca-part':'rule_prime_meca_part','e-rule-champion':'rule_champion','e-rule-vice':'rule_vice','e-rule-3eme':'rule_3eme','e-rule-4-6':'rule_4_6','e-rule-ecurie-champion':'rule_ecurie_champion','e-rule-ecurie-vice':'rule_ecurie_vice','e-rule-ecurie-3eme':'rule_ecurie_3eme','e-rule-ecurie-4-6':'rule_ecurie_4_6'};
   Object.entries(rmap).forEach(([eid,ckey])=>{const v=document.getElementById(eid)?.value;if(v!==undefined)c[ckey]=v;});
   DATA.config=c;
 }
