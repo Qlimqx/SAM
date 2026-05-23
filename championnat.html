@@ -264,7 +264,46 @@ input,select,textarea{font-family:inherit}
 .prog-finished{background:rgba(100,200,100,.1);color:#6dcc6d;border:1px solid rgba(100,200,100,.2)}
 .prog-live{background:rgba(227,6,19,.2);color:#ff3d4e;border:1px solid rgba(227,6,19,.4)}
 .prog-upcoming{background:rgba(255,165,0,.1);color:#ffa500;border:1px solid rgba(255,165,0,.25)}
-/* ── RÈGLEMENT ─────────────────────────────────────── */
+/* ── CALENDRIER ─────────────────────────────────── */
+.cal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.cal-card{background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden;transition:border-color .2s,transform .2s;position:relative}
+.cal-card:hover{border-color:var(--border2);transform:translateY(-2px)}
+.cal-card.cal-live{border-color:var(--accent)!important;background:rgba(227,6,19,.04)}
+.cal-card.cal-finished{opacity:.65}
+.cal-card.cal-next{border-color:var(--gold,#f5c842)!important;background:rgba(245,200,66,.04)}
+.cal-card-top{padding:14px 16px 10px;display:flex;align-items:center;justify-content:space-between}
+.cal-round-num{font-family:'Barlow Condensed',sans-serif;font-size:38px;font-weight:900;font-style:italic;color:var(--accent);line-height:1;opacity:.3}
+.cal-status-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.cal-status-dot.upcoming{background:var(--sub)}
+.cal-status-dot.live{background:var(--accent);animation:pulse 1s infinite}
+.cal-status-dot.finished{background:#4ade80}
+.cal-card-body{padding:0 16px 16px}
+.cal-nom{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:700;text-transform:uppercase;margin-bottom:4px;line-height:1.1}
+.cal-circuit{font-size:12px;color:var(--sub);margin-bottom:8px;display:flex;align-items:center;gap:5px}
+.cal-circuit::before{content:'📍';font-size:10px}
+.cal-date{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.cal-badge{position:absolute;top:10px;right:10px;font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:3px 7px;border-radius:3px}
+.cal-badge.live{background:rgba(227,6,19,.2);color:var(--accent);border:1px solid rgba(227,6,19,.3)}
+.cal-badge.finished{background:rgba(74,222,128,.1);color:#4ade80;border:1px solid rgba(74,222,128,.2)}
+.cal-badge.next{background:rgba(245,200,66,.15);color:#f5c842;border:1px solid rgba(245,200,66,.3)}
+
+/* ── SANCTIONS ───────────────────────────────────── */
+.sanctions-empty{text-align:center;padding:40px;font-size:14px;color:var(--muted);font-style:italic}
+.sanctions-table{width:100%;border-collapse:collapse}
+.sanctions-table th{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:10px 14px;border-bottom:1px solid var(--border);text-align:left}
+.sanctions-table td{padding:11px 14px;border-bottom:1px solid var(--border);vertical-align:top;font-size:13px}
+.sanctions-table tr:last-child td{border-bottom:none}
+.sanctions-table tr:hover td{background:rgba(255,255,255,.02)}
+.sanction-type{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:3px;white-space:nowrap}
+.st-avertissement{background:rgba(251,191,36,.12);color:#fbbf24;border:1px solid rgba(251,191,36,.25)}
+.st-penalite{background:rgba(249,115,22,.12);color:#f97316;border:1px solid rgba(249,115,22,.25)}
+.st-retrograde{background:rgba(168,85,247,.12);color:#a855f7;border:1px solid rgba(168,85,247,.25)}
+.st-amende{background:rgba(59,130,246,.12);color:#3b82f6;border:1px solid rgba(59,130,246,.25)}
+.st-dq{background:rgba(239,68,68,.15);color:#ef4444;border:1px solid rgba(239,68,68,.3)}
+.sanction-desc{color:var(--sub);font-size:12px;margin-top:3px}
+.sanction-penalty{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:var(--text)}
+.sanction-penalty.has-points{color:#ef4444}
+.sanction-penalty.has-amende{color:#f97316}
 .regl-intro{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px 24px;margin-bottom:20px;font-size:14px;color:var(--sub);line-height:1.8}
 .regl-intro strong{color:var(--text)}
 .regl-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
@@ -387,6 +426,16 @@ input,select,textarea{font-family:inherit}
 </style>
 </head>
 <body>
+
+<!-- ══ LOADING OVERLAY — premier élément, couvre tout ══ -->
+<div id="loading-overlay" style="position:fixed;inset:0;background:#0d0d14;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;opacity:1">
+  <div id="loading-fed-name" style="font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:900;font-style:italic;text-transform:uppercase;color:#f0f0f5;letter-spacing:.05em">Chargement...</div>
+  <div style="width:220px;height:3px;background:rgba(255,255,255,.1);border-radius:2px;overflow:hidden">
+    <div style="height:100%;background:#e30613;border-radius:2px;animation:ldBar 1.4s ease-in-out infinite"></div>
+  </div>
+  <div id="loading-status" style="font-size:11px;color:#55556a;letter-spacing:.1em;text-transform:uppercase">Connexion au serveur...</div>
+</div>
+<style>@keyframes ldBar{0%{width:0;margin-left:0}50%{width:55%;margin-left:22%}100%{width:0;margin-left:100%}}</style>
 
 <!-- ══════════════════════════════════════
      SETUP MODAL
@@ -553,18 +602,18 @@ function doPost(e) {
 <!-- HERO -->
 <section class="hero" id="hero">
   <div class="hero-bg"></div><div class="hero-img" id="hero-img"></div><div class="hero-grid-lines"></div><div class="hero-accent-line"></div>
-  <div class="hero-bg-num" id="hero-bg-num">5</div>
+  <div class="hero-bg-num" id="hero-bg-num"></div>
   <div class="hero-content">
     <div>
-      <div class="hero-eyebrow" id="hero-eyebrow">Manche 5 — Saison 2026</div>
-      <h1 class="hero-title" id="hero-title">Grand Prix de France</h1>
-      <div class="hero-subtitle" id="hero-subtitle">Circuit Bugatti — Le Mans</div>
+      <div class="hero-eyebrow" id="hero-eyebrow"></div>
+      <h1 class="hero-title" id="hero-title"></h1>
+      <div class="hero-subtitle" id="hero-subtitle"></div>
       <div class="hero-meta">
-        <div class="meta-item"><div class="meta-lbl">Date</div><div class="meta-val" id="hero-date">9–11 mai 2026</div></div>
+        <div class="meta-item"><div class="meta-lbl">Date</div><div class="meta-val" id="hero-date"></div></div>
         <div class="meta-sep"></div>
-        <div class="meta-item"><div class="meta-lbl">Tours</div><div class="meta-val" id="hero-laps">27 tours</div></div>
+        <div class="meta-item"><div class="meta-lbl">Tours</div><div class="meta-val" id="hero-laps"></div></div>
         <div class="meta-sep"></div>
-        <div><div class="status-badge s-finished" id="status-badge">✓ Terminé</div></div>
+        <div><div class="status-badge s-finished" id="status-badge"></div></div>
       </div>
     </div>
   </div>
@@ -573,10 +622,12 @@ function doPost(e) {
 <!-- EVENT TABS -->
 <div class="event-tabs"><div class="tabs-inner">
   <button class="tab-btn active" data-sections="news">Programme</button>
+  <button class="tab-btn" data-sections="calendrier">🗓 Calendrier</button>
   <button class="tab-btn" data-sections="grid">Grille de départ</button>
   <button class="tab-btn" data-sections="results">Résultats</button>
   <button class="tab-btn" data-sections="standings">Classement</button>
   <button class="tab-btn" data-sections="riders">Pilotes</button>
+  <button class="tab-btn" data-sections="sanctions" style="color:#f87171">⚖ Sanctions</button>
   <button class="tab-btn" data-sections="inscription" style="color:var(--accent)">📋 Inscription</button>
 </div></div>
 
@@ -622,6 +673,22 @@ function doPost(e) {
   </div>
 </section>
 
+<!-- CALENDRIER -->
+<section class="section" id="calendrier">
+  <div class="section-inner">
+    <div class="section-header"><h2 class="section-title">Calendrier de la Saison</h2></div>
+    <div id="calendrier-grid"></div>
+  </div>
+</section>
+
+<!-- SANCTIONS -->
+<section class="section" id="sanctions" style="background:var(--card)">
+  <div class="section-inner">
+    <div class="section-header"><h2 class="section-title">Sanctions & Pénalités</h2></div>
+    <div id="sanctions-content"></div>
+  </div>
+</section>
+
 <!-- INSCRIPTION / RÈGLEMENT -->
 <section class="section" id="inscription">
   <div class="section-inner">
@@ -633,10 +700,24 @@ function doPost(e) {
     <!-- FORMULAIRE PRÉ-INSCRIPTION -->
     <div class="form-card" id="inscription-form-wrap">
       <div class="form-card-hdr">
-        <div>
+        <div style="flex:1">
           <h3>🏁 Formulaire de Pré-Inscription</h3>
           <p>Remplis ce formulaire pour inscrire ton écurie au championnat. Toutes les inscriptions seront étudiées.</p>
         </div>
+        <div id="insc-counter-wrap" style="flex-shrink:0;text-align:right;margin-left:16px">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:900;color:var(--accent)" id="insc-count-num">—</div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)" id="insc-count-label">/ — écuries</div>
+          <div style="margin-top:4px;height:4px;background:var(--border2);border-radius:2px;overflow:hidden;width:80px">
+            <div id="insc-bar" style="height:100%;background:var(--accent);border-radius:2px;transition:width .4s;width:0"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- INSCRIPTIONS CLOSES -->
+      <div id="insc-closed-banner" class="hidden" style="padding:40px 24px;text-align:center;border-bottom:1px solid var(--border)">
+        <div style="font-size:48px;margin-bottom:12px">🔒</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:900;font-style:italic;text-transform:uppercase;color:var(--accent);margin-bottom:8px">Inscriptions closes</div>
+        <div style="font-size:14px;color:var(--sub);line-height:1.7">Le nombre maximum d'écuries a été atteint.<br>Contacte les organisateurs pour toute demande exceptionnelle.</div>
       </div>
 
       <!-- FORMULAIRE -->
@@ -680,6 +761,13 @@ function doPost(e) {
           <div class="field-note">Utilisé uniquement pour vous contacter concernant votre inscription.</div>
         </div>
 
+        <div class="form-section-title">Pilote Remplaçant <span style="font-size:10px;color:var(--muted);text-transform:none;letter-spacing:0;font-weight:400">— optionnel</span></div>
+        <div class="form-field">
+          <label>Pilote remplaçant</label>
+          <input id="f-remplacant" type="text" placeholder="Nom du pilote remplaçant (en cas d'absence d'un titulaire)">
+          <div class="field-note">📌 Un remplaçant inscrit évite l'amende en cas d'absence le jour J.</div>
+        </div>
+
         <button class="btn-submit" id="btn-submit" onclick="submitInscription()">
           🏁 Envoyer ma pré-inscription
         </button>
@@ -706,13 +794,13 @@ function doPost(e) {
 <footer class="footer"><div class="footer-inner">
   <div class="footer-top">
     <div class="footer-brand">
-      <div class="logo"><span class="badge" id="footer-series">S.A.M™</span><span style="background:none;color:var(--text);font-size:22px">S.A.M</span></div>
-      <p></p>
+      <div class="logo"><span class="badge" id="footer-series">MotoGP™</span><span style="background:none;color:var(--text);font-size:22px">RP</span></div>
+      <p>Site de roleplay. Données gérées via Google Sheets. Non officiel.</p>
     </div>
     <div class="footer-col"><h4>Événement</h4><ul><li><a href="#">Programme</a></li><li><a href="#">Grille</a></li><li><a href="#">Résultats</a></li></ul></div>
     <div class="footer-col"><h4>Pilotes</h4><ul><li><a href="#">Profils</a></li><li><a href="#">Statistiques</a></li></ul></div>
   </div>
-  <div class="footer-bottom"><span id="footer-copy">© 2026 S.A.M™ </span></div>
+  <div class="footer-bottom"><span id="footer-copy">© 2026 MotoGP™ RP</span></div>
 </div></footer>
 
 <!-- ADMIN LOGIN MODAL -->
@@ -745,6 +833,8 @@ function doPost(e) {
     <button class="ep-tab" onclick="switchTab('resultats',this)">Résultats</button>
     <button class="ep-tab" onclick="switchTab('classement',this)">Classement</button>
     <button class="ep-tab" onclick="switchTab('pilotes',this)">Pilotes</button>
+    <button class="ep-tab" onclick="switchTab('calendrier',this)">🗓 Cal.</button>
+    <button class="ep-tab" onclick="switchTab('sanctions',this)">⚖ Sanct.</button>
     <button class="ep-tab" onclick="switchTab('style',this)">Style</button>
     <button class="ep-tab" onclick="switchTab('reglement',this)">Règlement</button>
   </div>
@@ -809,6 +899,18 @@ function doPost(e) {
       <button class="btn-add-row" onclick="addRow('pilotes')">+ Ajouter un pilote</button>
     </div>
 
+    <!-- CALENDRIER -->
+    <div class="ep-section" id="tab-calendrier">
+      <div id="list-calendrier"></div>
+      <button class="btn-add-row" onclick="addRow('calendrier')">+ Ajouter une manche</button>
+    </div>
+
+    <!-- SANCTIONS -->
+    <div class="ep-section" id="tab-sanctions">
+      <div id="list-sanctions"></div>
+      <button class="btn-add-row" onclick="addRow('sanctions')">+ Ajouter une sanction</button>
+    </div>
+
     <!-- STYLE -->
     <div class="ep-section" id="tab-style">
       <div class="ep-field"><label>Nom de la série</label><input id="e-series" type="text"></div>
@@ -840,8 +942,12 @@ function doPost(e) {
     <!-- RÈGLEMENT -->
     <div class="ep-section" id="tab-reglement">
       <div class="ep-field"><label>Texte d'introduction</label><input id="e-rule-intro" type="text" placeholder="Bienvenue au championnat..."></div>
+      <div class="ep-divider">Inscriptions</div>
+      <div class="ep-field"><label>Nombre max d'écuries</label><input id="e-rule-max-ecuries" type="number" min="1" max="50" placeholder="8"></div>
       <div class="ep-divider">Frais d'entrée</div>
       <div class="ep-field"><label>Inscription ($)</label><input id="e-rule-inscription" type="text" placeholder="200 000"></div>
+      <div class="ep-divider">Amendes & Absences</div>
+      <div class="ep-field"><label>Amende absence le jour J ($)</label><input id="e-rule-amende-absence" type="text" placeholder="5 000"></div>
       <div class="ep-divider">Primes par course — Pilotes</div>
       <div class="ep-row">
         <div class="ep-field"><label>Victoire ($)</label><input id="e-rule-prime-victoire" type="text" placeholder="20 000"></div>
@@ -885,11 +991,19 @@ function doPost(e) {
 // ── DEMO DATA (fallback) ──────────────────────────
 const DEMO = {
   config:{gp_name:"Grand Prix de France",gp_subtitle:"Circuit Bugatti — Le Mans",gp_round:"5",gp_season:"2026",gp_date:"9–11 mai 2026",gp_flag:"🇫🇷",gp_weather:"Sec / 24°C",gp_laps:"27 tours",gp_dist:"118.8 km",gp_status:"finished",gp_hero_image:"",branding_series:"MotoGP™",branding_nav:"GRAND PRIX",branding_copy:"© 2026 MotoGP™ RP",
-    rule_intro:"Bienvenue au championnat MotoGP™ RP. Voici les conditions financières d'engagement pour la saison en cours.",
-    rule_inscription:"200 000",rule_caution:"30 000",
-    rule_prime_victoire:"20 000",rule_prime_podium:"12 000",rule_prime_top8:"6 000",rule_prime_participation:"2 000",rule_prime_meca_parfait:"8 000",rule_prime_meca_part:"3 000",
+    rule_intro:"Bienvenue au championnat. Voici les conditions financières d'engagement pour la saison en cours.",
+    rule_inscription:"200 000",rule_max_ecuries:"8",rule_amende_absence:"5 000",
+    rule_prime_victoire:"20 000",rule_prime_podium:"12 000",rule_prime_meca_part:"3 000",
     rule_champion:"80 000",rule_vice:"45 000",rule_3eme:"25 000",rule_4_6:"10 000",
     rule_ecurie_champion:"150 000",rule_ecurie_vice:"75 000",rule_ecurie_3eme:"35 000",rule_ecurie_4_6:"15 000"},
+  calendrier:[
+    {round:"1",nom:"Manche 1",circuit:"À définir",date:"À définir",statut:"upcoming"},
+    {round:"2",nom:"Manche 2",circuit:"À définir",date:"À définir",statut:"upcoming"},
+    {round:"3",nom:"Manche 3",circuit:"À définir",date:"À définir",statut:"upcoming"},
+    {round:"4",nom:"Manche 4",circuit:"À définir",date:"À définir",statut:"upcoming"},
+    {round:"5",nom:"Manche 5",circuit:"À définir",date:"À définir",statut:"upcoming"},
+  ],
+  sanctions:[],
   programme:[
     {jour:"Vendredi",heure:"09:00 – 09:45",session:"Essais Libres 1",statut:"finished"},
     {jour:"Vendredi",heure:"13:30 – 14:15",session:"Essais Libres 2",statut:"finished"},
@@ -980,7 +1094,7 @@ function showDemo(tab,btn){
 showDemo('config',document.querySelector('.sheet-tab-btn.active'));
 
 // ── URL DU SCRIPT (à changer si tu redéploies) ────
-const FORCE_URL = 'https://script.google.com/macros/s/AKfycbwVLUteLf-EnBZ1eeodPFUkh0VojbN3xxSJef2kjdqSfG4MZUiSBS7AuEQ1VfU8qq5S3Q/exec';
+const FORCE_URL = 'https://script.google.com/macros/s/AKfycbzrV_r2Ty5PsxrmqbiI6LnVktDnToAXdQuZjrApAamQaht5VMZ-Cybq2TiG2YGmwHg3NQ/exec';
 const AUTO_REFRESH_SEC = 30;
 const ADMIN_PASSWORD = 'admin'; // ← Change ce mot de passe ici
 
@@ -1022,6 +1136,9 @@ function loadFromScript(url){
       DATA.resultats   = data.resultats||DEMO.resultats;
       DATA.classement  = data.classement||DEMO.classement;
       DATA.pilotes     = data.pilotes||DEMO.pilotes;
+      DATA.calendrier  = data.calendrier||DEMO.calendrier;
+      DATA.sanctions   = data.sanctions||DEMO.sanctions;
+      DATA.inscriptions_count = parseInt(data.inscriptions_count)||0;
       resolve();
     };
     script.onerror = function(){
@@ -1101,8 +1218,88 @@ function showSetup(){
 
 // ── RENDER ────────────────────────────────────────
 function renderAll(){
-  renderHero();renderNews();renderGrid();renderResults();renderStandings();renderRiders();renderBranding();renderSections();renderReglement();
+  renderHero();renderNews();renderGrid();renderResults();renderStandings();renderRiders();renderBranding();renderSections();renderReglement();renderInscriptionCounter();renderCalendrier();renderSanctions();
   applyAccent(SETTINGS.accentColor);
+}
+
+function renderCalendrier(){
+  const items=DATA.calendrier||[];
+  const el=document.getElementById('calendrier-grid');
+  if(!el)return;
+  if(items.length===0){el.innerHTML='<div style="text-align:center;padding:40px;color:var(--muted);font-style:italic">Calendrier non encore publié.</div>';return;}
+  const liveIdx=items.findIndex(i=>i.statut==='live');
+  const nextIdx=liveIdx===-1?items.findIndex(i=>i.statut==='upcoming'):-1;
+  el.className='cal-grid';
+  el.innerHTML=items.map(function(r,i){
+    const isLive=r.statut==='live';
+    const isNext=i===nextIdx;
+    const isFinished=r.statut==='finished';
+    let badge='';
+    if(isLive)badge='<span class="cal-badge live">🔴 En direct</span>';
+    else if(isNext)badge='<span class="cal-badge next">Prochain</span>';
+    else if(isFinished)badge='<span class="cal-badge finished">✓ Terminé</span>';
+    return`<div class="cal-card${isLive?' cal-live':isNext?' cal-next':isFinished?' cal-finished':''}">
+      ${badge}
+      <div class="cal-card-top">
+        <span class="cal-round-num">${r.round}</span>
+        <span class="cal-status-dot ${r.statut||'upcoming'}"></span>
+      </div>
+      <div class="cal-card-body">
+        <div class="cal-nom">${r.nom||'—'}</div>
+        <div class="cal-circuit">${r.circuit||'À définir'}</div>
+        <div class="cal-date">${r.date||'Date à confirmer'}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderSanctions(){
+  const items=DATA.sanctions||[];
+  const el=document.getElementById('sanctions-content');
+  if(!el)return;
+  if(items.length===0){
+    el.innerHTML='<div class="sanctions-empty">Aucune sanction enregistrée pour le moment.</div>';
+    return;
+  }
+  const typeClass={'Avertissement':'st-avertissement','Pénalité de temps':'st-penalite','Rétrogradation':'st-retrograde','Amende':'st-amende','Disqualification':'st-dq'};
+  el.innerHTML=`<table class="sanctions-table">
+    <thead><tr><th>Date</th><th>Course</th><th>Pilote</th><th>Écurie</th><th>Type</th><th>Détail</th><th>Pénalité</th></tr></thead>
+    <tbody>${items.map(s=>`<tr>
+      <td style="color:var(--muted);white-space:nowrap">${s.date||'—'}</td>
+      <td>${s.course||'—'}</td>
+      <td><strong>${s.pilote||'—'}</strong></td>
+      <td style="color:var(--sub)">${s.ecurie||'—'}</td>
+      <td><span class="sanction-type ${typeClass[s.type]||'st-avertissement'}">${s.type||'—'}</span></td>
+      <td><div>${s.description||'—'}</div></td>
+      <td>
+        ${s.points?`<div class="sanction-penalty has-points">−${s.points} pts</div>`:''}
+        ${s.amende?`<div class="sanction-penalty has-amende">${s.amende} $</div>`:''}
+        ${!s.points&&!s.amende?'<span style="color:var(--muted)">—</span>':''}
+      </td>
+    </tr>`).join('')}
+    </tbody>
+  </table>`;
+}
+
+function renderInscriptionCounter(){
+  const max=parseInt(cfg('rule_max_ecuries','8'))||8;
+  const count=DATA.inscriptions_count||0;
+  const full=count>=max;
+
+  // Compteur
+  const numEl=document.getElementById('insc-count-num');
+  const lblEl=document.getElementById('insc-count-label');
+  const barEl=document.getElementById('insc-bar');
+  if(numEl)numEl.textContent=count;
+  if(lblEl)lblEl.textContent='/ '+max+' écurie'+(max>1?'s':'');
+  if(barEl)barEl.style.width=Math.min(100,Math.round(count/max*100))+'%';
+  if(barEl)barEl.style.background=full?'#f87171':count/max>=0.75?'#fbbf24':'var(--accent)';
+
+  // Afficher/cacher le formulaire
+  const closed=document.getElementById('insc-closed-banner');
+  const formBody=document.getElementById('form-body');
+  if(closed)closed.classList.toggle('hidden',!full);
+  if(formBody)formBody.style.display=full?'none':'block';
 }
 
 function fmt(val){
@@ -1137,6 +1334,31 @@ function renderReglement(){
         <div class="regl-row"><div class="regl-row-info"><div class="regl-row-label">Participation méca</div><div class="regl-row-note">Présence au stand</div></div><div class="regl-row-val">${fmt(c.rule_prime_meca_part||'3000')}</div></div>
       </div>
     </div>
+
+    <!-- AMENDES & RÈGLES DE CONDUITE -->
+    <div class="regl-champ" style="margin-top:20px">
+      <div class="regl-champ-title" style="color:#f87171">⚠ Amendes & Règles de Conduite</div>
+      <div class="regl-card" style="border-color:rgba(248,113,113,.2)">
+        <div class="regl-row" style="background:rgba(248,113,113,.04)">
+          <div class="regl-row-info">
+            <div class="regl-row-label" style="color:#f87171">🚫 Absence le jour J</div>
+            <div class="regl-row-note">Tout pilote absent sans remplaçant le jour de la course est automatiquement classé <strong style="color:#f87171">DNF</strong>. Une amende est appliquée à l'écurie.</div>
+          </div>
+          <div class="regl-row-val" style="color:#f87171">${fmt(c.rule_amende_absence||'5000')}</div>
+        </div>
+        ${c.rule_amende_custom?`<div class="regl-row">
+          <div class="regl-row-info"><div class="regl-row-label">📋 Amende générale</div><div class="regl-row-note">${c.rule_amende_custom_desc||'Comportement non sportif, infraction au règlement'}</div></div>
+          <div class="regl-row-val">${fmt(c.rule_amende_custom)}</div>
+        </div>`:''}
+        <div class="regl-row" style="background:rgba(0,0,0,.02)">
+          <div class="regl-row-info" style="flex:1">
+            <div class="regl-row-label" style="color:var(--sub)">📌 Règle du remplaçant</div>
+            <div class="regl-row-note">Chaque écurie peut inscrire un <strong>pilote remplaçant</strong> lors de l'inscription. Ce remplaçant peut être aligné en cas d'absence justifiée d'un pilote titulaire, sans amende.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="regl-champ">
       <div class="regl-champ-title">Primes Fin de Championnat — Pilotes</div>
       <div class="regl-podium-grid">
@@ -1185,15 +1407,15 @@ function renderHero(){
 }
 
 function renderBranding(){
-  // Priorité : DATA.config (Sheet) > SETTINGS > défauts
   const s=cfg('branding_series') || SETTINGS.series || 'MotoGP™';
   const n=cfg('branding_nav')    || SETTINGS.navTitle || 'GRAND PRIX';
   const c=cfg('branding_copy')   || SETTINGS.copy || '© 2026 MotoGP™ RP';
   ['nav-series','footer-series'].forEach(id=>set(id,s));
   set('nav-title',n);
   set('footer-copy',c);
-  // Aussi mettre à jour le titre de la page
   document.title = cfg('gp_name','Grand Prix') + ' — ' + s;
+  const ln=document.getElementById('loading-fed-name');
+  if(ln&&ln.textContent==='Chargement...')ln.textContent=s+' '+n;
 }
 
 function renderNews(){
@@ -1355,6 +1577,19 @@ const SCHEMAS = {
   pilotes:[
     {k:'numero',l:'Dossard',t:'text'},{k:'nom',l:'Nom',t:'text'},
     {k:'equipe',l:'Équipe',t:'text'},{k:'nationalite',l:'Nationalité',t:'text'},{k:'drapeau',l:'Drapeau emoji',t:'text'}
+  ],
+  calendrier:[
+    {k:'round',l:'Manche N°',t:'text'},{k:'nom',l:'Nom du GP',t:'text'},
+    {k:'circuit',l:'Circuit',t:'text'},{k:'date',l:'Date',t:'text'},
+    {k:'statut',l:'Statut (upcoming / live / finished)',t:'text'}
+  ],
+  sanctions:[
+    {k:'date',l:'Date',t:'text'},{k:'course',l:'Course / GP',t:'text'},
+    {k:'pilote',l:'Pilote',t:'text'},{k:'ecurie',l:'Écurie',t:'text'},
+    {k:'type',l:'Type (Avertissement / Pénalité de temps / Rétrogradation / Amende / Disqualification)',t:'text'},
+    {k:'description',l:'Description de l\'infraction',t:'text'},
+    {k:'points',l:'Points retirés (vide si aucun)',t:'text'},
+    {k:'amende',l:'Amende $ (vide si aucune)',t:'text'}
   ]
 };
 
@@ -1374,7 +1609,9 @@ function fillAdminPanel(){
   const cp=document.getElementById('e-color-picker');if(cp)cp.value=SETTINGS.accentColor;
   // Règlement
   sv('e-rule-intro',c.rule_intro||'');
+  sv('e-rule-max-ecuries',c.rule_max_ecuries||'8');
   sv('e-rule-inscription',c.rule_inscription||'200 000');
+  sv('e-rule-amende-absence',c.rule_amende_absence||'5 000');
   sv('e-rule-prime-victoire',c.rule_prime_victoire||'20 000');
   sv('e-rule-prime-podium',c.rule_prime_podium||'12 000');
   sv('e-rule-prime-meca-part',c.rule_prime_meca_part||'3 000');
@@ -1386,7 +1623,7 @@ function fillAdminPanel(){
   sv('e-rule-ecurie-vice',c.rule_ecurie_vice||'75 000');
   sv('e-rule-ecurie-3eme',c.rule_ecurie_3eme||'35 000');
   sv('e-rule-ecurie-4-6',c.rule_ecurie_4_6||'15 000');
-  ['actualites','grille','resultats','classement','pilotes'].forEach(k=>buildList(k));
+  ['actualites','grille','resultats','classement','pilotes','calendrier','sanctions'].forEach(k=>buildList(k));
 }
 
 function sv(id,val){const el=document.getElementById(id);if(el)el.value=val||'';}
@@ -1455,7 +1692,7 @@ function collectTab(tab){
 }
 
 function collectAllTabs(){
-  ['actualites','grille','resultats','classement','pilotes'].forEach(collectTab);
+  ['actualites','grille','resultats','classement','pilotes','calendrier','sanctions'].forEach(collectTab);
   // Collect GP config
   const c=DATA.config||{};
   c.gp_name=document.getElementById('e-gp-name')?.value||c.gp_name;
@@ -1473,7 +1710,7 @@ function collectAllTabs(){
   c.branding_nav=document.getElementById('e-navtitle')?.value||c.branding_nav;
   c.branding_copy=document.getElementById('e-copy')?.value||c.branding_copy;
   // Règlement
-  const rmap={'e-rule-intro':'rule_intro','e-rule-inscription':'rule_inscription','e-rule-prime-victoire':'rule_prime_victoire','e-rule-prime-podium':'rule_prime_podium','e-rule-prime-meca-part':'rule_prime_meca_part','e-rule-champion':'rule_champion','e-rule-vice':'rule_vice','e-rule-3eme':'rule_3eme','e-rule-4-6':'rule_4_6','e-rule-ecurie-champion':'rule_ecurie_champion','e-rule-ecurie-vice':'rule_ecurie_vice','e-rule-ecurie-3eme':'rule_ecurie_3eme','e-rule-ecurie-4-6':'rule_ecurie_4_6'};
+  const rmap={'e-rule-intro':'rule_intro','e-rule-max-ecuries':'rule_max_ecuries','e-rule-inscription':'rule_inscription','e-rule-amende-absence':'rule_amende_absence','e-rule-prime-victoire':'rule_prime_victoire','e-rule-prime-podium':'rule_prime_podium','e-rule-prime-meca-part':'rule_prime_meca_part','e-rule-champion':'rule_champion','e-rule-vice':'rule_vice','e-rule-3eme':'rule_3eme','e-rule-4-6':'rule_4_6','e-rule-ecurie-champion':'rule_ecurie_champion','e-rule-ecurie-vice':'rule_ecurie_vice','e-rule-ecurie-3eme':'rule_ecurie_3eme','e-rule-ecurie-4-6':'rule_ecurie_4_6'};
   Object.entries(rmap).forEach(([eid,ckey])=>{const v=document.getElementById(eid)?.value;if(v!==undefined)c[ckey]=v;});
   DATA.config=c;
 }
@@ -1520,7 +1757,9 @@ async function publishAll(){
     grille:     JSON.parse(JSON.stringify(DATA.grille||[])),
     resultats:  JSON.parse(JSON.stringify(DATA.resultats||[])),
     classement: JSON.parse(JSON.stringify(DATA.classement||[])),
-    pilotes:    JSON.parse(JSON.stringify(DATA.pilotes||[]))
+    pilotes:    JSON.parse(JSON.stringify(DATA.pilotes||[])),
+    calendrier: JSON.parse(JSON.stringify(DATA.calendrier||[])),
+    sanctions:  JSON.parse(JSON.stringify(DATA.sanctions||[]))
   };
 
   renderAll();
@@ -1545,7 +1784,9 @@ async function publishAll(){
     ['grille',    snap.grille],
     ['resultats', snap.resultats],
     ['classement',snap.classement],
-    ['pilotes',   snap.pilotes]
+    ['pilotes',   snap.pilotes],
+    ['calendrier',snap.calendrier],
+    ['sanctions', snap.sanctions]
   ];
 
   let allOk=true;
@@ -1614,12 +1855,13 @@ function applyAccent(color){
 
 // ── FORMULAIRE D'INSCRIPTION ──────────────────────
 async function submitInscription(){
-  const ecurie  = document.getElementById('f-ecurie')?.value.trim()||'';
-  const pilote1 = document.getElementById('f-pilote1')?.value.trim()||'';
-  const pilote2 = document.getElementById('f-pilote2')?.value.trim()||'';
-  const meca1   = document.getElementById('f-meca1')?.value.trim()||'';
-  const meca2   = document.getElementById('f-meca2')?.value.trim()||'';
-  const contact = document.getElementById('f-contact')?.value.trim()||'';
+  const ecurie    = document.getElementById('f-ecurie')?.value.trim()||'';
+  const pilote1   = document.getElementById('f-pilote1')?.value.trim()||'';
+  const pilote2   = document.getElementById('f-pilote2')?.value.trim()||'';
+  const meca1     = document.getElementById('f-meca1')?.value.trim()||'';
+  const meca2     = document.getElementById('f-meca2')?.value.trim()||'';
+  const contact   = document.getElementById('f-contact')?.value.trim()||'';
+  const remplacant= document.getElementById('f-remplacant')?.value.trim()||'';
 
   if(!ecurie)  { showFormError("Le nom de l'écurie est obligatoire."); return; }
   if(!pilote1) { showFormError('Le nom du pilote 1 est obligatoire.'); return; }
@@ -1629,10 +1871,20 @@ async function submitInscription(){
   const btn = document.getElementById('btn-submit');
   btn.disabled=true; btn.textContent='⏳ Envoi en cours...';
 
-  const data={date:new Date().toLocaleString('fr-FR'),ecurie,pilote1,pilote2,meca1,meca2,contact,statut:'En attente'};
+  const data={date:new Date().toLocaleString('fr-FR'),ecurie,pilote1,pilote2,meca1,meca2,contact,remplacant,statut:'En attente'};
 
   try{
-    await jsonpCall({action:'register',b64:btoa(unescape(encodeURIComponent(JSON.stringify(data))))});
+    const r=await jsonpCall({action:'register',b64:btoa(unescape(encodeURIComponent(JSON.stringify(data))))});
+    if(r&&r.full){
+      showFormError('Les inscriptions sont closes — le nombre maximum d\'écuries a été atteint.');
+      btn.disabled=false; btn.textContent='🏁 Envoyer ma pré-inscription';
+      DATA.inscriptions_count=parseInt(cfg('rule_max_ecuries','8'))||8;
+      renderInscriptionCounter();
+      return;
+    }
+    if(r&&!r.ok)throw new Error(r.error||'Erreur serveur');
+    DATA.inscriptions_count=(DATA.inscriptions_count||0)+1;
+    renderInscriptionCounter();
     document.getElementById('form-body').style.display='none';
     document.getElementById('success-ecurie-name').textContent='🏎 Écurie : '+ecurie;
     document.getElementById('form-success').classList.add('show');
@@ -1648,7 +1900,7 @@ function showFormError(msg){
 }
 
 function resetForm(){
-  ['f-ecurie','f-pilote1','f-pilote2','f-meca1','f-meca2','f-contact'].forEach(id=>{
+  ['f-ecurie','f-pilote1','f-pilote2','f-meca1','f-meca2','f-contact','f-remplacant'].forEach(id=>{
     const el=document.getElementById(id);if(el)el.value='';
   });
   document.getElementById('form-body').style.display='block';
@@ -1813,7 +2065,7 @@ function showToast(msg){
 }
 
 // ── TABS avec filtrage des sections ──────────────
-const ALL_SECTIONS=['news','grid','results','standings','riders','inscription'];
+const ALL_SECTIONS=['news','grid','results','standings','riders','inscription','calendrier','sanctions'];
 
 function showTab(btn){
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
@@ -1853,9 +2105,25 @@ function updateSheetLink(){
   applyAccent(SETTINGS.accentColor);
   setStatus('loading','Chargement des données...');
 
+  function hideLoader(){
+    const ol=document.getElementById('loading-overlay');
+    if(!ol)return;
+    ol.style.transition='opacity .5s ease';
+    ol.style.opacity='0';
+    setTimeout(function(){
+      ol.style.display='none';
+      ol.style.pointerEvents='none';
+    },520);
+  }
+
   function charger(silencieux){
+    if(!silencieux){
+      const ls=document.getElementById('loading-status');
+      if(ls)ls.textContent='Chargement des données...';
+    }
     return loadFromScript(FORCE_URL).then(()=>{
       renderAll();
+      hideLoader();
       const heure = new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
       setStatus('ok','Actualisé à ' + heure);
       updateSheetLink();
@@ -1863,6 +2131,7 @@ function updateSheetLink(){
       if(!silencieux){
         DATA=JSON.parse(JSON.stringify(DEMO));
         renderAll();
+        hideLoader();
         setStatus('err','Impossible de joindre le script');
       }
     });
