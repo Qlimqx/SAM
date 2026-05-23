@@ -1,374 +1,866 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Qualifications — Formula Uno de San Andreas</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet"/>
-  <style>
-    :root{--gold:#F0A500;--gold-dim:rgba(240,165,0,0.12);--gold-border:rgba(240,165,0,0.35);--bg:#080808;--surface:#111111;--surface2:#181818;--border:rgba(255,255,255,0.07);--text:#f0f0f0;--muted:#888;--dim:#444;--green:#2ecc71;--red:#e74c3c;--silver:#C0C0C0;--bronze:#cd7f32;}
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-    html{scroll-behavior:smooth;}
-    body{font-family:'Barlow',sans-serif;background:var(--bg);color:var(--text);font-size:17px;line-height:1.75;min-height:100vh;}
-    ::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px;}
-    a{color:var(--gold);text-decoration:none;}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fédération DE COURSE</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700;1,900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#c9a84c;--gold2:#f0d080;--gold-dim:rgba(201,168,76,.12);
+  --bg:#06060a;--bg2:#0c0c12;--card:#111118;--card2:#181820;
+  --border:rgba(255,255,255,.07);--border-gold:rgba(201,168,76,.25);
+  --text:#f0efe8;--sub:#8888a0;--muted:#44445a;
+  --acc:#e30613;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;font-size:15px;line-height:1.6;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;font-family:inherit;border:none;background:none}
+img{display:block;max-width:100%}
+.hidden{display:none!important}
 
-    /* HEADER */
-    header{position:sticky;top:0;z-index:100;background:rgba(8,8,8,0.96);backdrop-filter:blur(14px);border-bottom:1px solid var(--gold-border);}
-    .header-inner{max-width:1100px;margin:0 auto;padding:0 1.5rem;display:flex;align-items:center;gap:1.5rem;height:60px;}
-    .logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0;}
-    .logo-badge{width:34px;height:34px;border-radius:6px;background:var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:10px;color:#1a0e00;line-height:1.1;text-align:center;}
-    .logo-name{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:17px;letter-spacing:1px;color:var(--text);}
-    .logo-sub{font-size:12px;color:var(--muted);}
-    nav{display:flex;gap:2px;overflow-x:auto;flex:1;justify-content:flex-end;}
-    nav::-webkit-scrollbar{display:none;}
-    nav a{font-size:13px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:var(--muted);padding:5px 10px;border-radius:4px;white-space:nowrap;transition:color 0.2s,background 0.2s;text-decoration:none;}
-    nav a:hover{color:var(--gold);background:var(--gold-dim);}
-    nav a.active{color:var(--gold);background:var(--gold-dim);border-bottom:2px solid var(--gold);}
-    .sync-btn{background:var(--gold-dim);border:1px solid var(--gold-border);color:var(--gold);font-size:13px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;padding:5px 12px;border-radius:5px;cursor:pointer;transition:background 0.2s;white-space:nowrap;flex-shrink:0;}
-    .sync-btn:hover{background:rgba(240,165,0,0.22);}
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border-gold);border-radius:2px}
 
-    /* HERO */
-    .hero{position:relative;overflow:hidden;padding:3.5rem 1.5rem 3rem;text-align:center;background:radial-gradient(ellipse 80% 50% at 50% 0%,rgba(240,165,0,0.08) 0%,transparent 65%);}
-    .hero::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:100px;height:2px;background:var(--gold);}
-    .hero-badge{display:inline-block;font-size:12px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);border:1px solid var(--gold-border);padding:3px 14px;border-radius:20px;margin-bottom:1rem;}
-    .hero h1{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(2.5rem,8vw,5rem);letter-spacing:2px;text-transform:uppercase;line-height:1;margin-bottom:0.4rem;background:linear-gradient(180deg,#fff 20%,#777 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-    .hero h1 span{background:linear-gradient(135deg,var(--gold) 0%,#ffe066 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-    .hero-sub{font-size:1rem;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;}
+/* ── NAVBAR ── */
+.navbar{position:fixed;top:0;left:0;right:0;z-index:200;padding:0 48px;height:72px;display:flex;align-items:center;justify-content:space-between;transition:background .3s,backdrop-filter .3s,border-color .3s;border-bottom:1px solid transparent}
+.navbar.scrolled{background:rgba(6,6,10,.95);backdrop-filter:blur(16px);border-bottom-color:var(--border)}
+.nav-logo{display:flex;align-items:center;gap:14px;cursor:pointer}
+.nav-logo-img{width:48px;height:48px;border-radius:6px;object-fit:contain;background:var(--card);border:1px solid var(--border-gold);padding:4px}
+.nav-logo-img.placeholder{display:flex;align-items:center;justify-content:center;font-size:22px}
+.nav-logo-text{display:flex;flex-direction:column}
+.nav-logo-name{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:.08em;color:var(--text);line-height:1}
+.nav-logo-sub{font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);line-height:1;margin-top:2px}
+.nav-links{display:flex;gap:4px}
+.nav-link{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sub);padding:8px 16px;border-radius:4px;transition:color .15s,background .15s;position:relative}
+.nav-link:hover{color:var(--text)}
+.nav-link.champ{color:var(--gold);border:1px solid var(--border-gold);background:var(--gold-dim)}
+.nav-link.champ:hover{background:rgba(201,168,76,.2);color:var(--gold2)}
+.nav-link.champ::after{content:'→';margin-left:5px}
+.nav-right{display:flex;align-items:center;gap:10px}
+.btn-admin-nav{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:6px 14px;border:1px solid var(--muted);border-radius:4px;transition:all .15s;display:none}
+.btn-admin-nav.show{display:block}
+.btn-admin-nav:hover,.btn-admin-nav.active{color:var(--gold);border-color:var(--gold)}
+@media(max-width:768px){.navbar{padding:0 20px}.nav-links{display:none}}
 
-    /* LAYOUT */
-    main{max-width:1100px;margin:0 auto;padding:2.5rem 1.5rem 5rem;}
-    .section{margin-bottom:3.5rem;}
-    .section-header{display:flex;align-items:baseline;gap:1rem;margin-bottom:1.5rem;padding-bottom:0.75rem;border-bottom:1px solid var(--border);position:relative;}
-    .section-header::before{content:'';position:absolute;bottom:-1px;left:0;width:50px;height:2px;background:var(--gold);}
-    .section-num{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;color:var(--gold);letter-spacing:2px;text-transform:uppercase;opacity:0.6;}
-    .section-title{font-family:'Barlow Condensed',sans-serif;font-size:1.8rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;}
-    .grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;}
-    .grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:1rem;}
-    .card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1rem 1.25rem;transition:border-color 0.2s;}
-    .card:hover{border-color:var(--gold-border);}
-    .card-label{font-size:12px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--dim);margin-bottom:0.75rem;}
-    .stat{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1rem 1.25rem;}
-    .stat-label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;}
-    .stat-value{font-family:'Barlow Condensed',sans-serif;font-size:2.2rem;font-weight:700;color:var(--gold);line-height:1;}
-    .stat-sub{font-size:11px;color:var(--dim);margin-top:3px;}
-    .row-list{list-style:none;}
-    .row-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);gap:1rem;font-size:15px;}
-    .row-item:last-child{border-bottom:none;padding-bottom:0;}
-    .row-lbl{color:var(--muted);}
-    .row-val{font-weight:600;color:var(--text);white-space:nowrap;}
-    .row-val.g{color:var(--green);}
-    .badge{display:inline-block;font-size:12px;font-weight:600;letter-spacing:0.6px;text-transform:uppercase;padding:2px 8px;border-radius:4px;}
-    .b-gold{background:var(--gold-dim);color:var(--gold);}
-    .b-green{background:rgba(46,204,113,0.1);color:var(--green);}
-    .b-blue{background:rgba(59,139,250,0.1);color:#5ba5ff;}
-    .b-red{background:rgba(231,76,60,0.1);color:var(--red);}
-    .info{font-size:14px;color:var(--muted);background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:9px 13px;margin-top:0.875rem;line-height:1.6;}
-    .info strong{color:var(--gold);}
-    .highlight{background:rgba(240,165,0,0.04);border:1.5px solid var(--gold-border);border-radius:10px;padding:1rem 1.4rem;margin-bottom:1.5rem;}
-    .highlight-title{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
-    .highlight-body{font-size:15px;color:var(--muted);line-height:1.7;}
-    .highlight-body strong{color:var(--text);}
-    .rule{padding:1rem 1.25rem 1rem 1.5rem;border-left:2px solid var(--gold);background:var(--surface);border-radius:0 8px 8px 0;margin-bottom:10px;font-size:15px;line-height:1.7;color:var(--muted);}
-    .rule strong{color:var(--text);}
+/* ── HERO ── */
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.hero-video-wrap{position:absolute;inset:0;z-index:0}
+.hero-video-wrap iframe,.hero-video-wrap video{width:100%;height:100%;object-fit:cover;pointer-events:none}
+.hero-video-wrap::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(6,6,10,.3) 0%,rgba(6,6,10,.55) 50%,rgba(6,6,10,.9) 100%)}
+.hero-bg-img{position:absolute;inset:0;background-size:cover;background-position:center;background-repeat:no-repeat}
+.hero-bg-img::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(6,6,10,.7) 0%,rgba(6,6,10,.5) 50%,rgba(6,6,10,.85) 100%)}
+.hero-grid{position:absolute;inset:0;opacity:.06;background-image:repeating-linear-gradient(0deg,transparent,transparent 59px,var(--gold) 59px,var(--gold) 60px),repeating-linear-gradient(90deg,transparent,transparent 79px,var(--gold) 79px,var(--gold) 80px);z-index:1}
+.hero-content{position:relative;z-index:2;text-align:center;padding:120px 24px 80px;max-width:900px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--gold-dim);border:1px solid var(--border-gold);color:var(--gold);font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;padding:8px 18px;border-radius:20px;margin-bottom:28px;animation:fadeUp .8s ease both}
+.hero-badge::before,.hero-badge::after{content:'◆';font-size:7px;opacity:.6}
+.hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(64px,10vw,140px);line-height:.9;letter-spacing:.03em;margin-bottom:12px;animation:fadeUp .8s .15s ease both}
+.hero-title .line1{display:block;color:var(--text)}
+.hero-title .line2{display:block;background:linear-gradient(90deg,var(--gold),var(--gold2),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-subtitle{font-size:clamp(14px,1.8vw,18px);color:var(--sub);letter-spacing:.08em;text-transform:uppercase;font-weight:500;margin-bottom:40px;animation:fadeUp .8s .3s ease both}
+.hero-ctas{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;animation:fadeUp .8s .45s ease both}
+.btn-hero-primary{background:var(--gold);color:#06060a;font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:.1em;padding:14px 36px;border-radius:5px;transition:all .2s;border:2px solid var(--gold);display:flex;align-items:center;gap:8px}
+.btn-hero-primary:hover{background:var(--gold2);border-color:var(--gold2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(201,168,76,.3)}
+.btn-hero-secondary{background:transparent;color:var(--text);font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:.1em;padding:14px 36px;border-radius:5px;border:2px solid rgba(255,255,255,.2);transition:all .2s}
+.btn-hero-secondary:hover{border-color:rgba(255,255,255,.5);transform:translateY(-2px)}
+.hero-scroll{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--muted);font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;animation:fadeIn 1s 1s ease both}
+.scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--gold),transparent);animation:scrollAnim 2s infinite}
+@keyframes scrollAnim{0%{height:0;opacity:0}50%{height:40px;opacity:1}100%{height:40px;opacity:0}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
 
-    /* CLASSEMENT ECURIES */
-    .ecurie-rank-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.1rem 1.4rem;margin-bottom:0.75rem;display:flex;align-items:center;gap:1.1rem;transition:border-color 0.2s,transform 0.15s;position:relative;overflow:hidden;}
-    .ecurie-rank-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;}
-    .ecurie-rank-card:hover{transform:translateX(4px);}
-    .ecurie-rank-card.rank-1{border-color:var(--gold-border);background:rgba(240,165,0,0.04);}
-    .ecurie-rank-card.rank-1::before{background:var(--gold);}
-    .ecurie-rank-card.rank-2::before{background:var(--silver);}
-    .ecurie-rank-card.rank-3::before{background:var(--bronze);}
-    .rank-num{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.8rem;min-width:32px;text-align:center;line-height:1;}
-    .rank-1 .rank-num{color:var(--gold);}
-    .rank-2 .rank-num{color:var(--silver);}
-    .rank-3 .rank-num{color:var(--bronze);}
-    .rank-other .rank-num{color:var(--dim);}
-    .rank-badge{width:40px;height:40px;border-radius:50%;border:2px solid;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:13px;flex-shrink:0;}
-    .rank-info{flex:1;}
-    .rank-name{font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text);margin-bottom:3px;}
-    .rank-pilots{font-size:13px;color:var(--muted);}
-    .pts-breakdown{display:flex;gap:4px;flex-wrap:wrap;margin-top:3px;}
-    .pts-chip{font-size:12px;padding:1px 6px;border-radius:3px;background:var(--surface2);color:var(--muted);}
-    .pts-chip.bonus{background:rgba(240,165,0,0.1);color:var(--gold);}
-    .rank-pts-wrap{text-align:right;flex-shrink:0;}
-    .rank-pts{font-family:'Barlow Condensed',sans-serif;font-size:2.2rem;font-weight:900;line-height:1;}
-    .rank-1 .rank-pts{color:var(--gold);}
-    .rank-2 .rank-pts{color:var(--silver);}
-    .rank-3 .rank-pts{color:var(--bronze);}
-    .rank-other .rank-pts{color:var(--text);}
-    .rank-pts-label{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;}
+/* ── TICKER ── */
+.ticker{background:var(--gold);padding:10px 0;overflow:hidden;position:relative}
+.ticker::before,.ticker::after{content:'';position:absolute;top:0;bottom:0;width:80px;z-index:2}
+.ticker::before{left:0;background:linear-gradient(to right,var(--gold),transparent)}
+.ticker::after{right:0;background:linear-gradient(to left,var(--gold),transparent)}
+.ticker-inner{display:flex;gap:40px;animation:ticker 30s linear infinite;white-space:nowrap}
+.ticker-inner:hover{animation-play-state:paused}
+.ticker-item{font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:.12em;color:#06060a;display:flex;align-items:center;gap:12px}
+.ticker-sep{color:rgba(6,6,10,.4);font-size:12px}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
-    /* TABLES */
-    .data-table{width:100%;border-collapse:collapse;font-size:15px;}
-    .data-table th{text-align:left;padding:10px 12px;font-size:12px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--dim);border-bottom:1px solid var(--border);white-space:nowrap;}
-    .data-table td{padding:11px 12px;border-bottom:1px solid var(--border);color:var(--muted);}
-    .data-table tr:last-child td{border-bottom:none;}
-    .data-table tr:hover td{background:var(--surface2);}
-    .pos-badge{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;font-weight:700;font-size:11px;}
-    .pos-1{background:rgba(240,165,0,0.15);color:var(--gold);border:1px solid var(--gold);}
-    .pos-2{background:rgba(192,192,192,0.1);color:var(--silver);border:1px solid rgba(192,192,192,0.4);}
-    .pos-3{background:rgba(205,127,50,0.12);color:var(--bronze);border:1px solid var(--bronze);}
-    .pos-n{background:var(--surface2);color:var(--dim);border:1px solid var(--border);}
+/* ── SECTIONS ── */
+section{padding:96px 0}
+.inner{max-width:1280px;margin:0 auto;padding:0 48px}
+@media(max-width:768px){.inner{padding:0 20px}}
+.section-eyebrow{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.section-eyebrow::before{content:'◆';font-size:7px}
+.section-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(40px,5vw,72px);line-height:.95;letter-spacing:.03em;margin-bottom:16px}
+.section-sub{font-size:15px;color:var(--sub);max-width:560px;line-height:1.7}
+.gold-line{width:48px;height:2px;background:linear-gradient(90deg,var(--gold),transparent);margin-bottom:24px}
 
-    /* ÉCURIES GRID */
-    .ecurie-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:0.875rem;}
-    .ecurie-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1rem 1.25rem;display:flex;align-items:center;gap:0.875rem;transition:border-color 0.2s,transform 0.15s;}
-    .ecurie-card:hover{border-color:var(--gold-border);transform:translateY(-2px);}
-    .ecurie-initials{width:40px;height:40px;border-radius:50%;border:2px solid;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:13px;flex-shrink:0;}
-    .ecurie-name{font-weight:600;font-size:16px;margin-bottom:3px;}
-    .ecurie-detail{font-size:13px;color:var(--muted);display:flex;flex-wrap:wrap;gap:5px;align-items:center;}
+/* ── STATS ── */
+.stats-section{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:0}
+.stat-item{padding:40px 32px;text-align:center;border-right:1px solid var(--border);position:relative}
+.stat-item:last-child{border-right:none}
+.stat-item::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:2px;height:3px;background:var(--gold)}
+.stat-num{font-family:'Bebas Neue',sans-serif;font-size:64px;line-height:1;color:var(--gold);letter-spacing:-.01em}
+.stat-label{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:4px}
 
-    /* LOADING */
-    .loading{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:13px;padding:1.5rem 0;}
-    .spinner{width:18px;height:18px;border:2px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin 0.7s linear infinite;flex-shrink:0;}
-    @keyframes spin{to{transform:rotate(360deg);}}
-    .empty-state{text-align:center;padding:3rem 1rem;color:var(--muted);}
-    .empty-state .empty-icon{font-size:2.5rem;margin-bottom:0.75rem;}
-    .empty-state p{font-size:16px;}
+/* ── CHAMPIONSHIP CARD ── */
+.champ-section{position:relative;overflow:hidden}
+.champ-section::before{content:'';position:absolute;top:-100px;right:-200px;width:600px;height:600px;background:radial-gradient(circle,rgba(201,168,76,.06) 0%,transparent 70%);pointer-events:none}
+.champ-card{background:var(--card);border:1px solid var(--border-gold);border-radius:12px;overflow:hidden;display:grid;grid-template-columns:1fr 1fr;min-height:420px;transition:transform .3s,box-shadow .3s;cursor:pointer}
+.champ-card:hover{transform:translateY(-4px);box-shadow:0 24px 64px rgba(201,168,76,.12)}
+.champ-card-left{padding:56px;display:flex;flex-direction:column;justify-content:space-between;position:relative}
+.champ-card-left::after{content:'';position:absolute;right:0;top:10%;bottom:10%;width:1px;background:linear-gradient(to bottom,transparent,var(--border-gold),transparent)}
+.champ-tag{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.champ-tag::before{content:'';width:20px;height:1px;background:var(--gold)}
+.champ-name{font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,4vw,60px);line-height:.95;letter-spacing:.03em;margin-bottom:16px}
+.champ-desc{font-size:14px;color:var(--sub);line-height:1.7;margin-bottom:32px;flex:1}
+.btn-champ{display:inline-flex;align-items:center;gap:10px;background:var(--gold);color:#06060a;font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:.1em;padding:14px 28px;border-radius:5px;transition:all .2s;align-self:flex-start}
+.btn-champ:hover{background:var(--gold2);transform:translateX(4px)}
+.btn-champ-arrow{font-size:20px;transition:transform .2s}
+.btn-champ:hover .btn-champ-arrow{transform:translateX(4px)}
+.champ-card-right{background:var(--card2);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.champ-card-right-bg{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.3}
+.champ-card-right-overlay{position:absolute;inset:0;background:linear-gradient(135deg,transparent,rgba(201,168,76,.05))}
+.champ-stats{position:relative;z-index:1;display:flex;flex-direction:column;gap:20px;padding:40px}
+.cs-item{display:flex;align-items:center;gap:14px;background:rgba(6,6,10,.6);border:1px solid var(--border);border-radius:8px;padding:16px 20px}
+.cs-icon{font-size:24px;flex-shrink:0}
+.cs-val{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--gold);line-height:1}
+.cs-lbl{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--sub)}
+@media(max-width:900px){.champ-card{grid-template-columns:1fr}.champ-card-right{display:none}}
 
-    /* FOOTER */
-    footer{background:var(--surface);border-top:1px solid var(--border);text-align:center;padding:1.75rem 1.5rem;}
-    .footer-title{font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;font-weight:900;letter-spacing:3px;color:var(--gold);margin-bottom:4px;}
-    .footer-sub{font-size:13px;color:var(--dim);letter-spacing:1px;}
+/* ── NEWS ── */
+.news-section{background:var(--bg2)}
+.news-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:40px;flex-wrap:wrap;gap:16px}
+.news-link{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:6px}
+.news-link:hover{opacity:.7}
+.news-link::after{content:'→'}
+.news-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
+.news-card{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;cursor:pointer;transition:all .2s;group:true}
+.news-card:hover{border-color:var(--border-gold);transform:translateY(-3px)}
+.news-card-img{height:180px;background:var(--card2);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:48px}
+.news-card-img-bg{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .4s}
+.news-card:hover .news-card-img-bg{transform:scale(1.05)}
+.news-card-img::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(6,6,10,.8))}
+.news-cat{position:absolute;top:12px;left:12px;background:var(--gold);color:#06060a;font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:3px 9px;border-radius:3px;z-index:1}
+.news-card-body{padding:20px}
+.news-date{font-size:11px;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em}
+.news-title{font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:700;line-height:1.2;margin-bottom:8px;text-transform:uppercase;transition:color .2s}
+.news-card:hover .news-title{color:var(--gold)}
+.news-excerpt{font-size:13px;color:var(--sub);line-height:1.6}
 
-    @media(max-width:640px){.hero{padding:2.5rem 1rem 2rem;}main{padding:2rem 1rem 4rem;}.header-inner{gap:0.75rem;}nav a{font-size:12px;padding:4px 7px;}}
+/* ── ABOUT ── */
+.about-section{position:relative}
+.about-section::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--border-gold),transparent)}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+@media(max-width:900px){.about-grid{grid-template-columns:1fr;gap:40px}}
+.about-text p{font-size:15px;color:var(--sub);line-height:1.8;margin-bottom:16px}
+.about-text p:last-child{margin-bottom:0}
+.about-visual{position:relative}
+.about-box{background:var(--card);border:1px solid var(--border-gold);border-radius:10px;padding:40px;text-align:center}
+.about-logo-display{width:120px;height:120px;margin:0 auto 20px;border-radius:12px;background:var(--card2);border:1px solid var(--border-gold);display:flex;align-items:center;justify-content:center;font-size:56px}
+.about-logo-display img{width:100%;height:100%;object-fit:contain;border-radius:10px}
+.about-fed-name{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:.06em;margin-bottom:6px}
+.about-fed-sub{font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--gold)}
+.about-divider{width:48px;height:1px;background:var(--border-gold);margin:20px auto}
+.about-motto{font-size:13px;color:var(--sub);font-style:italic;line-height:1.6}
+
+/* ── FOOTER ── */
+.footer{background:#030305;border-top:1px solid var(--border);padding:56px 0 28px}
+.footer-top{display:flex;gap:64px;justify-content:space-between;flex-wrap:wrap;margin-bottom:48px}
+.footer-brand .nav-logo-name{font-size:26px;margin-bottom:4px}
+.footer-brand p{font-size:13px;color:var(--muted);max-width:260px;line-height:1.7;margin-top:12px}
+.footer-col h4{font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:8px}
+.footer-col ul li a{font-size:13px;color:var(--sub);transition:color .15s}
+.footer-col ul li a:hover{color:var(--gold)}
+.footer-bottom{border-top:1px solid var(--border);padding-top:24px;display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--muted);flex-wrap:wrap;gap:12px}
+.footer-gold{color:var(--gold)}
+
+/* ── ADMIN PANEL ── */
+.admin-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:300;opacity:0;pointer-events:none;transition:opacity .25s;backdrop-filter:blur(4px)}
+.admin-overlay.open{opacity:1;pointer-events:all}
+.admin-panel{position:fixed;top:0;right:0;bottom:0;width:420px;background:#0d0d14;border-left:1px solid var(--border-gold);z-index:301;transform:translateX(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;overflow:hidden}
+.admin-panel.open{transform:translateX(0)}
+.ap-header{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.ap-header h3{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.08em;display:flex;align-items:center;gap:8px;color:var(--gold)}
+.ap-close{background:none;border:1px solid var(--border);color:var(--sub);width:32px;height:32px;border-radius:4px;font-size:18px;transition:all .15s;display:flex;align-items:center;justify-content:center}
+.ap-close:hover{background:var(--card2);color:var(--text)}
+.ap-tabs{display:flex;overflow-x:auto;border-bottom:1px solid var(--border);flex-shrink:0}
+.ap-tab{background:none;border:none;color:var(--muted);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:12px 16px;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:all .15s}
+.ap-tab:hover{color:var(--text)}
+.ap-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.ap-body{flex:1;overflow-y:auto;padding:24px}
+.ap-section{display:none}
+.ap-section.active{display:block}
+.ap-field{margin-bottom:16px}
+.ap-field label{display:block;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.ap-field input,.ap-field textarea,.ap-field select{width:100%;background:var(--card2);border:1px solid var(--border);color:var(--text);padding:10px 13px;border-radius:5px;font-size:14px;outline:none;transition:border-color .15s}
+.ap-field input:focus,.ap-field textarea:focus{border-color:var(--gold)}
+.ap-field textarea{min-height:80px;resize:vertical;line-height:1.5}
+.ap-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ap-divider{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin:20px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border-gold);display:flex;align-items:center;gap:8px}
+.ap-divider::before{content:'◆';font-size:7px}
+.ap-item{background:var(--card2);border:1px solid var(--border);border-radius:6px;padding:12px;margin-bottom:8px}
+.ap-item .ap-field{margin-bottom:8px}
+.ap-item .ap-field:last-child{margin-bottom:0}
+.btn-ap-add{background:none;border:1px dashed var(--border);color:var(--sub);width:100%;padding:10px;border-radius:5px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;transition:all .15s;margin-bottom:4px}
+.btn-ap-add:hover{border-color:var(--gold);color:var(--gold);background:var(--gold-dim)}
+.btn-del-item{float:right;background:rgba(220,50,50,.1);border:1px solid rgba(220,50,50,.2);color:#e05555;font-size:10px;font-weight:700;padding:3px 8px;border-radius:3px;margin-bottom:8px;cursor:pointer}
+.ap-footer{padding:16px 24px;border-top:1px solid var(--border);display:flex;gap:10px;flex-shrink:0}
+.btn-ap-save{flex:1;background:var(--gold);color:#06060a;border:none;padding:12px;border-radius:5px;font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:.08em;transition:opacity .15s}
+.btn-ap-save:hover{opacity:.85}
+.btn-ap-reset{background:none;border:1px solid var(--border);color:var(--sub);padding:12px 16px;border-radius:5px;font-size:11px;font-weight:700;transition:all .15s}
+.btn-ap-reset:hover{border-color:var(--text);color:var(--text)}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(201,168,76,.15);border:1px solid var(--border-gold);color:var(--gold);font-size:13px;font-weight:600;padding:10px 22px;border-radius:6px;z-index:400;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ── SCROLL ANIMATIONS ── */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:.1s}
+.reveal-delay-2{transition-delay:.2s}
+.reveal-delay-3{transition-delay:.3s}
 </style>
 </head>
 <body>
 
-<header>
-  <div class="header-inner">
-    <a href="index.html" class="logo">
-      <div class="logo-badge">FORMULA<br>UNO</div>
-      <div>
-        <div class="logo-name">Formula Uno SA</div>
-        <div class="logo-sub">Événement officiel</div>
-      </div>
-    </a>
-    <nav>
-      <a href="index.html">Classement</a>
-      <a href="inscription.html">Inscription</a>
-      <a href="ecuries.html">Écuries</a>
-      <a href="qualif.html" class="active">Qualifications</a>
-      <a href="pilotes.html">Pilotes</a>
-      
-    </nav>
-    <button class="sync-btn" onclick="loadAll(true)">↻ Sync</button>
+<!-- ═══════════════════════════════════
+     NAVBAR
+═══════════════════════════════════ -->
+<nav class="navbar" id="navbar">
+  <div class="nav-logo" onclick="logoClicks()">
+    <div class="nav-logo-img placeholder" id="nav-logo-wrap">🏎</div>
+    <div class="nav-logo-text">
+      <span class="nav-logo-name" id="nav-fed-name">FÉDÉRATION</span>
+      <span class="nav-logo-sub" id="nav-fed-sub">Course Méchanique</span>
+    </div>
   </div>
-</header>
+  <div class="nav-links">
+    <a href="#" class="nav-link" onclick="scrollToSection('accueil');return false">Accueil</a>
+    <a href="#" class="nav-link" onclick="scrollToSection('stats');return false">Saison</a>
+    <a href="#" class="nav-link" onclick="scrollToSection('news');return false">Actualités</a>
+    <a href="#" class="nav-link" onclick="scrollToSection('about');return false">Fédération</a>
+    <a href="#" class="nav-link champ" id="nav-champ-link">Championnat</a>
+  </div>
+  <div class="nav-right">
+    <button class="btn-admin-nav" id="btn-admin-nav" onclick="toggleAdmin()">Admin</button>
+  </div>
+</nav>
 
-<section class="hero">
-  <div class="hero-badge">⏱️ Qualifications</div>
-  <h1>Résultats des <span>Qualifications</span></h1>
-  <p class="hero-sub">Q1 · Q2 · Q3 · Grille de départ</p>
+<!-- ═══════════════════════════════════
+     HERO
+═══════════════════════════════════ -->
+<section id="accueil" class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-video-wrap hidden" id="hero-video-wrap"></div>
+  <div class="hero-bg-img" id="hero-bg-img"></div>
+  <div class="hero-content">
+    <div class="hero-badge" id="hero-badge">Saison 2026 — Officiellement Lancée</div>
+    <h1 class="hero-title">
+      <span class="line1" id="hero-line1">FÉDÉRATION</span>
+      <span class="line2" id="hero-line2">DE COURSE</span>
+    </h1>
+    <p class="hero-subtitle" id="hero-subtitle">L'autorité suprême du sport automobile en jeu de rôle</p>
+    <div class="hero-ctas">
+      <a href="#" class="btn-hero-primary" id="hero-btn-champ">🏁 Voir le Championnat</a>
+      <a href="#" class="btn-hero-secondary" onclick="scrollToSection('about');return false">En savoir plus</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <span>Défiler</span>
+    <div class="scroll-line"></div>
+  </div>
 </section>
 
-<main>
+<!-- ═══════════════════════════════════
+     TICKER
+═══════════════════════════════════ -->
+<div class="ticker" id="ticker-wrap">
+  <div class="ticker-inner" id="ticker-inner"></div>
+</div>
 
-  <section class="section">
-    <div class="section-header">
-      <span class="section-num">01</span>
-      <h2 class="section-title">Résultats Qualifications</h2>
+<!-- ═══════════════════════════════════
+     STATS
+═══════════════════════════════════ -->
+<section class="stats-section" id="stats">
+  <div class="inner">
+    <div class="stats-grid" id="stats-grid"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════
+     CHAMPIONNAT
+═══════════════════════════════════ -->
+<section class="champ-section" id="championnat" style="padding:96px 0">
+  <div class="inner">
+    <div class="section-eyebrow reveal">Compétition officielle</div>
+    <div class="section-title reveal reveal-delay-1" id="champ-title-top">Le Championnat</div>
+    <div class="gold-line reveal"></div>
+    <div class="champ-card reveal" id="champ-card" onclick="goToChamp()">
+      <div class="champ-card-left">
+        <div>
+          <div class="champ-tag" id="champ-tag">Championnat Principal</div>
+          <h2 class="champ-name" id="champ-name">MotoGP™<br>Grand Prix</h2>
+          <p class="champ-desc" id="champ-desc">La compétition reine de la fédération. Pilotes, mécaniciens et écuries s'affrontent sur les circuits du monde entier pour décrocher le titre suprême.</p>
+        </div>
+        <button class="btn-champ">
+          Accéder au championnat
+          <span class="btn-champ-arrow">→</span>
+        </button>
+      </div>
+      <div class="champ-card-right">
+        <div class="champ-card-right-bg" id="champ-card-bg"></div>
+        <div class="champ-card-right-overlay"></div>
+        <div class="champ-stats" id="champ-stats"></div>
+      </div>
     </div>
-    <div id="quali-container"><div class="loading"><div class="spinner"></div> Chargement des qualifications...</div></div>
-  </section>
+  </div>
+</section>
 
-</main>
+<!-- ═══════════════════════════════════
+     NEWS
+═══════════════════════════════════ -->
+<section class="news-section" id="news">
+  <div class="inner">
+    <div class="news-header">
+      <div>
+        <div class="section-eyebrow reveal">Dernières nouvelles</div>
+        <div class="section-title reveal reveal-delay-1">Actualités</div>
+      </div>
+      <a href="#" class="news-link reveal">Toutes les actus</a>
+    </div>
+    <div class="news-grid" id="news-grid"></div>
+  </div>
+</section>
 
-<footer>
-  <div class="footer-title">Formula Uno</div>
-  <div class="footer-sub">Formula Uno de San Andreas · Événement officiel ·</div>
+<!-- ═══════════════════════════════════
+     ABOUT
+═══════════════════════════════════ -->
+<section class="about-section" id="about">
+  <div class="inner">
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <div class="section-eyebrow">Notre mission</div>
+        <h2 class="section-title" id="about-title">La Fédération</h2>
+        <div class="gold-line"></div>
+        <div id="about-body"></div>
+      </div>
+      <div class="about-visual reveal reveal-delay-2">
+        <div class="about-box">
+          <div class="about-logo-display" id="about-logo-display">🏎</div>
+          <div class="about-fed-name" id="about-fed-name-box">FÉDÉRATION</div>
+          <div class="about-fed-sub" id="about-fed-sub-box">Course Méchanique</div>
+          <div class="about-divider"></div>
+          <div class="about-motto" id="about-motto">"L'excellence, la compétition, le respect"</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════
+     FOOTER
+═══════════════════════════════════ -->
+<footer class="footer">
+  <div class="inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="nav-logo">
+          <div class="nav-logo-text">
+            <span class="nav-logo-name" id="footer-fed-name">FÉDÉRATION</span>
+            <span class="nav-logo-sub" id="footer-fed-sub">Course Méchanique</span>
+          </div>
+        </div>
+        <p id="footer-desc">L'autorité officielle du sport mécanique.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="#">Accueil</a></li>
+          <li><a href="#" id="footer-champ-link">Championnat</a></li>
+          <li><a href="#">Actualités</a></li>
+          <li><a href="#">Fédération</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Légal</h4>
+        <ul>
+          <li><a href="#">Règlement</a></li>
+          <li><a href="#">Statuts</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span id="footer-copy">© 2026 S.A.M  FÉDÉRATION</span>
+      <span class="footer-gold" id="footer-season">Saison 2026</span>
+    </div>
+  </div>
 </footer>
 
+<!-- ═══════════════════════════════════
+     ADMIN PANEL
+═══════════════════════════════════ -->
+<div class="admin-overlay" id="admin-overlay" onclick="toggleAdmin()"></div>
+<div class="admin-panel" id="admin-panel">
+  <div class="ap-header">
+    <h3>◆ Admin</h3>
+    <button class="ap-close" onclick="toggleAdmin()">✕</button>
+  </div>
+  <div class="ap-tabs">
+    <button class="ap-tab active" onclick="switchTab('general',this)">Général</button>
+    <button class="ap-tab" onclick="switchTab('hero',this)">Hero</button>
+    <button class="ap-tab" onclick="switchTab('champ',this)">Championnat</button>
+    <button class="ap-tab" onclick="switchTab('stats',this)">Stats</button>
+    <button class="ap-tab" onclick="switchTab('news',this)">Actus</button>
+    <button class="ap-tab" onclick="switchTab('about',this)">À propos</button>
+  </div>
+  <div class="ap-body">
+
+    <!-- GÉNÉRAL -->
+    <div class="ap-section active" id="tab-general">
+      <div class="ap-field"><label>Nom de la fédération</label><input id="e-fed-name" type="text" placeholder="FÉDÉRATION"></div>
+      <div class="ap-field"><label>Sous-titre</label><input id="e-fed-sub" type="text" placeholder="Course Méchanique"></div>
+      <div class="ap-field"><label>Logo (URL image)</label><input id="e-logo-url" type="text" placeholder="https://... ou emoji 🏎"></div>
+      <div class="ap-field"><label>Saison actuelle</label><input id="e-saison" type="text" placeholder="Saison 2026"></div>
+      <div class="ap-field"><label>Copyright footer</label><input id="e-footer-copy" type="text" placeholder="© 2026 FÉDÉRATION"></div>
+      <div class="ap-field"><label>Description footer</label><textarea id="e-footer-desc" placeholder="Description de la fédération..."></textarea></div>
+      <div class="ap-divider">Ticker (bandeau défilant)</div>
+      <div id="ticker-edit-list"></div>
+      <button class="btn-ap-add" onclick="addTickerItem()">+ Ajouter un message</button>
+    </div>
+
+    <!-- HERO -->
+    <div class="ap-section" id="tab-hero">
+      <div class="ap-field"><label>Badge (texte petit)</label><input id="e-hero-badge" type="text" placeholder="Saison 2026 — Officiellement Lancée"></div>
+      <div class="ap-field"><label>Titre ligne 1</label><input id="e-hero-line1" type="text" placeholder="FÉDÉRATION"></div>
+      <div class="ap-field"><label>Titre ligne 2 (en or)</label><input id="e-hero-line2" type="text" placeholder="DE COURSE"></div>
+      <div class="ap-field"><label>Sous-titre</label><input id="e-hero-subtitle" type="text" placeholder="L'autorité suprême..."></div>
+      <div class="ap-divider">Arrière-plan</div>
+      <div class="ap-field"><label>URL vidéo YouTube (embed)</label><input id="e-hero-video" type="text" placeholder="https://www.youtube.com/embed/XXXX?autoplay=1&mute=1&loop=1"></div>
+      <div class="ap-field"><label>URL image de fond (si pas de vidéo)</label><input id="e-hero-img" type="text" placeholder="https://..."></div>
+      <div style="font-size:11px;color:var(--muted);margin-top:-8px;margin-bottom:16px">Si une URL vidéo est renseignée, elle est prioritaire sur l'image.</div>
+    </div>
+
+    <!-- CHAMPIONNAT -->
+    <div class="ap-section" id="tab-champ">
+      <div class="ap-field"><label>URL du site championnat</label><input id="e-champ-url" type="text" placeholder="https://ton-pseudo.github.io/motogp-rp"></div>
+      <div class="ap-field"><label>Étiquette (tag)</label><input id="e-champ-tag" type="text" placeholder="Championnat Principal"></div>
+      <div class="ap-field"><label>Nom du championnat</label><input id="e-champ-name" type="text" placeholder="MotoGP™ Grand Prix"></div>
+      <div class="ap-field"><label>Description</label><textarea id="e-champ-desc" placeholder="Description du championnat..."></textarea></div>
+      <div class="ap-field"><label>Image de fond (carte droite)</label><input id="e-champ-img" type="text" placeholder="https://..."></div>
+      <div class="ap-divider">Stats dans la carte</div>
+      <div id="champ-stats-edit"></div>
+      <button class="btn-ap-add" onclick="addChampStat()">+ Ajouter une stat</button>
+    </div>
+
+    <!-- STATS -->
+    <div class="ap-section" id="tab-stats">
+      <div id="stats-edit-list"></div>
+      <button class="btn-ap-add" onclick="addStat()">+ Ajouter une statistique</button>
+    </div>
+
+    <!-- NEWS -->
+    <div class="ap-section" id="tab-news">
+      <div id="news-edit-list"></div>
+      <button class="btn-ap-add" onclick="addNews()">+ Ajouter une actualité</button>
+    </div>
+
+    <!-- ABOUT -->
+    <div class="ap-section" id="tab-about">
+      <div class="ap-field"><label>Titre section</label><input id="e-about-title" type="text" placeholder="La Fédération"></div>
+      <div class="ap-field"><label>Paragraphe 1</label><textarea id="e-about-p1" placeholder="Premier paragraphe..."></textarea></div>
+      <div class="ap-field"><label>Paragraphe 2</label><textarea id="e-about-p2" placeholder="Deuxième paragraphe..."></textarea></div>
+      <div class="ap-field"><label>Paragraphe 3</label><textarea id="e-about-p3" placeholder="Troisième paragraphe (optionnel)..."></textarea></div>
+      <div class="ap-field"><label>Devise / Motto</label><input id="e-motto" type="text" placeholder='"L'excellence, la compétition, le respect"'></div>
+    </div>
+
+  </div>
+  <div class="ap-footer">
+    <button class="btn-ap-save" onclick="saveAdmin()">◆ SAUVEGARDER</button>
+    <button class="btn-ap-reset" onclick="resetAdmin()">Réinitialiser</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
 <script>
+// ═══════════════════════════════════════════════════════
+// DEFAULT DATA
+// ═══════════════════════════════════════════════════════
+const ADMIN_PW = 'admin'; // ← Change ici
 
-
-
-
-// ============================================================
-// ★ FOND DE PAGE — Modifie ces 3 lignes ★
-// ============================================================
-const BG_TYPE    = 'none';    // 'none' | 'image' | 'video' | 'streamable' | 'youtube'
-const BG_URL     = '';         // image → URL .jpg  |  video → URL .mp4
-                               // streamable → code ex: 'gdbszz'
-                               // youtube    → ID ex: 'U2_vT7sgv_c'
-const BG_OPACITY = 0.75;      // Voile sombre : 0.3=léger · 0.75=normal · 0.92=très sombre
-
-(function applyBackground() {
-  if (BG_TYPE === 'none' || !BG_URL) return;
-
-  // Style commun pour tout fond plein écran
-  const fullStyle = `
-    position:fixed;
-    top:50%;
-    left:50%;
-    min-width:100vw;
-    min-height:100vh;
-    width:177.78vh;
-    height:56.25vw;
-    transform:translate(-50%,-50%);
-    z-index:-2;
-    pointer-events:none;
-    border:none;
-    object-fit:cover;
-  `;
-
-  // Voile sombre par dessus
-  const overlay = document.createElement('div');
-  overlay.style.cssText = `
-    position:fixed;top:0;left:0;
-    width:100%;height:100%;
-    background:rgba(0,0,0,${BG_OPACITY});
-    z-index:-1;pointer-events:none;
-  `;
-  document.body.appendChild(overlay);
-
-  if (BG_TYPE === 'image') {
-    document.body.style.backgroundImage = `url('${BG_URL}')`;
-    document.body.style.backgroundSize = 'cover';
-    document.body.style.backgroundPosition = 'center';
-    document.body.style.backgroundAttachment = 'fixed';
-
-  } else if (BG_TYPE === 'video') {
-    const vid = document.createElement('video');
-    vid.style.cssText = fullStyle;
-    // Autoplay — tous les attributs nécessaires pour Chrome/Safari
-    vid.setAttribute('autoplay', '');
-    vid.setAttribute('loop', '');
-    vid.setAttribute('muted', '');
-    vid.setAttribute('playsinline', '');
-    vid.autoplay   = true;
-    vid.loop       = true;
-    vid.muted      = true;
-    vid.defaultMuted = true;
-    vid.playsInline = true;
-    const source = document.createElement('source');
-    source.src  = BG_URL;
-    source.type = 'video/mp4';
-    vid.appendChild(source);
-    document.body.insertBefore(vid, document.body.firstChild);
-    // Plusieurs méthodes pour forcer la lecture
-    const tryPlay = () => vid.play().catch(() => {});
-    vid.addEventListener('loadedmetadata', tryPlay);
-    vid.addEventListener('canplay',        tryPlay);
-    vid.addEventListener('canplaythrough', tryPlay);
-    setTimeout(tryPlay, 500);
-    setTimeout(tryPlay, 1500);
-    vid.load();
-
-  } else if (BG_TYPE === 'streamable') {
-    const iframe = document.createElement('iframe');
-    iframe.style.cssText = fullStyle;
-    iframe.src = `https://streamable.com/e/${BG_URL}?autoplay=1&loop=1&muted=1&nocontrols=1&background=1`;
-    iframe.allow = 'autoplay';
-        document.body.insertBefore(iframe, document.body.firstChild);
-
-  } else if (BG_TYPE === 'youtube') {
-    const iframe = document.createElement('iframe');
-    iframe.style.cssText = fullStyle;
-    iframe.src = `https://www.youtube.com/embed/${BG_URL}?autoplay=1&loop=1&playlist=${BG_URL}&mute=1&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3`;
-    iframe.allow = 'autoplay';
-    document.body.insertBefore(iframe, document.body.firstChild);
+const DEFAULT = {
+  fedName: 'FÉDÉRATION',
+  fedSub: 'Course Méchanique',
+  logoUrl: '',
+  saison: 'Saison 2026',
+  footerCopy: '© 2026 S.A.M  FÉDÉRATION',
+  footerDesc: "L'autorité officielle du sport mécanique.",
+  ticker: [
+    '🏆 Saison 2026 officiellement lancée',
+    '🏎 Les inscriptions sont ouvertes',
+    '📋 Consulte le règlement financier',
+    '⚡ Rejoins la compétition dès maintenant',
+    '🔥 Championnats en cours — Résultats live',
+  ],
+  hero: {
+    badge: 'Saison 2026 — Officiellement Lancée',
+    line1: 'FÉDÉRATION',
+    line2: 'DE COURSE',
+    subtitle: "L'autorité suprême du sport automobile en jeu de rôle",
+    videoUrl: '',
+    imgUrl: '',
+  },
+  champ: {
+    url: './championnat.html',
+    tag: 'Championnat Principal',
+    name: 'MotoGP™\nGrand Prix',
+    desc: 'La compétition reine de la fédération. Pilotes, mécaniciens et écuries s\'affrontent sur les circuits du monde entier pour décrocher le titre suprême.',
+    imgUrl: '',
+    stats: [
+      {icon:'🏎',val:'22',lbl:'Courses'},
+      {icon:'👥',val:'36',lbl:'Pilotes'},
+      {icon:'🏆',val:'12',lbl:'Écuries'},
+    ]
+  },
+  stats: [
+    {num:'22',lbl:'Courses au calendrier'},
+    {num:'36',lbl:'Pilotes inscrits'},
+    {num:'12',lbl:'Écuries engagées'},
+    {num:'8',lbl:'Circuits différents'},
+  ],
+  news: [
+    {cat:'OFFICIEL',date:'18 mai 2026',title:'La saison 2026 est officiellement lancée',excerpt:"La fédération annonce l'ouverture officielle de la saison avec un calendrier de 22 manches.",emoji:'🏁',imgUrl:''},
+    {cat:'INSCRIPTIONS',date:'15 mai 2026',title:'Les inscriptions pour la saison 2026 sont ouvertes',excerpt:"Toutes les écuries souhaitant participer peuvent désormais soumettre leur dossier d'inscription.",emoji:'📋',imgUrl:''},
+    {cat:'RÈGLEMENT',date:'10 mai 2026',title:'Publication du règlement financier 2026',excerpt:"La fédération publie les montants des primes et des frais d'inscription pour la saison en cours.",emoji:'💰',imgUrl:''},
+  ],
+  about: {
+    title: 'La Fédération',
+    p1: "La FÉDÉRATION est l'organe gouvernant officiel du sport automobile dans notre univers de roleplay. Fondée pour encadrer et promouvoir la compétition, elle veille au respect des règles et à l'équité entre tous les participants.",
+    p2: "Notre mission est de garantir des compétitions de haut niveau, de soutenir les écuries et les pilotes dans leur développement, et d'assurer le spectacle pour tous les passionnés de Course Méchanique.",
+    p3: "",
+    motto: '"L\'excellence, la compétition, le respect"',
   }
-})();
+};
 
+// ═══════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════
+let D = JSON.parse(JSON.stringify(DEFAULT));
+let adminOpen = false;
+let adminMode = false;
+let logoClickCount = 0, logoClickTimer = null;
 
-
-const SHEET_ID = '1GmOrWSLecNuF5z7VEYo92XUJHBzfQW4Siih6Tj4cZx4';
-const POINTS_GP = {1:25,2:18,3:15,4:12,5:10,6:8,7:6,8:4,9:2,10:1};
-const BONUS_POLE = 3;
-const BONUS_MTC  = 2;
-
-function fmt(n){
-  if(!n&&n!==0)return'—';
-  const num=Number(String(n).replace(/[\s\u00a0]/g,''));
-  if(num>=1000000)return'$'+(num/1000000).toFixed(num%1000000===0?0:1)+'M';
-  if(num>=1000)return'$'+Math.round(num/1000)+'k';
-  return'$'+num.toLocaleString('fr-FR');
-}
-function cleanNum(s){if(!s&&s!==0)return 0;return parseFloat(String(s).replace(/[\s\u00a0,]/g,''))||0;}
-function getGpPoints(pos){const p=parseInt(pos);return POINTS_GP[p]||0;}
-function statusBadge(s){
-  if(!s)return'';const l=s.toLowerCase();
-  if(l.includes('confirm')||l.includes('inscrit'))return`<span class="badge b-green">${s}</span>`;
-  if(l.includes('attente'))return`<span class="badge b-gold">${s}</span>`;
-  if(l.includes('forfait')||l.includes('absent')||l.includes('disq'))return`<span class="badge b-red">${s}</span>`;
-  if(l.includes('libre')||l.includes('open'))return`<span class="badge b-blue">${s}</span>`;
-  return`<span class="badge b-blue">${s}</span>`;
+// ═══════════════════════════════════════════════════════
+// RENDER
+// ═══════════════════════════════════════════════════════
+function renderAll() {
+  renderNav();
+  renderHero();
+  renderTicker();
+  renderStats();
+  renderChamp();
+  renderNews();
+  renderAbout();
+  renderFooter();
 }
 
-async function fetchSheet(tab){
-  const url=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(tab.name)}&range=${tab.range}&headers=1`;
-  const res=await fetch(url,{credentials:'omit'});
-  if(!res.ok)throw new Error('HTTP '+res.status);
-  const text=await res.text();
-  if(text.includes('<!DOCTYPE'))throw new Error('Got HTML');
-  const clean=text.replace(/^[\s\S]*?setResponse\(/,'').replace(/\);\s*$/,'');
-  const json=JSON.parse(clean);
-  if(!json.table)throw new Error('No table');
-  const cols=json.table.cols.map(c=>(c.label||c.id||'').trim());
-  return(json.table.rows||[]).map(row=>{
-    const obj={};
-    (row.c||[]).forEach((cell,i)=>{obj[cols[i]||'col'+i]=(cell&&cell.v!=null)?String(cell.v):'';});
-    return obj;
-  }).filter(r=>{const f=Object.values(r)[0]||'';return f.trim()&&!f.startsWith('──')&&!f.startsWith('🏎')&&!f.startsWith('📊')&&!f.startsWith('Remplis');});
+function renderNav() {
+  set('nav-fed-name', D.fedName);
+  set('nav-fed-sub', D.fedSub);
+  renderLogo('nav-logo-wrap', D.logoUrl);
+  setChampLink('nav-champ-link', D.champ.url);
+  document.title = D.fedName;
 }
 
-function parseConfig(rows){
-  const cfg={};
-  rows.forEach(r=>{const k=Object.keys(r);const key=r[k[0]]||'';const val=r[k[1]]||'';if(key.trim())cfg[key.trim()]=val.trim();});
-  return cfg;
+function renderLogo(id, url) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  if (url && url.startsWith('http')) {
+    el.innerHTML = `<img src="${url}" alt="Logo">`;
+  } else {
+    el.textContent = url || '🏎';
+  }
 }
 
-function showLoading(id){document.getElementById(id).innerHTML='<div class="loading"><div class="spinner"></div> Chargement...</div>';}
-function showEmpty(id,icon,msg){document.getElementById(id).innerHTML=`<div class="empty-state"><div class="empty-icon">${icon}</div><p>${msg}</p></div>`;}
-
-
-const TABS = {qualif:{name:'QUALIFICATIONS',range:'A4:H100'}};
-async function loadAll(){
-  try{
-    const rows=await fetchSheet(TABS.qualif);
-    renderQualif(rows);
-  }catch(e){console.error(e);showEmpty('quali-container','⏱️','Les qualifications n\'ont pas encore eu lieu.');}
-}
-function renderQualif(quals){
-  const valid=quals.filter(q=>(q['Pos. Grille']||q['Pilote']||'').trim());
-  if(!valid.length){showEmpty('quali-container','⏱️','Les qualifications n\'ont pas encore eu lieu.');return;}
-  const rows=valid.map((q,i)=>{
-    const pos=q['Pos. Grille']||q['pos. grille']||`${i+1}`;
-    const nom=q['Pilote']||q['pilote']||'—';
-    const ecurie=q['Ecurie']||q['ecurie']||'—';
-    const q1=q['Q1']||q['q1']||'';
-    const q2=q['Q2']||q['q2']||'';
-    const q3=q['Q3']||q['q3']||'';
-    const best=q['Meilleur Temps']||q['meilleur temps']||q1||'';
-    const note=q['Note']||q['note']||'';
-    const p=parseInt(pos);
-    const posCls=p===1?'pos-1':p===2?'pos-2':p===3?'pos-3':'pos-n';
-    const isPole=note.toUpperCase().includes('POLE')||p===1;
-    return`<tr>
-      <td><span class="pos-badge ${posCls}">${pos}</span></td>
-      <td style="color:var(--text);font-weight:500;">${nom}${isPole?' <span class="badge b-gold" style="font-size:9px;">POLE</span>':''}</td>
-      <td style="color:var(--muted);font-size:12px;">${ecurie}</td>
-      <td style="font-family:monospace;font-size:11px;color:var(--muted);">${q1}</td>
-      <td style="font-family:monospace;font-size:11px;color:var(--muted);">${q2}</td>
-      <td style="font-family:monospace;font-size:11px;color:var(--muted);">${q3}</td>
-      <td style="font-family:monospace;font-weight:700;color:var(--gold);font-size:12px;">${best}</td>
-    </tr>`;
-  }).join('');
-  document.getElementById('quali-container').innerHTML=`
-    <div style="overflow-x:auto;"><table class="data-table">
-      <thead><tr><th>Grille</th><th>Pilote</th><th>Écurie</th><th>Q1</th><th>Q2</th><th>Q3</th><th style="color:var(--gold)">Meilleur</th></tr></thead>
-      <tbody>${rows}</tbody>
-    </table></div>
-    <div class="info"><strong>Q1</strong> = tous les pilotes · <strong>Q2</strong> = top 10 · <strong>Q3</strong> = top 6 (pole position). Pour indiquer la pole, mettre <strong>POLE</strong> dans la colonne Note.</div>`;
+function setChampLink(id, url) {
+  const el = document.getElementById(id);
+  if (el) el.href = url || '#';
 }
 
-window.addEventListener('DOMContentLoaded', ()=>loadAll());
+function renderHero() {
+  const h = D.hero;
+  set('hero-badge', h.badge);
+  set('hero-line1', h.line1);
+  set('hero-line2', h.line2);
+  set('hero-subtitle', h.subtitle);
+  // Video
+  const vw = document.getElementById('hero-video-wrap');
+  const bg = document.getElementById('hero-bg-img');
+  if (h.videoUrl) {
+    vw.classList.remove('hidden');
+    vw.innerHTML = `<iframe src="${h.videoUrl}" frameborder="0" allow="autoplay;muted" allowfullscreen></iframe>`;
+    bg.style.backgroundImage = '';
+  } else {
+    vw.classList.add('hidden');
+    vw.innerHTML = '';
+    bg.style.backgroundImage = h.imgUrl ? `url('${h.imgUrl}')` : '';
+  }
+  // CTA link
+  const btn = document.getElementById('hero-btn-champ');
+  if (btn) btn.href = D.champ.url || '#';
+}
+
+function renderTicker() {
+  const items = D.ticker || [];
+  const doubled = [...items, ...items]; // infinite loop trick
+  document.getElementById('ticker-inner').innerHTML = doubled.map(t =>
+    `<span class="ticker-item">${t}<span class="ticker-sep">◆</span></span>`
+  ).join('');
+}
+
+function renderStats() {
+  document.getElementById('stats-grid').innerHTML = D.stats.map(s => `
+    <div class="stat-item reveal">
+      <div class="stat-num counter" data-target="${parseInt(s.num)||0}">${s.num}</div>
+      <div class="stat-label">${s.lbl}</div>
+    </div>`).join('');
+  triggerReveal();
+}
+
+function renderChamp() {
+  const c = D.champ;
+  set('champ-tag', c.tag);
+  document.getElementById('champ-name').innerHTML = (c.name||'').replace('\n','<br>');
+  set('champ-desc', c.desc);
+  document.getElementById('champ-card-bg').style.backgroundImage = c.imgUrl ? `url('${c.imgUrl}')` : '';
+  document.getElementById('champ-stats').innerHTML = (c.stats||[]).map(s => `
+    <div class="cs-item">
+      <span class="cs-icon">${s.icon}</span>
+      <div><div class="cs-val">${s.val}</div><div class="cs-lbl">${s.lbl}</div></div>
+    </div>`).join('');
+  const card = document.getElementById('champ-card');
+  if (card) card.onclick = goToChamp;
+  set('champ-title-top', 'Le ' + (c.name||'Championnat').split('\n')[0]);
+}
+
+function goToChamp() {
+  const url = D.champ.url;
+  if (url && url !== '#') window.open(url, '_blank');
+}
+
+function renderNews() {
+  document.getElementById('news-grid').innerHTML = D.news.map(n => `
+    <div class="news-card reveal">
+      <div class="news-card-img">
+        ${n.imgUrl ? `<div class="news-card-img-bg" style="background-image:url('${n.imgUrl}')"></div>` : ''}
+        <div class="news-cat">${n.cat}</div>
+        <span style="position:relative;z-index:1">${n.emoji||'📰'}</span>
+      </div>
+      <div class="news-card-body">
+        <div class="news-date">${n.date}</div>
+        <div class="news-title">${n.title}</div>
+        <div class="news-excerpt">${n.excerpt}</div>
+      </div>
+    </div>`).join('');
+  triggerReveal();
+}
+
+function renderAbout() {
+  const a = D.about;
+  set('about-title', a.title);
+  const body = document.getElementById('about-body');
+  if (body) body.innerHTML = [a.p1,a.p2,a.p3].filter(Boolean).map(p=>`<p>${p}</p>`).join('');
+  set('about-fed-name-box', D.fedName);
+  set('about-fed-sub-box', D.fedSub);
+  set('about-motto', a.motto);
+  renderLogo('about-logo-display', D.logoUrl);
+}
+
+function renderFooter() {
+  set('footer-fed-name', D.fedName);
+  set('footer-fed-sub', D.fedSub);
+  set('footer-desc', D.footerDesc);
+  set('footer-copy', D.footerCopy);
+  set('footer-season', D.saison);
+  setChampLink('footer-champ-link', D.champ.url);
+}
+
+function set(id, val) { const el=document.getElementById(id); if(el) el.textContent=val||''; }
+
+// ═══════════════════════════════════════════════════════
+// SCROLL & ANIMATIONS
+// ═══════════════════════════════════════════════════════
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+  triggerReveal();
+});
+
+function triggerReveal() {
+  document.querySelectorAll('.reveal:not(.visible)').forEach(el => {
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight - 60) el.classList.add('visible');
+  });
+}
+
+function scrollToSection(id) {
+  document.getElementById(id)?.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+// ═══════════════════════════════════════════════════════
+// ADMIN
+// ═══════════════════════════════════════════════════════
+function logoClicks() {
+  logoClickCount++;
+  clearTimeout(logoClickTimer);
+  if (logoClickCount >= 3) {
+    logoClickCount = 0;
+    if (!adminMode) {
+      const pw = prompt('Mot de passe admin :');
+      if (pw !== ADMIN_PW) { showToast('❌ Mot de passe incorrect'); return; }
+      adminMode = true;
+      document.getElementById('btn-admin-nav').classList.add('show');
+      showToast('✓ Mode admin activé');
+    } else {
+      toggleAdmin();
+    }
+    return;
+  }
+  logoClickTimer = setTimeout(() => logoClickCount = 0, 1500);
+}
+
+function toggleAdmin() {
+  if (!adminMode) return;
+  adminOpen = !adminOpen;
+  document.getElementById('admin-panel').classList.toggle('open', adminOpen);
+  document.getElementById('admin-overlay').classList.toggle('open', adminOpen);
+  document.getElementById('btn-admin-nav').classList.toggle('active', adminOpen);
+  if (adminOpen) fillAdminForms();
+}
+
+function switchTab(name, btn) {
+  document.querySelectorAll('.ap-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.ap-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  btn.classList.add('active');
+}
+
+function fillAdminForms() {
+  sv('e-fed-name', D.fedName); sv('e-fed-sub', D.fedSub);
+  sv('e-logo-url', D.logoUrl); sv('e-saison', D.saison);
+  sv('e-footer-copy', D.footerCopy); sv('e-footer-desc', D.footerDesc);
+  sv('e-hero-badge', D.hero.badge); sv('e-hero-line1', D.hero.line1);
+  sv('e-hero-line2', D.hero.line2); sv('e-hero-subtitle', D.hero.subtitle);
+  sv('e-hero-video', D.hero.videoUrl); sv('e-hero-img', D.hero.imgUrl);
+  sv('e-champ-url', D.champ.url); sv('e-champ-tag', D.champ.tag);
+  sv('e-champ-name', D.champ.name); sv('e-champ-desc', D.champ.desc);
+  sv('e-champ-img', D.champ.imgUrl);
+  sv('e-about-title', D.about.title); sv('e-about-p1', D.about.p1);
+  sv('e-about-p2', D.about.p2); sv('e-about-p3', D.about.p3||'');
+  sv('e-motto', D.about.motto);
+  buildTickerEdit(); buildStatsEdit(); buildChampStatsEdit(); buildNewsEdit();
+}
+
+function sv(id, val) { const el=document.getElementById(id); if(el) el.value=val||''; }
+function gv(id) { return document.getElementById(id)?.value||''; }
+
+// ── List editors ──────────────────────────────
+function buildTickerEdit() {
+  document.getElementById('ticker-edit-list').innerHTML = D.ticker.map((t,i) => `
+    <div class="ap-item">
+      <button class="btn-del-item" onclick="D.ticker.splice(${i},1);buildTickerEdit()">✕</button>
+      <div class="ap-field"><input type="text" data-ticker="${i}" value="${escH(t)}"></div>
+    </div>`).join('');
+}
+function addTickerItem() { D.ticker.push('Nouveau message'); buildTickerEdit(); }
+
+function buildStatsEdit() {
+  document.getElementById('stats-edit-list').innerHTML = D.stats.map((s,i) => `
+    <div class="ap-item">
+      <button class="btn-del-item" onclick="D.stats.splice(${i},1);buildStatsEdit()">✕</button>
+      <div class="ap-row">
+        <div class="ap-field"><label>Nombre</label><input type="text" data-stat="${i}" data-key="num" value="${escH(s.num)}"></div>
+        <div class="ap-field"><label>Libellé</label><input type="text" data-stat="${i}" data-key="lbl" value="${escH(s.lbl)}"></div>
+      </div>
+    </div>`).join('');
+}
+function addStat() { D.stats.push({num:'0',lbl:'Nouveau'}); buildStatsEdit(); }
+
+function buildChampStatsEdit() {
+  document.getElementById('champ-stats-edit').innerHTML = (D.champ.stats||[]).map((s,i) => `
+    <div class="ap-item">
+      <button class="btn-del-item" onclick="D.champ.stats.splice(${i},1);buildChampStatsEdit()">✕</button>
+      <div class="ap-row">
+        <div class="ap-field"><label>Emoji</label><input type="text" data-cs="${i}" data-key="icon" value="${escH(s.icon)}"></div>
+        <div class="ap-field"><label>Valeur</label><input type="text" data-cs="${i}" data-key="val" value="${escH(s.val)}"></div>
+      </div>
+      <div class="ap-field"><label>Libellé</label><input type="text" data-cs="${i}" data-key="lbl" value="${escH(s.lbl)}"></div>
+    </div>`).join('');
+}
+function addChampStat() { D.champ.stats.push({icon:'🏆',val:'0',lbl:'Stat'}); buildChampStatsEdit(); }
+
+function buildNewsEdit() {
+  document.getElementById('news-edit-list').innerHTML = D.news.map((n,i) => `
+    <div class="ap-item">
+      <button class="btn-del-item" onclick="D.news.splice(${i},1);buildNewsEdit()">✕</button>
+      <div class="ap-row">
+        <div class="ap-field"><label>Catégorie</label><input type="text" data-news="${i}" data-key="cat" value="${escH(n.cat)}"></div>
+        <div class="ap-field"><label>Emoji</label><input type="text" data-news="${i}" data-key="emoji" value="${escH(n.emoji)}"></div>
+      </div>
+      <div class="ap-field"><label>Date</label><input type="text" data-news="${i}" data-key="date" value="${escH(n.date)}"></div>
+      <div class="ap-field"><label>Titre</label><input type="text" data-news="${i}" data-key="title" value="${escH(n.title)}"></div>
+      <div class="ap-field"><label>Extrait</label><input type="text" data-news="${i}" data-key="excerpt" value="${escH(n.excerpt)}"></div>
+      <div class="ap-field"><label>Image URL (optionnel)</label><input type="text" data-news="${i}" data-key="imgUrl" value="${escH(n.imgUrl||'')}"></div>
+    </div>`).join('');
+}
+function addNews() { D.news.unshift({cat:'NEWS',date:'Aujourd\'hui',title:'Nouvelle actualité',excerpt:'Description...',emoji:'📰',imgUrl:''}); buildNewsEdit(); }
+
+function escH(s) { return String(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+
+// ── Save ──────────────────────────────────────
+function saveAdmin() {
+  D.fedName = gv('e-fed-name'); D.fedSub = gv('e-fed-sub');
+  D.logoUrl = gv('e-logo-url'); D.saison = gv('e-saison');
+  D.footerCopy = gv('e-footer-copy'); D.footerDesc = gv('e-footer-desc');
+  D.hero = {badge:gv('e-hero-badge'),line1:gv('e-hero-line1'),line2:gv('e-hero-line2'),subtitle:gv('e-hero-subtitle'),videoUrl:gv('e-hero-video'),imgUrl:gv('e-hero-img')};
+  D.champ.url = gv('e-champ-url'); D.champ.tag = gv('e-champ-tag');
+  D.champ.name = gv('e-champ-name'); D.champ.desc = gv('e-champ-desc');
+  D.champ.imgUrl = gv('e-champ-img');
+  D.about = {title:gv('e-about-title'),p1:gv('e-about-p1'),p2:gv('e-about-p2'),p3:gv('e-about-p3'),motto:gv('e-motto')};
+  // Collect lists
+  document.querySelectorAll('[data-ticker]').forEach(el => D.ticker[parseInt(el.dataset.ticker)] = el.value);
+  document.querySelectorAll('[data-stat]').forEach(el => { if(!D.stats[parseInt(el.dataset.stat)])D.stats[parseInt(el.dataset.stat)]={};D.stats[parseInt(el.dataset.stat)][el.dataset.key]=el.value; });
+  document.querySelectorAll('[data-cs]').forEach(el => { if(!D.champ.stats[parseInt(el.dataset.cs)])D.champ.stats[parseInt(el.dataset.cs)]={};D.champ.stats[parseInt(el.dataset.cs)][el.dataset.key]=el.value; });
+  document.querySelectorAll('[data-news]').forEach(el => { if(!D.news[parseInt(el.dataset.news)])D.news[parseInt(el.dataset.news)]={};D.news[parseInt(el.dataset.news)][el.dataset.key]=el.value; });
+  save(); renderAll(); showToast('✓ Sauvegardé !');
+}
+
+function resetAdmin() {
+  if (!confirm('Réinitialiser toutes les données ?')) return;
+  D = JSON.parse(JSON.stringify(DEFAULT));
+  save(); renderAll(); fillAdminForms(); showToast('✓ Réinitialisé');
+}
+
+// ═══════════════════════════════════════════════════════
+// STORAGE
+// ═══════════════════════════════════════════════════════
+function save() { try { localStorage.setItem('fed-rp-data', JSON.stringify(D)); } catch(e){} }
+function load() { try { const s=localStorage.getItem('fed-rp-data'); if(s) D={...DEFAULT,...JSON.parse(s),hero:{...DEFAULT.hero,...JSON.parse(s).hero},champ:{...DEFAULT.champ,...JSON.parse(s).champ},about:{...DEFAULT.about,...JSON.parse(s).about}}; } catch(e){} }
+
+// ═══════════════════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════════════════
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2800);
+}
+
+// ═══════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════
+load();
+renderAll();
+setTimeout(triggerReveal, 100);
 </script>
 </body>
 </html>
