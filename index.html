@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fédération DE COURSE</title>
+<title>Fédération de Course</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700;1,900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -212,7 +212,62 @@ section{padding:96px 0}
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(201,168,76,.15);border:1px solid var(--border-gold);color:var(--gold);font-size:13px;font-weight:600;padding:10px 22px;border-radius:6px;z-index:400;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
-/* ── SCROLL ANIMATIONS ── */
+/* ── RÈGLEMENT ─────────────────────────────────── */
+.regl-section{background:var(--bg2);border-top:1px solid var(--border)}
+.regl-articles{display:flex;flex-direction:column;gap:12px;margin-top:8px}
+.regl-article{background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden;transition:border-color .2s}
+.regl-article:hover{border-color:var(--border-gold)}
+.regl-article-hdr{display:flex;align-items:center;gap:14px;padding:16px 20px;cursor:pointer;user-select:none}
+.regl-art-num{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--gold);width:36px;flex-shrink:0;line-height:1}
+.regl-art-title{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:.05em;flex:1}
+.regl-art-arrow{color:var(--muted);font-size:12px;transition:transform .2s;flex-shrink:0}
+.regl-article.open .regl-art-arrow{transform:rotate(180deg)}
+.regl-art-body{font-size:14px;color:var(--sub);line-height:1.8;padding:0 20px 16px 70px;display:none}
+.regl-article.open .regl-art-body{display:block}
+
+/* ── PALMARÈS ──────────────────────────────────── */
+.palmares-section{background:var(--bg)}
+.palmares-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.palm-card{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;transition:transform .2s,border-color .2s}
+.palm-card:hover{transform:translateY(-3px);border-color:var(--border-gold)}
+.palm-card.p1{border-color:var(--border-gold);background:linear-gradient(135deg,rgba(201,168,76,.06),var(--card))}
+.palm-card-top{padding:16px 20px 12px;border-bottom:1px solid var(--border);background:var(--card2)}
+.palm-saison{font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
+.palm-gp{font-size:12px;color:var(--sub)}
+.palm-trophy{font-size:28px;margin-bottom:6px}
+.palm-champion{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:.04em;color:var(--text);line-height:1}
+.palm-card.p1 .palm-champion{color:var(--gold)}
+.palm-body{padding:14px 20px}
+.palm-row{display:flex;align-items:center;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);font-size:13px}
+.palm-row:last-child{border-bottom:none}
+.palm-row-label{color:var(--muted)}
+.palm-row-val{font-weight:600;color:var(--text)}
+
+/* ── GALERIE ───────────────────────────────────── */
+.galerie-section{background:var(--bg2);border-top:1px solid var(--border)}
+.galerie-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.gal-item{border-radius:8px;overflow:hidden;cursor:pointer;position:relative;aspect-ratio:16/9;background:var(--card);border:1px solid var(--border);transition:transform .2s,border-color .2s;group:true}
+.gal-item:hover{transform:scale(1.02);border-color:var(--border-gold)}
+.gal-item img{width:100%;height:100%;object-fit:cover;display:block}
+.gal-item-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.7),transparent);opacity:0;transition:opacity .2s;display:flex;flex-direction:column;justify-content:flex-end;padding:12px}
+.gal-item:hover .gal-item-overlay{opacity:1}
+.gal-item-title{font-size:13px;font-weight:600;color:#fff}
+.gal-item-type{position:absolute;top:10px;right:10px;background:rgba(0,0,0,.6);border-radius:4px;padding:3px 8px;font-size:10px;font-weight:700;color:rgba(255,255,255,.8);letter-spacing:.06em;text-transform:uppercase}
+.gal-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:48px;height:48px;border-radius:50%;background:rgba(201,168,76,.9);display:flex;align-items:center;justify-content:center;font-size:18px;opacity:0;transition:opacity .2s}
+.gal-item:hover .gal-play{opacity:1}
+.gal-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:40px;background:var(--card2)}
+
+/* LIGHTBOX */
+.lightbox{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:500;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px)}
+.lightbox.hidden{display:none}
+.lb-close{position:absolute;top:20px;right:24px;background:none;border:1px solid var(--border);color:var(--sub);width:36px;height:36px;border-radius:50%;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;z-index:1}
+.lb-close:hover{border-color:var(--text);color:var(--text)}
+.lb-content{max-width:900px;width:100%;aspect-ratio:16/9}
+.lb-content img{width:100%;height:100%;object-fit:contain}
+.lb-content iframe{width:100%;height:100%;border:none;border-radius:6px}
+
+/* ── RÈGLEMENT ADMIN ITEMS ─────────────────────── */
+.regl-section{background:var(--bg2)}
 .reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
 .reveal.visible{opacity:1;transform:translateY(0)}
 .reveal-delay-1{transition-delay:.1s}
@@ -230,12 +285,15 @@ section{padding:96px 0}
     <div class="nav-logo-img placeholder" id="nav-logo-wrap">🏎</div>
     <div class="nav-logo-text">
       <span class="nav-logo-name" id="nav-fed-name">FÉDÉRATION</span>
-      <span class="nav-logo-sub" id="nav-fed-sub">Course Méchanique</span>
+      <span class="nav-logo-sub" id="nav-fed-sub">Sport Mécanique</span>
     </div>
   </div>
   <div class="nav-links">
     <a href="#" class="nav-link" onclick="scrollToSection('accueil');return false">Accueil</a>
     <a href="#" class="nav-link" onclick="scrollToSection('stats');return false">Saison</a>
+    <a href="#" class="nav-link" onclick="scrollToSection('palmares');return false">Palmarès</a>
+    <a href="#" class="nav-link" onclick="scrollToSection('galerie');return false">Galerie</a>
+    <a href="#" class="nav-link" onclick="scrollToSection('reglement');return false">Règlement</a>
     <a href="#" class="nav-link" onclick="scrollToSection('news');return false">Actualités</a>
     <a href="#" class="nav-link" onclick="scrollToSection('about');return false">Fédération</a>
     <a href="#" class="nav-link champ" id="nav-champ-link">Championnat</a>
@@ -258,7 +316,7 @@ section{padding:96px 0}
       <span class="line1" id="hero-line1">FÉDÉRATION</span>
       <span class="line2" id="hero-line2">DE COURSE</span>
     </h1>
-    <p class="hero-subtitle" id="hero-subtitle">L'autorité suprême du sport automobile en jeu de rôle</p>
+    <p class="hero-subtitle" id="hero-subtitle">L'autorité suprême du sport mécanique</p>
     <div class="hero-ctas">
       <a href="#" class="btn-hero-primary" id="hero-btn-champ">🏁 Voir le Championnat</a>
       <a href="#" class="btn-hero-secondary" onclick="scrollToSection('about');return false">En savoir plus</a>
@@ -316,6 +374,48 @@ section{padding:96px 0}
 </section>
 
 <!-- ═══════════════════════════════════
+     PALMARÈS
+═══════════════════════════════════ -->
+<section class="palmares-section" id="palmares" style="padding:96px 0">
+  <div class="inner">
+    <div class="section-eyebrow reveal">Histoires & Légendes</div>
+    <div class="section-title reveal reveal-delay-1">Palmarès</div>
+    <div class="gold-line reveal"></div>
+    <div class="palmares-grid reveal" id="palmares-grid"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════
+     GALERIE
+═══════════════════════════════════ -->
+<section class="galerie-section" id="galerie" style="padding:96px 0">
+  <div class="inner">
+    <div class="section-eyebrow reveal">Photos & Vidéos</div>
+    <div class="section-title reveal reveal-delay-1">Galerie</div>
+    <div class="gold-line reveal"></div>
+    <div class="galerie-grid reveal" id="galerie-grid"></div>
+  </div>
+</section>
+
+<!-- LIGHTBOX -->
+<div class="lightbox hidden" id="lightbox">
+  <button class="lb-close" onclick="closeLightbox()">✕</button>
+  <div class="lb-content" id="lb-content"></div>
+</div>
+
+<!-- ═══════════════════════════════════
+     RÈGLEMENT
+═══════════════════════════════════ -->
+<section class="regl-section" id="reglement" style="padding:96px 0">
+  <div class="inner">
+    <div class="section-eyebrow reveal">Officiel</div>
+    <div class="section-title reveal reveal-delay-1">Règlement</div>
+    <div class="gold-line reveal"></div>
+    <div class="regl-articles reveal" id="regl-articles"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════
      NEWS
 ═══════════════════════════════════ -->
 <section class="news-section" id="news">
@@ -346,8 +446,8 @@ section{padding:96px 0}
       <div class="about-visual reveal reveal-delay-2">
         <div class="about-box">
           <div class="about-logo-display" id="about-logo-display">🏎</div>
-          <div class="about-fed-name" id="about-fed-name-box">FÉDÉRATION</div>
-          <div class="about-fed-sub" id="about-fed-sub-box">Course Méchanique</div>
+          <div class="about-fed-name" id="about-fed-name-box">FÉDÉRATION RP</div>
+          <div class="about-fed-sub" id="about-fed-sub-box">Course Automobile</div>
           <div class="about-divider"></div>
           <div class="about-motto" id="about-motto">"L'excellence, la compétition, le respect"</div>
         </div>
@@ -366,7 +466,7 @@ section{padding:96px 0}
         <div class="nav-logo">
           <div class="nav-logo-text">
             <span class="nav-logo-name" id="footer-fed-name">FÉDÉRATION</span>
-            <span class="nav-logo-sub" id="footer-fed-sub">Course Méchanique</span>
+            <span class="nav-logo-sub" id="footer-fed-sub">Sport Mécanique</span>
           </div>
         </div>
         <p id="footer-desc">L'autorité officielle du sport mécanique.</p>
@@ -390,7 +490,7 @@ section{padding:96px 0}
       </div>
     </div>
     <div class="footer-bottom">
-      <span id="footer-copy">© 2026 S.A.M  FÉDÉRATION</span>
+      <span id="footer-copy">© 2026 Fédération — Tous droits réservés</span>
       <span class="footer-gold" id="footer-season">Saison 2026</span>
     </div>
   </div>
@@ -412,16 +512,19 @@ section{padding:96px 0}
     <button class="ap-tab" onclick="switchTab('stats',this)">Stats</button>
     <button class="ap-tab" onclick="switchTab('news',this)">Actus</button>
     <button class="ap-tab" onclick="switchTab('about',this)">À propos</button>
+    <button class="ap-tab" onclick="switchTab('palmares',this)">🏆 Palmarès</button>
+    <button class="ap-tab" onclick="switchTab('galerie',this)">🖼 Galerie</button>
+    <button class="ap-tab" onclick="switchTab('reglement',this)">📋 Règlement</button>
   </div>
   <div class="ap-body">
 
     <!-- GÉNÉRAL -->
     <div class="ap-section active" id="tab-general">
-      <div class="ap-field"><label>Nom de la fédération</label><input id="e-fed-name" type="text" placeholder="FÉDÉRATION"></div>
-      <div class="ap-field"><label>Sous-titre</label><input id="e-fed-sub" type="text" placeholder="Course Méchanique"></div>
+      <div class="ap-field"><label>Nom de la fédération</label><input id="e-fed-name" type="text" placeholder="FÉDÉRATION RP"></div>
+      <div class="ap-field"><label>Sous-titre</label><input id="e-fed-sub" type="text" placeholder="Course Automobile"></div>
       <div class="ap-field"><label>Logo (URL image)</label><input id="e-logo-url" type="text" placeholder="https://... ou emoji 🏎"></div>
       <div class="ap-field"><label>Saison actuelle</label><input id="e-saison" type="text" placeholder="Saison 2026"></div>
-      <div class="ap-field"><label>Copyright footer</label><input id="e-footer-copy" type="text" placeholder="© 2026 FÉDÉRATION"></div>
+      <div class="ap-field"><label>Copyright footer</label><input id="e-footer-copy" type="text" placeholder="© 2026 Fédération RP"></div>
       <div class="ap-field"><label>Description footer</label><textarea id="e-footer-desc" placeholder="Description de la fédération..."></textarea></div>
       <div class="ap-divider">Ticker (bandeau défilant)</div>
       <div id="ticker-edit-list"></div>
@@ -432,7 +535,7 @@ section{padding:96px 0}
     <div class="ap-section" id="tab-hero">
       <div class="ap-field"><label>Badge (texte petit)</label><input id="e-hero-badge" type="text" placeholder="Saison 2026 — Officiellement Lancée"></div>
       <div class="ap-field"><label>Titre ligne 1</label><input id="e-hero-line1" type="text" placeholder="FÉDÉRATION"></div>
-      <div class="ap-field"><label>Titre ligne 2 (en or)</label><input id="e-hero-line2" type="text" placeholder="DE COURSE"></div>
+      <div class="ap-field"><label>Titre ligne 2 (en or)</label><input id="e-hero-line2" type="text" placeholder="DE COURSE RP"></div>
       <div class="ap-field"><label>Sous-titre</label><input id="e-hero-subtitle" type="text" placeholder="L'autorité suprême..."></div>
       <div class="ap-divider">Arrière-plan</div>
       <div class="ap-field"><label>URL vidéo YouTube (embed)</label><input id="e-hero-video" type="text" placeholder="https://www.youtube.com/embed/XXXX?autoplay=1&mute=1&loop=1"></div>
@@ -475,6 +578,27 @@ section{padding:96px 0}
 
   </div>
   <div class="ap-footer">
+
+    <!-- PALMARÈS -->
+    <div class="ap-section" id="tab-palmares" style="display:none">
+      <div id="palmares-edit-list"></div>
+      <button class="btn-ap-add" onclick="addPalmares()">+ Ajouter une saison</button>
+    </div>
+
+    <!-- GALERIE -->
+    <div class="ap-section" id="tab-galerie" style="display:none">
+      <div id="galerie-edit-list"></div>
+      <button class="btn-ap-add" onclick="addGalerie()">+ Ajouter un média</button>
+    </div>
+
+    <!-- RÈGLEMENT -->
+    <div class="ap-section" id="tab-reglement" style="display:none">
+      <div id="reglement-edit-list"></div>
+      <button class="btn-ap-add" onclick="addReglArticle()">+ Ajouter un article</button>
+    </div>
+
+  </div>
+  <div class="ap-footer">
     <button class="btn-ap-save" onclick="saveAdmin()">◆ SAUVEGARDER</button>
     <button class="btn-ap-reset" onclick="resetAdmin()">Réinitialiser</button>
   </div>
@@ -490,10 +614,10 @@ const ADMIN_PW = 'admin'; // ← Change ici
 
 const DEFAULT = {
   fedName: 'FÉDÉRATION',
-  fedSub: 'Course Méchanique',
+  fedSub: 'Sport Mécanique',
   logoUrl: '',
   saison: 'Saison 2026',
-  footerCopy: '© 2026 S.A.M  FÉDÉRATION',
+  footerCopy: '© 2026 Fédération — Tous droits réservés',
   footerDesc: "L'autorité officielle du sport mécanique.",
   ticker: [
     '🏆 Saison 2026 officiellement lancée',
@@ -506,14 +630,14 @@ const DEFAULT = {
     badge: 'Saison 2026 — Officiellement Lancée',
     line1: 'FÉDÉRATION',
     line2: 'DE COURSE',
-    subtitle: "L'autorité suprême du sport automobile en jeu de rôle",
+    subtitle: "L'autorité suprême du sport mécanique",
     videoUrl: '',
     imgUrl: '',
   },
   champ: {
     url: './championnat.html',
     tag: 'Championnat Principal',
-    name: 'MotoGP™\nGrand Prix',
+    name: 'Grand Prix\nChampionnat',
     desc: 'La compétition reine de la fédération. Pilotes, mécaniciens et écuries s\'affrontent sur les circuits du monde entier pour décrocher le titre suprême.',
     imgUrl: '',
     stats: [
@@ -535,11 +659,24 @@ const DEFAULT = {
   ],
   about: {
     title: 'La Fédération',
-    p1: "La FÉDÉRATION est l'organe gouvernant officiel du sport automobile dans notre univers de roleplay. Fondée pour encadrer et promouvoir la compétition, elle veille au respect des règles et à l'équité entre tous les participants.",
-    p2: "Notre mission est de garantir des compétitions de haut niveau, de soutenir les écuries et les pilotes dans leur développement, et d'assurer le spectacle pour tous les passionnés de Course Méchanique.",
+    p1: "La Fédération est l'organe gouvernant officiel du sport mécanique. Fondée pour encadrer et promouvoir la compétition, elle veille au respect des règles et à l'équité entre tous les participants.",
+    p2: "Notre mission est de garantir des compétitions de haut niveau, de soutenir les écuries et les pilotes dans leur développement, et d'assurer le spectacle pour tous les passionnés de sport mécanique.",
     p3: "",
     motto: '"L\'excellence, la compétition, le respect"',
-  }
+  },
+  palmares: [
+    {saison:'Saison 2026',gp:'À venir',champion:'—',ecurie:'—',points:'—',vice:'—',img:''},
+  ],
+  galerie: [
+    {type:'photo',url:'',titre:'Grand Prix',desc:''},
+  ],
+  reglement: [
+    {titre:'Inscription',texte:"Les frais d'inscription sont dus avant le début des qualifications. Sans paiement validé, le pilote n'est pas admis sur la grille."},
+    {titre:'Composition des écuries',texte:"Chaque écurie aligne 2 pilotes et 5 mécaniciens maximum."},
+    {titre:'Déroulement de l\'épreuve',texte:"La course se déroule sur le circuit officiel. Tout pilote doit respecter le tracé défini par les commissaires."},
+    {titre:'Sanctions',texte:"Le commissaire de piste se réserve le droit d'infliger des pénalités aux pilotes commettant des infractions. Toute décision est définitive."},
+    {titre:'Gains',texte:"Toute écurie remportant des gains devra obligatoirement en reverser une partie aux pilotes et mécaniciens. Les écuries sont libres de fixer leur propre répartition."},
+  ]
 };
 
 // ═══════════════════════════════════════════════════════
@@ -559,9 +696,103 @@ function renderAll() {
   renderTicker();
   renderStats();
   renderChamp();
+  renderPalmares();
+  renderGalerie();
+  renderReglement();
   renderNews();
   renderAbout();
   renderFooter();
+}
+
+function renderPalmares() {
+  const items = D.palmares || [];
+  const el = document.getElementById('palmares-grid');
+  if (!el) return;
+  if (items.length === 0) { el.innerHTML = '<div style="color:var(--sub);font-style:italic">Aucun palmarès pour l\'instant.</div>'; return; }
+  el.innerHTML = items.map(function(p, i) {
+    const cls = i === 0 ? 'p1' : '';
+    return `<div class="palm-card ${cls}">
+      <div class="palm-card-top">
+        <div class="palm-saison">${p.saison}</div>
+        <div class="palm-gp">${p.gp||''}</div>
+      </div>
+      <div style="padding:16px 20px 8px">
+        <div class="palm-trophy">${i===0?'🏆':i===1?'🥈':'🥉'}</div>
+        <div class="palm-champion">${p.champion||'—'}</div>
+      </div>
+      <div class="palm-body">
+        <div class="palm-row"><span class="palm-row-label">Écurie</span><span class="palm-row-val">${p.ecurie||'—'}</span></div>
+        <div class="palm-row"><span class="palm-row-label">Points</span><span class="palm-row-val">${p.points||'—'}</span></div>
+        ${p.vice?`<div class="palm-row"><span class="palm-row-label">Vice-champion</span><span class="palm-row-val">${p.vice}</span></div>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderGalerie() {
+  const items = (D.galerie || []).filter(function(g) { return g.url; });
+  const el = document.getElementById('galerie-grid');
+  if (!el) return;
+  if (items.length === 0) { el.innerHTML = '<div style="color:var(--sub);font-style:italic;padding:20px 0">Aucun média pour l\'instant.</div>'; return; }
+  el.innerHTML = items.map(function(g, i) {
+    const isVideo = g.type === 'youtube' || g.type === 'streamable' || g.type === 'video';
+    const thumb = g.type === 'youtube' ? `https://img.youtube.com/vi/${g.url}/mqdefault.jpg` : (g.type === 'photo' ? g.url : '');
+    return `<div class="gal-item" onclick="openLightbox(${i})">
+      ${thumb ? `<img src="${thumb}" alt="${g.titre||''}" loading="lazy">` : `<div class="gal-placeholder">${isVideo?'▶':'🖼'}</div>`}
+      <div class="gal-item-type">${g.type||'photo'}</div>
+      ${isVideo ? '<div class="gal-play">▶</div>' : ''}
+      <div class="gal-item-overlay"><div class="gal-item-title">${g.titre||''}</div></div>
+    </div>`;
+  }).join('');
+}
+
+function openLightbox(idx) {
+  const items = (D.galerie || []).filter(function(g) { return g.url; });
+  const g = items[idx];
+  if (!g) return;
+  const lb = document.getElementById('lightbox');
+  const lbc = document.getElementById('lb-content');
+  lb.classList.remove('hidden');
+  if (g.type === 'photo') {
+    lbc.innerHTML = `<img src="${g.url}" alt="${g.titre||''}">`;
+  } else if (g.type === 'youtube') {
+    lbc.innerHTML = `<iframe src="https://www.youtube.com/embed/${g.url}?autoplay=1" allow="autoplay" allowfullscreen></iframe>`;
+  } else if (g.type === 'streamable') {
+    lbc.innerHTML = `<iframe src="https://streamable.com/e/${g.url}?autoplay=1" allow="autoplay" allowfullscreen></iframe>`;
+  } else {
+    lbc.innerHTML = `<video src="${g.url}" controls autoplay style="width:100%;height:100%;border-radius:6px"></video>`;
+  }
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.add('hidden');
+  document.getElementById('lb-content').innerHTML = '';
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeLightbox(); });
+
+function renderReglement() {
+  const items = D.reglement || [];
+  const el = document.getElementById('regl-articles');
+  if (!el) return;
+  if (items.length === 0) { el.innerHTML = '<div style="color:var(--sub);font-style:italic">Règlement non publié.</div>'; return; }
+  el.innerHTML = items.map(function(r, i) {
+    return `<div class="regl-article" id="regl-art-${i}">
+      <div class="regl-article-hdr" onclick="toggleArticle(${i})">
+        <span class="regl-art-num">Art.${i+1}</span>
+        <span class="regl-art-title">${r.titre||'—'}</span>
+        <span class="regl-art-arrow">▾</span>
+      </div>
+      <div class="regl-art-body">${r.texte||''}</div>
+    </div>`;
+  }).join('');
+}
+
+function toggleArticle(i) {
+  const el = document.getElementById('regl-art-'+i);
+  if (el) el.classList.toggle('open');
 }
 
 function renderNav() {
@@ -758,6 +989,7 @@ function fillAdminForms() {
   sv('e-about-p2', D.about.p2); sv('e-about-p3', D.about.p3||'');
   sv('e-motto', D.about.motto);
   buildTickerEdit(); buildStatsEdit(); buildChampStatsEdit(); buildNewsEdit();
+  buildPalmaresEdit(); buildGalerieEdit(); buildReglEdit();
 }
 
 function sv(id, val) { const el=document.getElementById(id); if(el) el.value=val||''; }
@@ -814,7 +1046,52 @@ function buildNewsEdit() {
 }
 function addNews() { D.news.unshift({cat:'NEWS',date:'Aujourd\'hui',title:'Nouvelle actualité',excerpt:'Description...',emoji:'📰',imgUrl:''}); buildNewsEdit(); }
 
-function escH(s) { return String(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+// ── PALMARÈS ──────────────────────────────────────
+function buildPalmaresEdit() {
+  document.getElementById('palmares-edit-list').innerHTML = (D.palmares||[]).map(function(p,i) {
+    return `<div class="ap-item">
+      <button class="btn-del-item" onclick="D.palmares.splice(${i},1);buildPalmaresEdit()">✕</button>
+      <div class="ap-row"><div class="ap-field"><label>Saison</label><input type="text" data-palm="${i}" data-key="saison" value="${escH(p.saison)}"></div>
+      <div class="ap-field"><label>Grand Prix / Événement</label><input type="text" data-palm="${i}" data-key="gp" value="${escH(p.gp||'')}"></div></div>
+      <div class="ap-field"><label>🏆 Champion pilote</label><input type="text" data-palm="${i}" data-key="champion" value="${escH(p.champion||'')}"></div>
+      <div class="ap-row"><div class="ap-field"><label>Écurie championne</label><input type="text" data-palm="${i}" data-key="ecurie" value="${escH(p.ecurie||'')}"></div>
+      <div class="ap-field"><label>Points</label><input type="text" data-palm="${i}" data-key="points" value="${escH(p.points||'')}"></div></div>
+      <div class="ap-field"><label>Vice-champion (optionnel)</label><input type="text" data-palm="${i}" data-key="vice" value="${escH(p.vice||'')}"></div>
+    </div>`;
+  }).join('');
+}
+function addPalmares() { D.palmares.push({saison:'Saison ?',gp:'',champion:'',ecurie:'',points:'',vice:''}); buildPalmaresEdit(); }
+
+// ── GALERIE ────────────────────────────────────────
+function buildGalerieEdit() {
+  document.getElementById('galerie-edit-list').innerHTML = (D.galerie||[]).map(function(g,i) {
+    return `<div class="ap-item">
+      <button class="btn-del-item" onclick="D.galerie.splice(${i},1);buildGalerieEdit()">✕</button>
+      <div class="ap-field"><label>Type</label>
+        <select data-gal="${i}" data-key="type">
+          <option value="photo"${g.type==='photo'?' selected':''}>📷 Photo (URL image)</option>
+          <option value="youtube"${g.type==='youtube'?' selected':''}>▶ YouTube (ID vidéo)</option>
+          <option value="streamable"${g.type==='streamable'?' selected':''}>▶ Streamable (code)</option>
+          <option value="video"${g.type==='video'?' selected':''}>🎬 Vidéo directe (URL .mp4)</option>
+        </select></div>
+      <div class="ap-field"><label>URL / ID</label><input type="text" data-gal="${i}" data-key="url" value="${escH(g.url||'')}" placeholder="ex: photo=https://... | youtube=dQw4w9WgXcQ"></div>
+      <div class="ap-field"><label>Titre</label><input type="text" data-gal="${i}" data-key="titre" value="${escH(g.titre||'')}"></div>
+    </div>`;
+  }).join('');
+}
+function addGalerie() { D.galerie.push({type:'photo',url:'',titre:''}); buildGalerieEdit(); }
+
+// ── RÈGLEMENT ──────────────────────────────────────
+function buildReglEdit() {
+  document.getElementById('reglement-edit-list').innerHTML = (D.reglement||[]).map(function(r,i) {
+    return `<div class="ap-item">
+      <button class="btn-del-item" onclick="D.reglement.splice(${i},1);buildReglEdit()">✕</button>
+      <div class="ap-field"><label>Art.${i+1} — Titre</label><input type="text" data-regl="${i}" data-key="titre" value="${escH(r.titre||'')}"></div>
+      <div class="ap-field"><label>Texte</label><textarea data-regl="${i}" data-key="texte">${escH(r.texte||'')}</textarea></div>
+    </div>`;
+  }).join('');
+}
+function addReglArticle() { D.reglement.push({titre:'Nouvel article',texte:''}); buildReglEdit(); }
 
 // ── Save ──────────────────────────────────────
 function saveAdmin() {
@@ -831,6 +1108,9 @@ function saveAdmin() {
   document.querySelectorAll('[data-stat]').forEach(el => { if(!D.stats[parseInt(el.dataset.stat)])D.stats[parseInt(el.dataset.stat)]={};D.stats[parseInt(el.dataset.stat)][el.dataset.key]=el.value; });
   document.querySelectorAll('[data-cs]').forEach(el => { if(!D.champ.stats[parseInt(el.dataset.cs)])D.champ.stats[parseInt(el.dataset.cs)]={};D.champ.stats[parseInt(el.dataset.cs)][el.dataset.key]=el.value; });
   document.querySelectorAll('[data-news]').forEach(el => { if(!D.news[parseInt(el.dataset.news)])D.news[parseInt(el.dataset.news)]={};D.news[parseInt(el.dataset.news)][el.dataset.key]=el.value; });
+  document.querySelectorAll('[data-palm]').forEach(function(el) { const i=parseInt(el.dataset.palm); if(!D.palmares[i])D.palmares[i]={}; D.palmares[i][el.dataset.key]=el.value; });
+  document.querySelectorAll('[data-gal]').forEach(function(el) { const i=parseInt(el.dataset.gal); if(!D.galerie[i])D.galerie[i]={}; D.galerie[i][el.dataset.key]=el.value; });
+  document.querySelectorAll('[data-regl]').forEach(function(el) { const i=parseInt(el.dataset.regl); if(!D.reglement[i])D.reglement[i]={}; D.reglement[i][el.dataset.key]=el.value; });
   save(); renderAll(); showToast('✓ Sauvegardé !');
 }
 
@@ -841,8 +1121,91 @@ function resetAdmin() {
 }
 
 // ═══════════════════════════════════════════════════════
-// STORAGE
+// LIVE CHAMPIONSHIP DATA
 // ═══════════════════════════════════════════════════════
+const CHAMP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw0Jjayyjou65NWDc8yreuGGbQ8LJxpDO6wEiMYJlXXZsbAOEtryArNKFsuj6pPmo69/exec';
+
+let CHAMP_DATA = null;
+
+function fetchChampData() {
+  return new Promise(function(resolve) {
+    const cb = 'fedCb_' + Date.now();
+    const script = document.createElement('script');
+    let done = false;
+    window[cb] = function(data) {
+      done = true; delete window[cb];
+      if (script.parentNode) script.parentNode.removeChild(script);
+      CHAMP_DATA = data;
+      resolve(data);
+    };
+    script.onerror = function() {
+      done = true; delete window[cb];
+      if (script.parentNode) script.parentNode.removeChild(script);
+      resolve(null);
+    };
+    setTimeout(function() {
+      if (!done) { delete window[cb]; resolve(null); }
+    }, 8000);
+    script.src = CHAMP_SCRIPT_URL + '?callback=' + cb;
+    document.head.appendChild(script);
+  });
+}
+
+function parseChampStats(data) {
+  if (!data) return;
+  // Config (key-value)
+  const cfg = {};
+  (data.config || []).forEach(function(r) { if (r.cle) cfg[r.cle] = r.valeur || ''; });
+
+  const classement = data.classement || [];
+  const pilotes    = data.pilotes || [];
+  const grille     = data.grille || [];
+
+  // Unique teams
+  const teams = new Set(classement.map(function(r) { return r.equipe; }).filter(Boolean));
+
+  // Build live stats
+  const liveStats = [];
+
+  if (cfg.gp_round) {
+    liveStats.push({num: 'M' + cfg.gp_round, lbl: 'Manche en cours · ' + (cfg.gp_season || '2026')});
+  }
+  if (classement.length > 0) {
+    liveStats.push({num: String(classement.length), lbl: 'Pilotes au championnat'});
+  }
+  if (teams.size > 0) {
+    liveStats.push({num: String(teams.size), lbl: 'Écuries engagées'});
+  }
+  if (grille.length > 0) {
+    liveStats.push({num: String(grille.length), lbl: 'Pilotes sur la grille'});
+  }
+
+  // Override stats if we got live data
+  if (liveStats.length > 0) {
+    D.stats = liveStats;
+    renderStats();
+  }
+
+  // Update champ card stats
+  if (classement.length > 0) {
+    const leader = classement[0];
+    D.champ.stats = [
+      {icon: '🏆', val: leader.pilote || '—', lbl: 'Leader championnat'},
+      {icon: '⭐', val: leader.points || '—', lbl: 'Points leader'},
+      {icon: '🏁', val: cfg.gp_round ? 'Manche ' + cfg.gp_round : '—', lbl: 'Manche en cours'},
+    ];
+    renderChamp();
+  }
+
+  // Update ticker with live GP name
+  if (cfg.gp_name && cfg.gp_round) {
+    const liveMsg = '🔴 En cours : ' + cfg.gp_name + ' — Manche ' + cfg.gp_round;
+    if (!D.ticker.includes(liveMsg)) {
+      D.ticker.unshift(liveMsg);
+      renderTicker();
+    }
+  }
+}
 function save() { try { localStorage.setItem('fed-rp-data', JSON.stringify(D)); } catch(e){} }
 function load() { try { const s=localStorage.getItem('fed-rp-data'); if(s) D={...DEFAULT,...JSON.parse(s),hero:{...DEFAULT.hero,...JSON.parse(s).hero},champ:{...DEFAULT.champ,...JSON.parse(s).champ},about:{...DEFAULT.about,...JSON.parse(s).about}}; } catch(e){} }
 
@@ -861,6 +1224,17 @@ function showToast(msg) {
 load();
 renderAll();
 setTimeout(triggerReveal, 100);
+
+// Charger les données live du championnat
+fetchChampData().then(function(data) {
+  if (data) {
+    parseChampStats(data);
+    // Auto-refresh toutes les 60 secondes
+    setInterval(function() {
+      fetchChampData().then(function(d) { if(d) parseChampStats(d); });
+    }, 60000);
+  }
+});
 </script>
 </body>
 </html>
