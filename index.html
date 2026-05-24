@@ -1043,6 +1043,8 @@ function buildNewsEdit() {
 }
 function addNews() { D.news.unshift({cat:'NEWS',date:'Aujourd\'hui',title:'Nouvelle actualité',excerpt:'Description...',emoji:'📰',imgUrl:''}); buildNewsEdit(); }
 
+function escH(s) { return String(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+
 // ── PALMARÈS ──────────────────────────────────────
 function buildPalmaresEdit() {
   document.getElementById('palmares-edit-list').innerHTML = (D.palmares||[]).map(function(p,i) {
