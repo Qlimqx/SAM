@@ -1,93 +1,374 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>San Andreas Motors - Bientôt disponible</title>
-    <style>
-        /* Styles de base */
-        body, html {
-            height: 100%;
-            margin: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #0b0b0b; /* Fond sombre pour faire ressortir le doré */
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-        }
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Qualifications — Formula Uno de San Andreas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--gold:#F0A500;--gold-dim:rgba(240,165,0,0.12);--gold-border:rgba(240,165,0,0.35);--bg:#080808;--surface:#111111;--surface2:#181818;--border:rgba(255,255,255,0.07);--text:#f0f0f0;--muted:#888;--dim:#444;--green:#2ecc71;--red:#e74c3c;--silver:#C0C0C0;--bronze:#cd7f32;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{font-family:'Barlow',sans-serif;background:var(--bg);color:var(--text);font-size:17px;line-height:1.75;min-height:100vh;}
+    ::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px;}
+    a{color:var(--gold);text-decoration:none;}
 
-        .container {
-            text-align: center;
-            padding: 20px;
-            max-width: 600px;
-            animation: fadeIn 2s ease-in-out;
-        }
+    /* HEADER */
+    header{position:sticky;top:0;z-index:100;background:rgba(8,8,8,0.96);backdrop-filter:blur(14px);border-bottom:1px solid var(--gold-border);}
+    .header-inner{max-width:1100px;margin:0 auto;padding:0 1.5rem;display:flex;align-items:center;gap:1.5rem;height:60px;}
+    .logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0;}
+    .logo-badge{width:34px;height:34px;border-radius:6px;background:var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:10px;color:#1a0e00;line-height:1.1;text-align:center;}
+    .logo-name{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:17px;letter-spacing:1px;color:var(--text);}
+    .logo-sub{font-size:12px;color:var(--muted);}
+    nav{display:flex;gap:2px;overflow-x:auto;flex:1;justify-content:flex-end;}
+    nav::-webkit-scrollbar{display:none;}
+    nav a{font-size:13px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:var(--muted);padding:5px 10px;border-radius:4px;white-space:nowrap;transition:color 0.2s,background 0.2s;text-decoration:none;}
+    nav a:hover{color:var(--gold);background:var(--gold-dim);}
+    nav a.active{color:var(--gold);background:var(--gold-dim);border-bottom:2px solid var(--gold);}
+    .sync-btn{background:var(--gold-dim);border:1px solid var(--gold-border);color:var(--gold);font-size:13px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;padding:5px 12px;border-radius:5px;cursor:pointer;transition:background 0.2s;white-space:nowrap;flex-shrink:0;}
+    .sync-btn:hover{background:rgba(240,165,0,0.22);}
 
-        /* Animation d'entrée */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+    /* HERO */
+    .hero{position:relative;overflow:hidden;padding:3.5rem 1.5rem 3rem;text-align:center;background:radial-gradient(ellipse 80% 50% at 50% 0%,rgba(240,165,0,0.08) 0%,transparent 65%);}
+    .hero::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:100px;height:2px;background:var(--gold);}
+    .hero-badge{display:inline-block;font-size:12px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);border:1px solid var(--gold-border);padding:3px 14px;border-radius:20px;margin-bottom:1rem;}
+    .hero h1{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(2.5rem,8vw,5rem);letter-spacing:2px;text-transform:uppercase;line-height:1;margin-bottom:0.4rem;background:linear-gradient(180deg,#fff 20%,#777 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .hero h1 span{background:linear-gradient(135deg,var(--gold) 0%,#ffe066 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .hero-sub{font-size:1rem;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;}
 
-        /* Style du logo */
-        .logo {
-            max-width: 100%;
-            height: auto;
-            filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.3));
-            margin-bottom: 20px;
-        }
+    /* LAYOUT */
+    main{max-width:1100px;margin:0 auto;padding:2.5rem 1.5rem 5rem;}
+    .section{margin-bottom:3.5rem;}
+    .section-header{display:flex;align-items:baseline;gap:1rem;margin-bottom:1.5rem;padding-bottom:0.75rem;border-bottom:1px solid var(--border);position:relative;}
+    .section-header::before{content:'';position:absolute;bottom:-1px;left:0;width:50px;height:2px;background:var(--gold);}
+    .section-num{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;color:var(--gold);letter-spacing:2px;text-transform:uppercase;opacity:0.6;}
+    .section-title{font-family:'Barlow Condensed',sans-serif;font-size:1.8rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;}
+    .grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;}
+    .grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:1rem;}
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1rem 1.25rem;transition:border-color 0.2s;}
+    .card:hover{border-color:var(--gold-border);}
+    .card-label{font-size:12px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--dim);margin-bottom:0.75rem;}
+    .stat{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1rem 1.25rem;}
+    .stat-label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;}
+    .stat-value{font-family:'Barlow Condensed',sans-serif;font-size:2.2rem;font-weight:700;color:var(--gold);line-height:1;}
+    .stat-sub{font-size:11px;color:var(--dim);margin-top:3px;}
+    .row-list{list-style:none;}
+    .row-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);gap:1rem;font-size:15px;}
+    .row-item:last-child{border-bottom:none;padding-bottom:0;}
+    .row-lbl{color:var(--muted);}
+    .row-val{font-weight:600;color:var(--text);white-space:nowrap;}
+    .row-val.g{color:var(--green);}
+    .badge{display:inline-block;font-size:12px;font-weight:600;letter-spacing:0.6px;text-transform:uppercase;padding:2px 8px;border-radius:4px;}
+    .b-gold{background:var(--gold-dim);color:var(--gold);}
+    .b-green{background:rgba(46,204,113,0.1);color:var(--green);}
+    .b-blue{background:rgba(59,139,250,0.1);color:#5ba5ff;}
+    .b-red{background:rgba(231,76,60,0.1);color:var(--red);}
+    .info{font-size:14px;color:var(--muted);background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:9px 13px;margin-top:0.875rem;line-height:1.6;}
+    .info strong{color:var(--gold);}
+    .highlight{background:rgba(240,165,0,0.04);border:1.5px solid var(--gold-border);border-radius:10px;padding:1rem 1.4rem;margin-bottom:1.5rem;}
+    .highlight-title{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
+    .highlight-body{font-size:15px;color:var(--muted);line-height:1.7;}
+    .highlight-body strong{color:var(--text);}
+    .rule{padding:1rem 1.25rem 1rem 1.5rem;border-left:2px solid var(--gold);background:var(--surface);border-radius:0 8px 8px 0;margin-bottom:10px;font-size:15px;line-height:1.7;color:var(--muted);}
+    .rule strong{color:var(--text);}
 
-        h1 {
-            font-size: 1.5rem;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            color: #d4af37; /* Couleur dorée */
-            margin-bottom: 10px;
-        }
+    /* CLASSEMENT ECURIES */
+    .ecurie-rank-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.1rem 1.4rem;margin-bottom:0.75rem;display:flex;align-items:center;gap:1.1rem;transition:border-color 0.2s,transform 0.15s;position:relative;overflow:hidden;}
+    .ecurie-rank-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;}
+    .ecurie-rank-card:hover{transform:translateX(4px);}
+    .ecurie-rank-card.rank-1{border-color:var(--gold-border);background:rgba(240,165,0,0.04);}
+    .ecurie-rank-card.rank-1::before{background:var(--gold);}
+    .ecurie-rank-card.rank-2::before{background:var(--silver);}
+    .ecurie-rank-card.rank-3::before{background:var(--bronze);}
+    .rank-num{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.8rem;min-width:32px;text-align:center;line-height:1;}
+    .rank-1 .rank-num{color:var(--gold);}
+    .rank-2 .rank-num{color:var(--silver);}
+    .rank-3 .rank-num{color:var(--bronze);}
+    .rank-other .rank-num{color:var(--dim);}
+    .rank-badge{width:40px;height:40px;border-radius:50%;border:2px solid;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:13px;flex-shrink:0;}
+    .rank-info{flex:1;}
+    .rank-name{font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text);margin-bottom:3px;}
+    .rank-pilots{font-size:13px;color:var(--muted);}
+    .pts-breakdown{display:flex;gap:4px;flex-wrap:wrap;margin-top:3px;}
+    .pts-chip{font-size:12px;padding:1px 6px;border-radius:3px;background:var(--surface2);color:var(--muted);}
+    .pts-chip.bonus{background:rgba(240,165,0,0.1);color:var(--gold);}
+    .rank-pts-wrap{text-align:right;flex-shrink:0;}
+    .rank-pts{font-family:'Barlow Condensed',sans-serif;font-size:2.2rem;font-weight:900;line-height:1;}
+    .rank-1 .rank-pts{color:var(--gold);}
+    .rank-2 .rank-pts{color:var(--silver);}
+    .rank-3 .rank-pts{color:var(--bronze);}
+    .rank-other .rank-pts{color:var(--text);}
+    .rank-pts-label{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;}
 
-        p {
-            font-size: 1.1rem;
-            color: #cccccc;
-            font-style: italic;
-        }
+    /* TABLES */
+    .data-table{width:100%;border-collapse:collapse;font-size:15px;}
+    .data-table th{text-align:left;padding:10px 12px;font-size:12px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--dim);border-bottom:1px solid var(--border);white-space:nowrap;}
+    .data-table td{padding:11px 12px;border-bottom:1px solid var(--border);color:var(--muted);}
+    .data-table tr:last-child td{border-bottom:none;}
+    .data-table tr:hover td{background:var(--surface2);}
+    .pos-badge{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;font-weight:700;font-size:11px;}
+    .pos-1{background:rgba(240,165,0,0.15);color:var(--gold);border:1px solid var(--gold);}
+    .pos-2{background:rgba(192,192,192,0.1);color:var(--silver);border:1px solid rgba(192,192,192,0.4);}
+    .pos-3{background:rgba(205,127,50,0.12);color:var(--bronze);border:1px solid var(--bronze);}
+    .pos-n{background:var(--surface2);color:var(--dim);border:1px solid var(--border);}
 
-        /* Petit badge "Soon" */
-        .badge {
-            display: inline-block;
-            background: linear-gradient(45deg, #d4af37, #f9e29c);
-            color: black;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-weight: bold;
-            font-size: 0.9rem;
-            margin-top: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-        }
+    /* ÉCURIES GRID */
+    .ecurie-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:0.875rem;}
+    .ecurie-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1rem 1.25rem;display:flex;align-items:center;gap:0.875rem;transition:border-color 0.2s,transform 0.15s;}
+    .ecurie-card:hover{border-color:var(--gold-border);transform:translateY(-2px);}
+    .ecurie-initials{width:40px;height:40px;border-radius:50%;border:2px solid;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:13px;flex-shrink:0;}
+    .ecurie-name{font-weight:600;font-size:16px;margin-bottom:3px;}
+    .ecurie-detail{font-size:13px;color:var(--muted);display:flex;flex-wrap:wrap;gap:5px;align-items:center;}
 
-        /* Effet de lueur en arrière-plan */
-        .glow {
-            position: absolute;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(212, 175, 55, 0.1) 0%, rgba(0,0,0,0) 70%);
-            z-index: -1;
-        }
-    </style>
+    /* LOADING */
+    .loading{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:13px;padding:1.5rem 0;}
+    .spinner{width:18px;height:18px;border:2px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin 0.7s linear infinite;flex-shrink:0;}
+    @keyframes spin{to{transform:rotate(360deg);}}
+    .empty-state{text-align:center;padding:3rem 1rem;color:var(--muted);}
+    .empty-state .empty-icon{font-size:2.5rem;margin-bottom:0.75rem;}
+    .empty-state p{font-size:16px;}
+
+    /* FOOTER */
+    footer{background:var(--surface);border-top:1px solid var(--border);text-align:center;padding:1.75rem 1.5rem;}
+    .footer-title{font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;font-weight:900;letter-spacing:3px;color:var(--gold);margin-bottom:4px;}
+    .footer-sub{font-size:13px;color:var(--dim);letter-spacing:1px;}
+
+    @media(max-width:640px){.hero{padding:2.5rem 1rem 2rem;}main{padding:2rem 1rem 4rem;}.header-inner{gap:0.75rem;}nav a{font-size:12px;padding:4px 7px;}}
+</style>
 </head>
 <body>
 
-    <div class="glow"></div>
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-badge">FORMULA<br>UNO</div>
+      <div>
+        <div class="logo-name">Formula Uno SA</div>
+        <div class="logo-sub">Événement officiel</div>
+      </div>
+    </a>
+    <nav>
+      <a href="index.html">Classement</a>
+      <a href="inscription.html">Inscription</a>
+      <a href="ecuries.html">Écuries</a>
+      <a href="qualif.html" class="active">Qualifications</a>
+      <a href="pilotes.html">Pilotes</a>
+      
+    </nav>
+    <button class="sync-btn" onclick="loadAll(true)">↻ Sync</button>
+  </div>
+</header>
 
-    <div class="container">
-        <img src="ed3ffbb8-46b0-4b45-88a4-27bddd7f0ffb.png" alt="San Andreas Motors Logo" class="logo">
-        
-        <h1>Ouverture Prochaine</h1>
-        <p>Nos mécaniciens peaufinent les derniers détails...</p>
-        
-        <div class="badge">Soon™</div>
+<section class="hero">
+  <div class="hero-badge">⏱️ Qualifications</div>
+  <h1>Résultats des <span>Qualifications</span></h1>
+  <p class="hero-sub">Q1 · Q2 · Q3 · Grille de départ</p>
+</section>
+
+<main>
+
+  <section class="section">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <h2 class="section-title">Résultats Qualifications</h2>
     </div>
+    <div id="quali-container"><div class="loading"><div class="spinner"></div> Chargement des qualifications...</div></div>
+  </section>
 
+</main>
+
+<footer>
+  <div class="footer-title">Formula Uno</div>
+  <div class="footer-sub">Formula Uno de San Andreas · Événement officiel ·</div>
+</footer>
+
+<script>
+
+
+
+
+// ============================================================
+// ★ FOND DE PAGE — Modifie ces 3 lignes ★
+// ============================================================
+const BG_TYPE    = 'none';    // 'none' | 'image' | 'video' | 'streamable' | 'youtube'
+const BG_URL     = '';         // image → URL .jpg  |  video → URL .mp4
+                               // streamable → code ex: 'gdbszz'
+                               // youtube    → ID ex: 'U2_vT7sgv_c'
+const BG_OPACITY = 0.75;      // Voile sombre : 0.3=léger · 0.75=normal · 0.92=très sombre
+
+(function applyBackground() {
+  if (BG_TYPE === 'none' || !BG_URL) return;
+
+  // Style commun pour tout fond plein écran
+  const fullStyle = `
+    position:fixed;
+    top:50%;
+    left:50%;
+    min-width:100vw;
+    min-height:100vh;
+    width:177.78vh;
+    height:56.25vw;
+    transform:translate(-50%,-50%);
+    z-index:-2;
+    pointer-events:none;
+    border:none;
+    object-fit:cover;
+  `;
+
+  // Voile sombre par dessus
+  const overlay = document.createElement('div');
+  overlay.style.cssText = `
+    position:fixed;top:0;left:0;
+    width:100%;height:100%;
+    background:rgba(0,0,0,${BG_OPACITY});
+    z-index:-1;pointer-events:none;
+  `;
+  document.body.appendChild(overlay);
+
+  if (BG_TYPE === 'image') {
+    document.body.style.backgroundImage = `url('${BG_URL}')`;
+    document.body.style.backgroundSize = 'cover';
+    document.body.style.backgroundPosition = 'center';
+    document.body.style.backgroundAttachment = 'fixed';
+
+  } else if (BG_TYPE === 'video') {
+    const vid = document.createElement('video');
+    vid.style.cssText = fullStyle;
+    // Autoplay — tous les attributs nécessaires pour Chrome/Safari
+    vid.setAttribute('autoplay', '');
+    vid.setAttribute('loop', '');
+    vid.setAttribute('muted', '');
+    vid.setAttribute('playsinline', '');
+    vid.autoplay   = true;
+    vid.loop       = true;
+    vid.muted      = true;
+    vid.defaultMuted = true;
+    vid.playsInline = true;
+    const source = document.createElement('source');
+    source.src  = BG_URL;
+    source.type = 'video/mp4';
+    vid.appendChild(source);
+    document.body.insertBefore(vid, document.body.firstChild);
+    // Plusieurs méthodes pour forcer la lecture
+    const tryPlay = () => vid.play().catch(() => {});
+    vid.addEventListener('loadedmetadata', tryPlay);
+    vid.addEventListener('canplay',        tryPlay);
+    vid.addEventListener('canplaythrough', tryPlay);
+    setTimeout(tryPlay, 500);
+    setTimeout(tryPlay, 1500);
+    vid.load();
+
+  } else if (BG_TYPE === 'streamable') {
+    const iframe = document.createElement('iframe');
+    iframe.style.cssText = fullStyle;
+    iframe.src = `https://streamable.com/e/${BG_URL}?autoplay=1&loop=1&muted=1&nocontrols=1&background=1`;
+    iframe.allow = 'autoplay';
+        document.body.insertBefore(iframe, document.body.firstChild);
+
+  } else if (BG_TYPE === 'youtube') {
+    const iframe = document.createElement('iframe');
+    iframe.style.cssText = fullStyle;
+    iframe.src = `https://www.youtube.com/embed/${BG_URL}?autoplay=1&loop=1&playlist=${BG_URL}&mute=1&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3`;
+    iframe.allow = 'autoplay';
+    document.body.insertBefore(iframe, document.body.firstChild);
+  }
+})();
+
+
+
+const SHEET_ID = '1GmOrWSLecNuF5z7VEYo92XUJHBzfQW4Siih6Tj4cZx4';
+const POINTS_GP = {1:25,2:18,3:15,4:12,5:10,6:8,7:6,8:4,9:2,10:1};
+const BONUS_POLE = 3;
+const BONUS_MTC  = 2;
+
+function fmt(n){
+  if(!n&&n!==0)return'—';
+  const num=Number(String(n).replace(/[\s\u00a0]/g,''));
+  if(num>=1000000)return'$'+(num/1000000).toFixed(num%1000000===0?0:1)+'M';
+  if(num>=1000)return'$'+Math.round(num/1000)+'k';
+  return'$'+num.toLocaleString('fr-FR');
+}
+function cleanNum(s){if(!s&&s!==0)return 0;return parseFloat(String(s).replace(/[\s\u00a0,]/g,''))||0;}
+function getGpPoints(pos){const p=parseInt(pos);return POINTS_GP[p]||0;}
+function statusBadge(s){
+  if(!s)return'';const l=s.toLowerCase();
+  if(l.includes('confirm')||l.includes('inscrit'))return`<span class="badge b-green">${s}</span>`;
+  if(l.includes('attente'))return`<span class="badge b-gold">${s}</span>`;
+  if(l.includes('forfait')||l.includes('absent')||l.includes('disq'))return`<span class="badge b-red">${s}</span>`;
+  if(l.includes('libre')||l.includes('open'))return`<span class="badge b-blue">${s}</span>`;
+  return`<span class="badge b-blue">${s}</span>`;
+}
+
+async function fetchSheet(tab){
+  const url=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(tab.name)}&range=${tab.range}&headers=1`;
+  const res=await fetch(url,{credentials:'omit'});
+  if(!res.ok)throw new Error('HTTP '+res.status);
+  const text=await res.text();
+  if(text.includes('<!DOCTYPE'))throw new Error('Got HTML');
+  const clean=text.replace(/^[\s\S]*?setResponse\(/,'').replace(/\);\s*$/,'');
+  const json=JSON.parse(clean);
+  if(!json.table)throw new Error('No table');
+  const cols=json.table.cols.map(c=>(c.label||c.id||'').trim());
+  return(json.table.rows||[]).map(row=>{
+    const obj={};
+    (row.c||[]).forEach((cell,i)=>{obj[cols[i]||'col'+i]=(cell&&cell.v!=null)?String(cell.v):'';});
+    return obj;
+  }).filter(r=>{const f=Object.values(r)[0]||'';return f.trim()&&!f.startsWith('──')&&!f.startsWith('🏎')&&!f.startsWith('📊')&&!f.startsWith('Remplis');});
+}
+
+function parseConfig(rows){
+  const cfg={};
+  rows.forEach(r=>{const k=Object.keys(r);const key=r[k[0]]||'';const val=r[k[1]]||'';if(key.trim())cfg[key.trim()]=val.trim();});
+  return cfg;
+}
+
+function showLoading(id){document.getElementById(id).innerHTML='<div class="loading"><div class="spinner"></div> Chargement...</div>';}
+function showEmpty(id,icon,msg){document.getElementById(id).innerHTML=`<div class="empty-state"><div class="empty-icon">${icon}</div><p>${msg}</p></div>`;}
+
+
+const TABS = {qualif:{name:'QUALIFICATIONS',range:'A4:H100'}};
+async function loadAll(){
+  try{
+    const rows=await fetchSheet(TABS.qualif);
+    renderQualif(rows);
+  }catch(e){console.error(e);showEmpty('quali-container','⏱️','Les qualifications n\'ont pas encore eu lieu.');}
+}
+function renderQualif(quals){
+  const valid=quals.filter(q=>(q['Pos. Grille']||q['Pilote']||'').trim());
+  if(!valid.length){showEmpty('quali-container','⏱️','Les qualifications n\'ont pas encore eu lieu.');return;}
+  const rows=valid.map((q,i)=>{
+    const pos=q['Pos. Grille']||q['pos. grille']||`${i+1}`;
+    const nom=q['Pilote']||q['pilote']||'—';
+    const ecurie=q['Ecurie']||q['ecurie']||'—';
+    const q1=q['Q1']||q['q1']||'';
+    const q2=q['Q2']||q['q2']||'';
+    const q3=q['Q3']||q['q3']||'';
+    const best=q['Meilleur Temps']||q['meilleur temps']||q1||'';
+    const note=q['Note']||q['note']||'';
+    const p=parseInt(pos);
+    const posCls=p===1?'pos-1':p===2?'pos-2':p===3?'pos-3':'pos-n';
+    const isPole=note.toUpperCase().includes('POLE')||p===1;
+    return`<tr>
+      <td><span class="pos-badge ${posCls}">${pos}</span></td>
+      <td style="color:var(--text);font-weight:500;">${nom}${isPole?' <span class="badge b-gold" style="font-size:9px;">POLE</span>':''}</td>
+      <td style="color:var(--muted);font-size:12px;">${ecurie}</td>
+      <td style="font-family:monospace;font-size:11px;color:var(--muted);">${q1}</td>
+      <td style="font-family:monospace;font-size:11px;color:var(--muted);">${q2}</td>
+      <td style="font-family:monospace;font-size:11px;color:var(--muted);">${q3}</td>
+      <td style="font-family:monospace;font-weight:700;color:var(--gold);font-size:12px;">${best}</td>
+    </tr>`;
+  }).join('');
+  document.getElementById('quali-container').innerHTML=`
+    <div style="overflow-x:auto;"><table class="data-table">
+      <thead><tr><th>Grille</th><th>Pilote</th><th>Écurie</th><th>Q1</th><th>Q2</th><th>Q3</th><th style="color:var(--gold)">Meilleur</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table></div>
+    <div class="info"><strong>Q1</strong> = tous les pilotes · <strong>Q2</strong> = top 10 · <strong>Q3</strong> = top 6 (pole position). Pour indiquer la pole, mettre <strong>POLE</strong> dans la colonne Note.</div>`;
+}
+
+window.addEventListener('DOMContentLoaded', ()=>loadAll());
+</script>
 </body>
 </html>
